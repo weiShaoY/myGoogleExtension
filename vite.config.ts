@@ -1,4 +1,4 @@
-import path from 'node:path'
+import { fileURLToPath, URL } from 'node:url' // 更现代的路径处理方式
 
 import { crx } from '@crxjs/vite-plugin'
 
@@ -20,18 +20,31 @@ import manifest from './manifest.config.ts'
 
 import { name, version } from './package.json'
 
+/**
+ * 创建路径别名配置
+ */
+function pathAlias(aliasName: string, targetPath: string) {
+  return {
+    [aliasName]: fileURLToPath(new URL(targetPath, import.meta.url)),
+  }
+}
+
 export default defineConfig({
   resolve: {
     alias: {
-      '@': `${path.resolve(__dirname, 'src')}`,
-      '@assets': `${path.resolve(__dirname, 'src/assets')}`,
-      '@svgs': `${path.resolve(__dirname, 'src/assets/svgs')}`,
-      '@images': `${path.resolve(__dirname, 'src/assets/images')}`,
-      '@hooks': `${path.resolve(__dirname, 'src/hooks')}`,
-      '@stores': `${path.resolve(__dirname, 'src/stores')}`,
-      '@utils': `${path.resolve(__dirname, 'src/utils')}`,
+      ...pathAlias('@', './src'),
+      ...pathAlias('@assets', './src/assets'),
+      ...pathAlias('@svgs', './src/assets/svgs'),
+      ...pathAlias('@images', './src/assets/images'),
+      ...pathAlias('@hooks', './src/hooks'),
+      ...pathAlias('@stores', './src/stores'),
+      ...pathAlias('@utils', './src/utils'),
     },
+
+    // 补充：省略文件扩展名，提升开发体验
+    extensions: ['.vue', '.js', '.ts', '.jsx', '.tsx', '.json'],
   },
+
   plugins: [
     vue(),
 
@@ -62,8 +75,14 @@ export default defineConfig({
           importStyle: false,
         }),
       ],
+
+      // 类型声明（指定输出路径，规范类型文件位置）
       dts: 'src/types/core/auto-imports.d.ts',
+
+      // 模板中自动导入
       vueTemplate: true,
+
+      // ESLint 兼容
       eslintrc: {
         enabled: true,
       },
