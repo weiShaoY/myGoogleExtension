@@ -1,0 +1,46 @@
+// @charset "UTF-8";
+
+// /* 滚动条样式 */
+
+// /* 滚动条整体部分，必须要设置 */
+// ::-webkit-scrollbar {
+//   width: 8px !important; /* 滚动条宽度 */
+//   height: 0 !important; /* 水平滚动条高度，设为0隐藏 */
+// }
+
+// /* 滚动条的轨道 */
+// ::-webkit-scrollbar-track {
+//   background-color: #17171c; /* 轨道背景色 */
+// }
+
+// /* 滚动条的滑块按钮 */
+// ::-webkit-scrollbar-thumb {
+//   border-radius: 5px; /* 滑块圆角 */
+//   background-color: #cccccc !important; /* 滑块颜色 */
+//   transition: all 0.2s; /* 过渡效果 */
+//   -webkit-transition: all 0.2s; /* 兼容webkit的过渡效果 */
+// }
+
+// /* 滑块悬停状态 */
+// ::-webkit-scrollbar-thumb:hover {
+//   background-color: #b0abab !important; /* 悬停时滑块颜色 */
+// }
+
+// /* 滚动条的上下两端的按钮 */
+// ::-webkit-scrollbar-button {
+//   height: 0px; /* 上下按钮高度，设为0隐藏 */
+//   width: 0; /* 上下按钮宽度，设为0隐藏 */
+// }
+
+// /* 深色模式下的滚动条样式 */
+// .dark {
+//   /* 深色模式轨道 */
+//   ::-webkit-scrollbar-track {
+//     background-color: #070707; /* 深色模式轨道背景色 */
+//   }
+
+//   /* 深色模式滑块 */
+//   ::-webkit-scrollbar-thumb {
+//     background-color: #393946 !important; /* 深色模式滑块颜色 */
+//   }
+// }
