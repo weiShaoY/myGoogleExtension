@@ -51,7 +51,7 @@ declare global {
   const injectLocal: typeof import('@vueuse/core').injectLocal
   const isClipboardSupported: typeof import('../../utils/clipboard').isClipboardSupported
   const isDefined: typeof import('@vueuse/core').isDefined
-  const isHostnameMatch: typeof import('../../utils/urlMatcher copy').isHostnameMatch
+  const isHostnameMatch: typeof import('../../utils/isHostnameMatch').isHostnameMatch
   const isMatchingHostname: typeof import('../../utils/isHostnameMatch').isMatchingHostname
   const isProxy: typeof import('vue').isProxy
   const isReactive: typeof import('vue').isReactive
@@ -91,6 +91,7 @@ declare global {
   const onWatcherCleanup: typeof import('vue').onWatcherCleanup
   const openLink: typeof import('../../utils/openLink').openLink
   const pausableWatch: typeof import('@vueuse/core').pausableWatch
+  const pinia: typeof import('../../stores/index').pinia
   const provide: typeof import('vue').provide
   const provideLocal: typeof import('@vueuse/core').provideLocal
   const reactify: typeof import('@vueuse/core').reactify
@@ -116,6 +117,7 @@ declare global {
   const shallowReadonly: typeof import('vue').shallowReadonly
   const shallowRef: typeof import('vue').shallowRef
   const storeToRefs: typeof import('pinia').storeToRefs
+  const stores: typeof import('../../stores/index').default
   const syncRef: typeof import('@vueuse/core').syncRef
   const syncRefs: typeof import('@vueuse/core').syncRefs
   const templateRef: typeof import('@vueuse/core').templateRef
@@ -190,6 +192,7 @@ declare global {
   const useElementHover: typeof import('@vueuse/core').useElementHover
   const useElementSize: typeof import('@vueuse/core').useElementSize
   const useElementVisibility: typeof import('@vueuse/core').useElementVisibility
+  const useEmbyStore: typeof import('../../stores/index').useEmbyStore
   const useEventBus: typeof import('@vueuse/core').useEventBus
   const useEventListener: typeof import('@vueuse/core').useEventListener
   const useEventSource: typeof import('@vueuse/core').useEventSource
@@ -200,6 +203,7 @@ declare global {
   const useFileSystemAccess: typeof import('@vueuse/core').useFileSystemAccess
   const useFocus: typeof import('@vueuse/core').useFocus
   const useFocusWithin: typeof import('@vueuse/core').useFocusWithin
+  const useFolderStore: typeof import('../../stores/index').useFolderStore
   const useFps: typeof import('@vueuse/core').useFps
   const useFullscreen: typeof import('@vueuse/core').useFullscreen
   const useGamepad: typeof import('@vueuse/core').useGamepad
@@ -273,6 +277,7 @@ declare global {
   const useSwipe: typeof import('@vueuse/core').useSwipe
   const useTemplateRef: typeof import('vue').useTemplateRef
   const useTemplateRefsList: typeof import('@vueuse/core').useTemplateRefsList
+  const useTestStore: typeof import('../../stores/index').useTestStore
   const useTextDirection: typeof import('@vueuse/core').useTextDirection
   const useTextSelection: typeof import('@vueuse/core').useTextSelection
   const useTextareaAutosize: typeof import('@vueuse/core').useTextareaAutosize
@@ -289,6 +294,7 @@ declare global {
   const useToNumber: typeof import('@vueuse/core').useToNumber
   const useToString: typeof import('@vueuse/core').useToString
   const useToggle: typeof import('@vueuse/core').useToggle
+  const useTorrentStore: typeof import('../../stores/index').useTorrentStore
   const useTransition: typeof import('@vueuse/core').useTransition
   const useUrlSearchParams: typeof import('@vueuse/core').useUrlSearchParams
   const useUserMedia: typeof import('@vueuse/core').useUserMedia
@@ -326,9 +332,6 @@ declare global {
   // @ts-ignore
   export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, ShallowRef, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
-  // @ts-ignore
-  export type { UrlMatchKeyword, HostnameMatchKeyword } from '../../utils/urlMatcher copy'
-  import('../../utils/urlMatcher copy')
 }
 
 // for vue template auto import
@@ -336,6 +339,9 @@ import { UnwrapRef } from 'vue'
 declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
+    readonly // useEmbyStore: UnwrapRef<typeof import('../../stores/index copy')['// useEmbyStore']>
+    readonly // useFolderStore: UnwrapRef<typeof import('../../stores/index copy')['// useFolderStore']>
+    readonly // useTorrentStore: UnwrapRef<typeof import('../../stores/index copy')['// useTorrentStore']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
@@ -377,18 +383,18 @@ declare module 'vue' {
     readonly getCurrentWatcher: UnwrapRef<typeof import('vue')['getCurrentWatcher']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
+    readonly index copy: UnwrapRef<typeof import('../../stores/index copy')['default']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly injectLocal: UnwrapRef<typeof import('@vueuse/core')['injectLocal']>
     readonly isClipboardSupported: UnwrapRef<typeof import('../../utils/clipboard')['isClipboardSupported']>
     readonly isDefined: UnwrapRef<typeof import('@vueuse/core')['isDefined']>
-    readonly isHostnameMatch: UnwrapRef<typeof import('../../utils/urlMatcher copy')['isHostnameMatch']>
+    readonly isHostnameMatch: UnwrapRef<typeof import('../../utils/isHostnameMatch')['isHostnameMatch']>
     readonly isProxy: UnwrapRef<typeof import('vue')['isProxy']>
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
     readonly isRef: UnwrapRef<typeof import('vue')['isRef']>
     readonly isShallow: UnwrapRef<typeof import('vue')['isShallow']>
     readonly isUrlMatch: UnwrapRef<typeof import('../../utils/urlMatcher')['isUrlMatch']>
-    readonly isUrlPathMatch: UnwrapRef<typeof import('../../utils/urlMatcher copy')['isUrlPathMatch']>
     readonly makeDestructurable: UnwrapRef<typeof import('@vueuse/core')['makeDestructurable']>
     readonly mapActions: UnwrapRef<typeof import('pinia')['mapActions']>
     readonly mapGetters: UnwrapRef<typeof import('pinia')['mapGetters']>
@@ -443,6 +449,7 @@ declare module 'vue' {
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
     readonly storeToRefs: UnwrapRef<typeof import('pinia')['storeToRefs']>
+    readonly stores: UnwrapRef<typeof import('../../stores/index')['default']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
     readonly templateRef: UnwrapRef<typeof import('@vueuse/core')['templateRef']>
@@ -597,6 +604,7 @@ declare module 'vue' {
     readonly useSwipe: UnwrapRef<typeof import('@vueuse/core')['useSwipe']>
     readonly useTemplateRef: UnwrapRef<typeof import('vue')['useTemplateRef']>
     readonly useTemplateRefsList: UnwrapRef<typeof import('@vueuse/core')['useTemplateRefsList']>
+    readonly useTestStore: UnwrapRef<typeof import('../../stores/index')['useTestStore']>
     readonly useTextDirection: UnwrapRef<typeof import('@vueuse/core')['useTextDirection']>
     readonly useTextSelection: UnwrapRef<typeof import('@vueuse/core')['useTextSelection']>
     readonly useTextareaAutosize: UnwrapRef<typeof import('@vueuse/core')['useTextareaAutosize']>

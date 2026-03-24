@@ -2,6 +2,8 @@ import { createApp } from 'vue'
 
 import { setupPlugins } from '@/plugins'
 
+import Stores from '../stores'
+
 import App from './App.vue'
 
 import '../styles/index'
@@ -21,6 +23,8 @@ function mountApp() {
   const app = createApp(App)
 
   setupPlugins(app)
+
+  app.use(Stores)
 
   app.mount(container)
 }
