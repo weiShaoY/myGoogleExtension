@@ -7,9 +7,9 @@ import Pages from './pages/index.vue'
 </script>
 
 <template>
-  <Search />
 
   <AppProvider>
+    <Search />
 
     <Pages />
 
