@@ -7,3 +7,5 @@ import 'uno.css'
 import 'virtual:uno.css'
 
 import 'virtual:svg-icons/register'
+
+import './core/main.scss'
