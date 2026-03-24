@@ -1,3 +1,5 @@
+import path from 'node:path'
+
 import { fileURLToPath, URL } from 'node:url' // 更现代的路径处理方式
 
 import { crx } from '@crxjs/vite-plugin'
@@ -13,6 +15,8 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import components from 'unplugin-vue-components/vite'
 
 import { defineConfig } from 'vite'
+
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons-ng'
 
 import zip from 'vite-plugin-zip-pack'
 
@@ -92,6 +96,15 @@ export default defineConfig({
           importStyle: 'sass',
         }),
       ],
+    }),
+
+    // SVG 图标插件配置
+    createSvgIconsPlugin({
+      // 指定需要缓存的图标文件夹路径
+      iconDirs: [path.resolve(process.cwd(), 'src/assets/svgs')],
+
+      // SVG 图标的 symbol ID 命名规则
+      symbolId: `icon-[dir]-[name]`,
     }),
 
     crx({

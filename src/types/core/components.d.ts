@@ -18,5 +18,6 @@ declare module 'vue' {
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     HelloWorld: typeof import('./../../components/HelloWorld.vue')['default']
     Search: typeof import('./../../components/Search/index.vue')['default']
+    SvgIcon: typeof import('./../../components/SvgIcon/index.vue')['default']
   }
 }
