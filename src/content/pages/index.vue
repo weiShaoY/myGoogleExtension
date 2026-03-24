@@ -1,8 +1,15 @@
 <!------  2026-03-24---13:58---星期二  ------>
 <!------------------------------------    ------------------------------------------------->
 <script lang="ts" setup>
+import { onMounted } from 'vue'
 
-window.$message('页面')
+onMounted(() => {
+  console.log('[index.vue] window.$notification:', window.$notification)
+  window.$message({
+    message: '测试',
+    duration: 113000,
+  })
+})
 </script>
 
 <template>

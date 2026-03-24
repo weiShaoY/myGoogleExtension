@@ -37,12 +37,21 @@ const ContextHolder = defineComponent({
     function registerGlobalComponents() {
       try {
         window.$notification = ElNotification
+
         window.$messageBox = ElMessageBox
+
         window.$message = ElMessage
+
         window.$isDevelopment = isDevelopment
+
+        console.log('[AppProvider] 全局组件注册成功', {
+          $notification: typeof window.$notification,
+          $message: typeof window.$message,
+          $messageBox: typeof window.$messageBox,
+        })
       }
-      catch {
-        console.error('注册全局组件失败')
+      catch (error) {
+        console.error('[AppProvider] 注册全局组件失败', error)
       }
     }
 
