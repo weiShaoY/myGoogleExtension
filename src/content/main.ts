@@ -1,5 +1,7 @@
 import { createApp } from 'vue'
 
+import { setupPlugins } from '@/plugins'
+
 import App from './App.vue'
 
 import '../styles/index'
@@ -17,6 +19,8 @@ function mountApp() {
   document.body.appendChild(container)
 
   const app = createApp(App)
+
+  setupPlugins(app)
 
   app.mount(container)
 }

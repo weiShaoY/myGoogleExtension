@@ -58,6 +58,7 @@
     "inject": true,
     "injectLocal": true,
     "isDefined": true,
+    "isHostnameMatch": true,
     "isProxy": true,
     "isReactive": true,
     "isReadonly": true,

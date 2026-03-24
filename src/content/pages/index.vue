@@ -4,12 +4,16 @@
 import { onMounted } from 'vue'
 
 onMounted(() => {
-  console.log('[index.vue] window.$notification:', window.$notification)
+  console.log('[index.vue] window.$message:', window.$message)
+  console.log('[index.vue] document.body:', document.body)
+
   window.$message({
-    message: '测试',
+    message: '测试消息 - 将显示 113 秒',
     duration: 113000,
+    type: 'success',
   })
 })
+
 </script>
 
 <template>
