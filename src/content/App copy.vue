@@ -38,7 +38,7 @@ const toggle = () => show.value = !show.value
   <div
     class="fixed right-10 bg-red !bottom-60"
   >
-    测试1
+    测试1222
   </div>
 
 </template>

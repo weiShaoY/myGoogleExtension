@@ -1,0 +1,29 @@
+<!------  2026-03-24---13:14---星期二  ------>
+<!------------------------------------    ------------------------------------------------->
+<script lang="ts" setup>
+
+import Pages from './pages/index.vue'
+
+</script>
+
+<template>
+  <!-- <Search /> -->
+
+  <!-- <Pages /> -->
+
+  <AppProvider>
+    <!-- <div
+      class="bottom-10 right-10 bg-primary !fixed"
+    >
+      测试
+    </div> -->
+
+    <Pages />
+
+  </AppProvider>
+
+</template>
+
+<style lang="scss" scoped>
+
+</style>

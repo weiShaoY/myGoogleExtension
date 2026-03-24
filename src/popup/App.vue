@@ -4,17 +4,43 @@ import HelloWorld from '@/components/HelloWorld.vue'
 
 <template>
   <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="@/assets/vite.svg" class="logo" alt="Vite logo">
+    <a
+      href="https://vite.dev"
+      target="_blank"
+    >
+      <img
+        src="@/assets/vite.svg"
+        class="logo"
+        alt="Vite logo"
+      >
     </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="@/assets/vue.svg" class="logo vue" alt="Vue logo">
+
+    <a
+      href="https://vuejs.org/"
+      target="_blank"
+    >
+      <img
+        src="@/assets/vue.svg"
+        class="logo vue"
+        alt="Vue logo"
+      >
     </a>
-    <a href="https://crxjs.dev/vite-plugin" target="_blank">
-      <img src="@/assets/crx.svg" class="logo crx" alt="crx logo">
+
+    <a
+      href="https://crxjs.dev/vite-plugin"
+      target="_blank"
+    >
+      <img
+        src="@/assets/crx.svg"
+        class="logo crx"
+        alt="crx logo"
+      >
     </a>
   </div>
-  <HelloWorld msg="Vite + Vue + CRXJS" />
+
+  <HelloWorld
+    msg="Vite + Vue + CRXJS"
+  />
 </template>
 
 <style scoped>

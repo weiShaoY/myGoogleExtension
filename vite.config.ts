@@ -55,14 +55,8 @@ export default defineConfig({
     autoImport({
       imports: [
         'vue',
-        'vue-router',
         'pinia',
         '@vueuse/core',
-        {
-          from: 'vue-router',
-          imports: ['RouteLocationRaw'],
-          type: true,
-        },
       ],
       dirs: [
         'src/composables',
@@ -91,6 +85,7 @@ export default defineConfig({
     // ===== 组件自动导入插件 =====
     components ({
       // 生成 TypeScript 组件声明文件
+      dts: 'src/types/core/components.d.ts',
       resolvers: [
         // 使用 Sass 引入 Element Plus 样式
         ElementPlusResolver({
