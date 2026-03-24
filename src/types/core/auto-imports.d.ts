@@ -51,13 +51,15 @@ declare global {
   const injectLocal: typeof import('@vueuse/core').injectLocal
   const isClipboardSupported: typeof import('../../utils/clipboard').isClipboardSupported
   const isDefined: typeof import('@vueuse/core').isDefined
-  const isHostnameMatch: typeof import('../../utils/isHostnameMatch').isHostnameMatch
+  const isHostnameMatch: typeof import('../../utils/urlMatcher copy').isHostnameMatch
   const isMatchingHostname: typeof import('../../utils/isHostnameMatch').isMatchingHostname
   const isProxy: typeof import('vue').isProxy
   const isReactive: typeof import('vue').isReactive
   const isReadonly: typeof import('vue').isReadonly
   const isRef: typeof import('vue').isRef
   const isShallow: typeof import('vue').isShallow
+  const isUrlMatch: typeof import('../../utils/urlMatcher').isUrlMatch
+  const isUrlPathMatch: typeof import('../../utils/urlMatcher copy').isUrlPathMatch
   const makeDestructurable: typeof import('@vueuse/core').makeDestructurable
   const mapActions: typeof import('pinia').mapActions
   const mapGetters: typeof import('pinia').mapGetters
@@ -324,6 +326,9 @@ declare global {
   // @ts-ignore
   export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, ShallowRef, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
+  // @ts-ignore
+  export type { UrlMatchKeyword, HostnameMatchKeyword } from '../../utils/urlMatcher copy'
+  import('../../utils/urlMatcher copy')
 }
 
 // for vue template auto import
@@ -376,12 +381,14 @@ declare module 'vue' {
     readonly injectLocal: UnwrapRef<typeof import('@vueuse/core')['injectLocal']>
     readonly isClipboardSupported: UnwrapRef<typeof import('../../utils/clipboard')['isClipboardSupported']>
     readonly isDefined: UnwrapRef<typeof import('@vueuse/core')['isDefined']>
-    readonly isHostnameMatch: UnwrapRef<typeof import('../../utils/isHostnameMatch')['isHostnameMatch']>
+    readonly isHostnameMatch: UnwrapRef<typeof import('../../utils/urlMatcher copy')['isHostnameMatch']>
     readonly isProxy: UnwrapRef<typeof import('vue')['isProxy']>
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
     readonly isRef: UnwrapRef<typeof import('vue')['isRef']>
     readonly isShallow: UnwrapRef<typeof import('vue')['isShallow']>
+    readonly isUrlMatch: UnwrapRef<typeof import('../../utils/urlMatcher')['isUrlMatch']>
+    readonly isUrlPathMatch: UnwrapRef<typeof import('../../utils/urlMatcher copy')['isUrlPathMatch']>
     readonly makeDestructurable: UnwrapRef<typeof import('@vueuse/core')['makeDestructurable']>
     readonly mapActions: UnwrapRef<typeof import('pinia')['mapActions']>
     readonly mapGetters: UnwrapRef<typeof import('pinia')['mapGetters']>

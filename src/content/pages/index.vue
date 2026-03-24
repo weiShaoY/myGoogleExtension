@@ -38,15 +38,15 @@ onMounted(() => {
   </div> -->
 
   <Emby
-    v-if="isHostnameMatch('emby')"
+    v-if="isUrlMatch('emby')"
   />
 
   <Javdb
-    v-else-if="isHostnameMatch('javdb')"
+    v-else-if="isUrlMatch('javdb')"
   />
 
   <Javbus
-    v-else-if="isHostnameMatch('javbus')"
+    v-else-if="isUrlMatch('javbus')"
   />
 </template>
 
