@@ -2,9 +2,14 @@
  *  搜索组件配置
  */
 export const SearchConfig: {
-  siteList: SearchConfigType.SiteItem[]
+  displayOnPaths: SearchConfigType.displayOnPaths
+  siteGroups: SearchConfigType.SiteItem[]
 } = {
-  siteList: [
+  displayOnPaths: [
+    'google.com/search',
+    'baidu.com/s',
+  ],
+  siteGroups: [
     {
       name: 'Google',
       icon: 'google',
@@ -22,7 +27,7 @@ export const SearchConfig: {
     {
       name: '开发',
       icon: 'dev-jueJin',
-      siteList: [
+      siteGroups: [
         {
           name: '稀土掘金',
           icon: 'dev-jueJin',
@@ -49,7 +54,7 @@ export const SearchConfig: {
     {
       name: '论坛',
       icon: 'forum-v2ex',
-      siteList: [
+      siteGroups: [
         {
           name: 'V2EX',
           icon: 'forum-v2ex',
@@ -69,7 +74,7 @@ export const SearchConfig: {
     {
       name: '购物',
       icon: 'shop-jd',
-      siteList: [
+      siteGroups: [
         {
           name: '京东',
           icon: 'shop-jd',
@@ -104,7 +109,7 @@ export const SearchConfig: {
     {
       name: '成人',
       icon: 'av-javdb',
-      siteList: [
+      siteGroups: [
         {
           name: 'javdb',
           icon: 'av-javdb',

@@ -4,6 +4,11 @@
 namespace SearchConfigType {
 
   /**
+   *  搜索组件显示的网站
+   */
+  export type displayOnPaths = string[]
+
+  /**
    *  搜索引擎站点类型
    */
   export type SiteItem = {
@@ -30,7 +35,7 @@ namespace SearchConfigType {
     searchUrl?: string
 
     /** 子菜单 */
-    siteList?: SiteItem[]
+    siteGroups?: SiteItem[]
   }
 
 }

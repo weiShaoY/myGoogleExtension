@@ -9,8 +9,6 @@ import Pages from './pages/index.vue'
 <template>
   <Search />
 
-  <!-- <Pages /> -->
-
   <AppProvider>
 
     <Pages />
