@@ -13,6 +13,9 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppProvider: typeof import('./../../components/AppProvider/index.vue')['default']
     ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
+    ElMenu: typeof import('element-plus/es')['ElMenu']
+    ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
+    ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     HelloWorld: typeof import('./../../components/HelloWorld.vue')['default']
     Search: typeof import('./../../components/Search/index.vue')['default']
   }

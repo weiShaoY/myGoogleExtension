@@ -7,16 +7,11 @@ import Pages from './pages/index.vue'
 </script>
 
 <template>
-  <!-- <Search /> -->
+  <Search />
 
   <!-- <Pages /> -->
 
   <AppProvider>
-    <!-- <div
-      class="bottom-10 right-10 bg-primary !fixed"
-    >
-      测试
-    </div> -->
 
     <Pages />
 

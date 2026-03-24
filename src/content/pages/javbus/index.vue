@@ -4,7 +4,7 @@
 import { onMounted } from 'vue'
 
 onMounted(() => {
-  const a = isHostnameMatch('javdb') ? 'javdb' : '不是 javdb'
+  const a = isHostnameMatch('javbus') ? 'javbus' : '不是 javbus'
 
   window.$message({
     message: a,
@@ -19,7 +19,7 @@ onMounted(() => {
   <div
     class="bottom-10 right-10 bg-red !fixed"
   >
-    javdb
+    javbus
   </div>
 
 </template>
