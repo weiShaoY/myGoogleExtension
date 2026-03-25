@@ -1,24 +1,24 @@
-import { createPinia } from 'pinia'
+// import { createPinia } from 'pinia'
 
-import { createPersistedState } from 'pinia-plugin-persistedstate'
+// import { createPersistedState } from 'pinia-plugin-persistedstate'
 
-// import useEmbyStore from './modules/emby'
+// // import useEmbyStore from './modules/emby'
 
-// import useFolderStore from './modules/folder'
+// // import useFolderStore from './modules/folder'
 
-// import useTorrentStore from './modules/torrent'
+// // import useTorrentStore from './modules/torrent'
 
-export {
+// export {
 
-  // useEmbyStore,
-  // useFolderStore,
-  // useTorrentStore,
-}
+//   // useEmbyStore,
+//   // useFolderStore,
+//   // useTorrentStore,
+// }
 
-const pinia = createPinia()
+// const pinia = createPinia()
 
-const persistPlugin = createPersistedState()
+// const persistPlugin = createPersistedState()
 
-pinia.use(persistPlugin)
+// pinia.use(persistPlugin)
 
-export default pinia
+// export default pinia

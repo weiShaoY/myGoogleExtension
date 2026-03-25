@@ -23,6 +23,8 @@ export default defineManifest({
     'sidePanel',
     'contentSettings',
     'storage',
+    'system.storage',
+    'unlimitedStorage',
   ],
   side_panel: {
     default_path: 'src/sidepanel/index.html',

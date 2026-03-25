@@ -59,6 +59,7 @@ export default defineConfig({
     autoImport({
       imports: [
         'vue',
+        'vue-router',
         'pinia',
         '@vueuse/core',
       ],
@@ -73,14 +74,8 @@ export default defineConfig({
           importStyle: false,
         }),
       ],
-
-      // 类型声明（指定输出路径，规范类型文件位置）
       dts: 'src/types/core/auto-imports.d.ts',
-
-      // 模板中自动导入
       vueTemplate: true,
-
-      // ESLint 兼容
       eslintrc: {
         enabled: true,
       },

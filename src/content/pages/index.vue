@@ -11,14 +11,13 @@ import Javbus from './javbus/index.vue'
 import Javdb from './javdb/index.vue'
 
 onMounted(() => {
-  console.log('[index.vue] window.$message:', window.$message)
-  console.log('[index.vue] document.body:', document.body)
-
-  window.$message({
-    message: '测试页',
-    duration: 113000,
-    type: 'success',
-  })
+  // console.log('[index.vue] window.$message:', window.$message)
+  // console.log('[index.vue] document.body:', document.body)
+  // window.$message({
+  //   message: '测试页',
+  //   duration: 113000,
+  //   type: 'success',
+  // })
 })
 
 </script>

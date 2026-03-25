@@ -3,14 +3,15 @@ import { defineStore } from 'pinia'
 const useTestStore = defineStore(
   'test',
   () => {
-    const testOBJ = {
+    const testValue = ref(0)
+
+    const testObj = ref({
       a: 1,
-      b: 2,
-      c: 3,
-    }
+    })
 
     return {
-      testOBJ,
+      testValue,
+      testObj,
     }
   },
   {

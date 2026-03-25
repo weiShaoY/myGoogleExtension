@@ -1,15 +1,17 @@
 import { createPinia } from 'pinia'
 
-import { piniaChromeStoragePlugin } from 'pinia-chrome-storage'
-
 import useTestStore from './modules/test'
 
+import { chromeStorage } from './pinia-sync-plugin'
+
 const pinia = createPinia()
+
+pinia.use(
+  chromeStorage,
+)
 
 export {
   useTestStore,
 }
-
-pinia.use(piniaChromeStoragePlugin)
 
 export default pinia

@@ -10,6 +10,7 @@ declare global {
   const acceptHMRUpdate: typeof import('pinia').acceptHMRUpdate
   const asyncComputed: typeof import('@vueuse/core').asyncComputed
   const autoResetRef: typeof import('@vueuse/core').autoResetRef
+  const chromeStorage: typeof import('../../stores/pinia-sync-plugin').chromeStorage
   const computed: typeof import('vue').computed
   const computedAsync: typeof import('@vueuse/core').computedAsync
   const computedEager: typeof import('@vueuse/core').computedEager
@@ -52,14 +53,12 @@ declare global {
   const isClipboardSupported: typeof import('../../utils/clipboard').isClipboardSupported
   const isDefined: typeof import('@vueuse/core').isDefined
   const isHostnameMatch: typeof import('../../utils/isHostnameMatch').isHostnameMatch
-  const isMatchingHostname: typeof import('../../utils/isHostnameMatch').isMatchingHostname
   const isProxy: typeof import('vue').isProxy
   const isReactive: typeof import('vue').isReactive
   const isReadonly: typeof import('vue').isReadonly
   const isRef: typeof import('vue').isRef
   const isShallow: typeof import('vue').isShallow
   const isUrlMatch: typeof import('../../utils/urlMatcher').isUrlMatch
-  const isUrlPathMatch: typeof import('../../utils/urlMatcher copy').isUrlPathMatch
   const makeDestructurable: typeof import('@vueuse/core').makeDestructurable
   const mapActions: typeof import('pinia').mapActions
   const mapGetters: typeof import('pinia').mapGetters
@@ -91,7 +90,7 @@ declare global {
   const onWatcherCleanup: typeof import('vue').onWatcherCleanup
   const openLink: typeof import('../../utils/openLink').openLink
   const pausableWatch: typeof import('@vueuse/core').pausableWatch
-  const pinia: typeof import('../../stores/index').pinia
+  const piniaChromeStoragePlugin: typeof import('../../stores/piniaChromeStoragePlugin').piniaChromeStoragePlugin
   const provide: typeof import('vue').provide
   const provideLocal: typeof import('@vueuse/core').provideLocal
   const reactify: typeof import('@vueuse/core').reactify
@@ -192,7 +191,6 @@ declare global {
   const useElementHover: typeof import('@vueuse/core').useElementHover
   const useElementSize: typeof import('@vueuse/core').useElementSize
   const useElementVisibility: typeof import('@vueuse/core').useElementVisibility
-  const useEmbyStore: typeof import('../../stores/index').useEmbyStore
   const useEventBus: typeof import('@vueuse/core').useEventBus
   const useEventListener: typeof import('@vueuse/core').useEventListener
   const useEventSource: typeof import('@vueuse/core').useEventSource
@@ -203,7 +201,6 @@ declare global {
   const useFileSystemAccess: typeof import('@vueuse/core').useFileSystemAccess
   const useFocus: typeof import('@vueuse/core').useFocus
   const useFocusWithin: typeof import('@vueuse/core').useFocusWithin
-  const useFolderStore: typeof import('../../stores/index').useFolderStore
   const useFps: typeof import('@vueuse/core').useFps
   const useFullscreen: typeof import('@vueuse/core').useFullscreen
   const useGamepad: typeof import('@vueuse/core').useGamepad
@@ -294,7 +291,6 @@ declare global {
   const useToNumber: typeof import('@vueuse/core').useToNumber
   const useToString: typeof import('@vueuse/core').useToString
   const useToggle: typeof import('@vueuse/core').useToggle
-  const useTorrentStore: typeof import('../../stores/index').useTorrentStore
   const useTransition: typeof import('@vueuse/core').useTransition
   const useUrlSearchParams: typeof import('@vueuse/core').useUrlSearchParams
   const useUserMedia: typeof import('@vueuse/core').useUserMedia
@@ -339,13 +335,11 @@ import { UnwrapRef } from 'vue'
 declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
-    readonly // useEmbyStore: UnwrapRef<typeof import('../../stores/index copy')['// useEmbyStore']>
-    readonly // useFolderStore: UnwrapRef<typeof import('../../stores/index copy')['// useFolderStore']>
-    readonly // useTorrentStore: UnwrapRef<typeof import('../../stores/index copy')['// useTorrentStore']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
+    readonly chromeStorage: UnwrapRef<typeof import('../../stores/pinia-sync-plugin')['chromeStorage']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly computedAsync: UnwrapRef<typeof import('@vueuse/core')['computedAsync']>
     readonly computedEager: UnwrapRef<typeof import('@vueuse/core')['computedEager']>
@@ -383,7 +377,6 @@ declare module 'vue' {
     readonly getCurrentWatcher: UnwrapRef<typeof import('vue')['getCurrentWatcher']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
-    readonly index copy: UnwrapRef<typeof import('../../stores/index copy')['default']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly injectLocal: UnwrapRef<typeof import('@vueuse/core')['injectLocal']>
     readonly isClipboardSupported: UnwrapRef<typeof import('../../utils/clipboard')['isClipboardSupported']>
@@ -405,6 +398,8 @@ declare module 'vue' {
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
     readonly onBeforeMount: UnwrapRef<typeof import('vue')['onBeforeMount']>
+    readonly onBeforeRouteLeave: UnwrapRef<typeof import('vue-router')['onBeforeRouteLeave']>
+    readonly onBeforeRouteUpdate: UnwrapRef<typeof import('vue-router')['onBeforeRouteUpdate']>
     readonly onBeforeUnmount: UnwrapRef<typeof import('vue')['onBeforeUnmount']>
     readonly onBeforeUpdate: UnwrapRef<typeof import('vue')['onBeforeUpdate']>
     readonly onClickOutside: UnwrapRef<typeof import('@vueuse/core')['onClickOutside']>
@@ -547,6 +542,7 @@ declare module 'vue' {
     readonly useIntervalFn: UnwrapRef<typeof import('@vueuse/core')['useIntervalFn']>
     readonly useKeyModifier: UnwrapRef<typeof import('@vueuse/core')['useKeyModifier']>
     readonly useLastChanged: UnwrapRef<typeof import('@vueuse/core')['useLastChanged']>
+    readonly useLink: UnwrapRef<typeof import('vue-router')['useLink']>
     readonly useLocalStorage: UnwrapRef<typeof import('@vueuse/core')['useLocalStorage']>
     readonly useMagicKeys: UnwrapRef<typeof import('@vueuse/core')['useMagicKeys']>
     readonly useManualRefHistory: UnwrapRef<typeof import('@vueuse/core')['useManualRefHistory']>
@@ -584,6 +580,8 @@ declare module 'vue' {
     readonly useRafFn: UnwrapRef<typeof import('@vueuse/core')['useRafFn']>
     readonly useRefHistory: UnwrapRef<typeof import('@vueuse/core')['useRefHistory']>
     readonly useResizeObserver: UnwrapRef<typeof import('@vueuse/core')['useResizeObserver']>
+    readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>
+    readonly useRouter: UnwrapRef<typeof import('vue-router')['useRouter']>
     readonly useSSRWidth: UnwrapRef<typeof import('@vueuse/core')['useSSRWidth']>
     readonly useScreenOrientation: UnwrapRef<typeof import('@vueuse/core')['useScreenOrientation']>
     readonly useScreenSafeArea: UnwrapRef<typeof import('@vueuse/core')['useScreenSafeArea']>
