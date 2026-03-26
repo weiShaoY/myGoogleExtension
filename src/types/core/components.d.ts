@@ -19,9 +19,13 @@ declare module 'vue' {
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     EmbyCatalogedList: typeof import('./../../components/EmbyCatalogedList/index.vue')['default']
     EmbyPlayButton: typeof import('./../../components/EmbyPlayButton/index.vue')['default']
+    FolderQueryDuplicateDialog: typeof import('./../../components/Setting/components/folderQueryDuplicateDialog/index.vue')['default']
+    FolderReadSuccessDialog: typeof import('./../../components/Setting/components/folderReadSuccessDialog/index.vue')['default']
     HelloWorld: typeof import('./../../components/HelloWorld.vue')['default']
     Main: typeof import('./../../components/Search/main.vue')['default']
+    PendingUpdateChineseButton: typeof import('./../../components/PendingUpdateChineseButton/index.vue')['default']
     Search: typeof import('./../../components/Search/index.vue')['default']
+    Setting: typeof import('./../../components/Setting/index.vue')['default']
     SvgIcon: typeof import('./../../components/SvgIcon/index.vue')['default']
   }
 }

@@ -7,13 +7,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "paths": {
-      "@/*": ["src/*"],
-      "@assets/*": ["src/assets/*"],
-      "@svgs/*": ["src/assets/svgs/*"],
-      "@images/*": ["src/assets/images/*"],
-      "@hooks/*": ["src/hooks/*"],
-      "@stores/*": ["src/stores/*"],
-      "@utils/*": ["src/utils/*"]
+      "@/*": ["src/*"]
     },
     "resolveJsonModule": true,
     "types": ["vite/client", "@crxjs/vite-plugin/client", "chrome"],

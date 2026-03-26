@@ -1,6 +1,4 @@
-import path from 'node:path'
-
-import { fileURLToPath, URL } from 'node:url' // 更现代的路径处理方式
+import path, { resolve } from 'node:path'
 
 import { crx } from '@crxjs/vite-plugin'
 
@@ -24,25 +22,10 @@ import manifest from './manifest.config.ts'
 
 import { name, version } from './package.json'
 
-/**
- * 创建路径别名配置
- */
-function pathAlias(aliasName: string, targetPath: string) {
-  return {
-    [aliasName]: fileURLToPath(new URL(targetPath, import.meta.url)),
-  }
-}
-
 export default defineConfig({
   resolve: {
     alias: {
-      ...pathAlias('@/', './src'),
-      ...pathAlias('@assets/', './src/assets'),
-      ...pathAlias('@svgs/', './src/assets/svgs'),
-      ...pathAlias('@images/', './src/assets/images'),
-      ...pathAlias('@hooks/', './src/hooks'),
-      ...pathAlias('@stores/', './src/stores'),
-      ...pathAlias('@utils/', './src/utils'),
+      '@/': `${resolve(__dirname, 'src')}/`,
     },
 
     // 补充：省略文件扩展名，提升开发体验
