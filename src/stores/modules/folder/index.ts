@@ -2,10 +2,19 @@ import { defineStore } from 'pinia'
 
 import { ref } from 'vue'
 
-const useFolderStore = defineStore(
+export const useFolderStore = defineStore(
   'folder',
   () => {
+    const embyFolder = ref<FolderConfigType.EmbyFolder>({
+      folderName: 'emby名称',
+      folderReadTime: 0,
+      folderFileList: [],
+      folderDuplicateNameFileList: [],
+      folderUniqueFileNameFileList: [],
+    })
+
     const embyScanConfig = ref<FolderConfigType.EmbyScanConfig>({
+
       /**
        * 目标扫描磁盘驱动器盘符
        */
@@ -14,7 +23,7 @@ const useFolderStore = defineStore(
       /**
        * 是否启用文件夹扫描定时提醒功能
        */
-      enableScanReminder: true,
+      enableScanReminder: false,
 
       /**
        * 文件夹扫描提醒间隔时间（小时）
@@ -29,78 +38,19 @@ const useFolderStore = defineStore(
     })
 
     /**
-     *  文件夹名称
-     */
-    const folderName = ref<string>('')
-
-    /**
-     *  文件夹 读取时间
-     */
-    const folderReadTime = ref<number>(0)
-
-    /**
-     *  文件夹 文件列表
-     */
-    const folderFileList = ref<FolderConfigType.File[]>([])
-
-    /**
-     *  文件夹内文件名重复的文件列表。
-     */
-    const folderDuplicateNameFileList = ref<FolderConfigType.File[]>([])
-
-    /**
-     *  文件夹内文件名已去重的文件列表 (每个文件名仅出现一次)。
-     */
-    const folderUniqueFileNameFileList = ref<string[]>([])
-
-    /**
-     *  加载Emby文件夹数据
-     *  @description 加载 Emby 文件夹数据，并将其存储到 Pinia store 中
-     */
-    function loadEmbyFolderData() {
-      const embyFolder = JSON.parse(GM_getValue('EmbyFolder', '{}'))
-
-      if (embyFolder.folderName && embyFolder.folderReadTime && embyFolder.folderFileList) {
-        folderName.value = embyFolder.folderName
-
-        folderReadTime.value = embyFolder.folderReadTime
-
-        folderFileList.value = embyFolder.folderFileList
-
-        folderDuplicateNameFileList.value = getFolderDuplicateNameFileList(folderFileList.value, 'cleanName')
-
-        folderUniqueFileNameFileList.value = getFolderUniqueFileNameFileList(folderFileList.value, 'cleanName')
-      }
-
-      else {
-        window.$notification.error('读取Emby文件夹错误, 请重新读取Emby文件夹')
-      }
-    }
-
-    /**
      *  保存文件夹文件列表
-     *  @param folderName_ - 文件夹名
+     *  @param _folderName - 文件夹名
      *  @param videoFileSet - 视频文件集合
      *  @description 保存 Emby 文件夹数据，并将其存储到 GM_setValue 和 Pinia store 中
      */
-    function saveEmbyFolderData(folderName_: string, videoFileSet: Set<FolderConfigType.File>) {
-      folderName.value = folderName_
-
-      folderFileList.value = Array.from(videoFileSet)
-
-      folderDuplicateNameFileList.value = getFolderDuplicateNameFileList(folderFileList.value, 'cleanName')
-
-      folderUniqueFileNameFileList.value = getFolderUniqueFileNameFileList(folderFileList.value, 'cleanName')
-
-      folderReadTime.value = Date.now()
-
-      const embyFolder = {
-        folderName: folderName.value,
-        folderReadTime: folderReadTime.value,
-        folderFileList: folderFileList.value,
+    function saveEmbyFolderData(_folderName: string, videoFileSet: Set<FolderConfigType.File>) {
+      embyFolder.value = {
+        folderName: _folderName,
+        folderReadTime: Date.now(),
+        folderFileList: Array.from(videoFileSet),
+        folderDuplicateNameFileList: getFolderDuplicateNameFileList(Array.from(videoFileSet), 'cleanName'),
+        folderUniqueFileNameFileList: getFolderUniqueFileNameFileList(Array.from(videoFileSet), 'cleanName'),
       }
-
-      GM_setValue('EmbyFolder', JSON.stringify(embyFolder))
     }
 
     /**
@@ -144,41 +94,16 @@ const useFolderStore = defineStore(
     }
 
     return {
+
+      /**
+       * Emby 文件夹数据。
+       */
+      embyFolder,
+
       /**
        * Emby 文件夹扫描配置。
        */
       embyScanConfig,
-
-      /**
-       * 文件夹名称。
-       */
-      folderName,
-
-      /**
-       * 文件夹读取时间戳 (Unix 时间戳)。
-       */
-      folderReadTime,
-
-      /**
-       * 文件列表。
-       */
-      folderFileList,
-
-      /**
-       * 文件夹内文件名重复的文件列表。
-       */
-      folderDuplicateNameFileList,
-
-      /**
-       * 文件夹内文件名已去重的文件列表 (每个文件名仅出现一次)。
-       */
-      folderUniqueFileNameFileList,
-
-      /**
-       *  加载Emby文件夹数据
-       *  @description 加载 Emby 文件夹数据，并将其存储到 Pinia store 中
-       */
-      loadEmbyFolderData,
 
       /**
        * 保存文件夹文件列表的函数。
@@ -193,4 +118,4 @@ const useFolderStore = defineStore(
 
 )
 
-export default useFolderStore
+// export default useFolderStore

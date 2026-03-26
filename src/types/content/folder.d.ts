@@ -4,6 +4,37 @@
 namespace FolderConfigType {
 
   /**
+   *  Emby 文件夹
+   */
+  export type EmbyFolder = {
+
+    /**
+     *  文件夹名称
+     */
+    folderName: string
+
+    /**
+     * 文件读取时间-时间戳
+     */
+    folderReadTime: number
+
+    /**
+     *  文件列表
+     */
+    folderFileList: File[]
+
+    /**
+     *  文件夹内文件名重复的文件列表。
+     */
+    folderDuplicateNameFileList: File[]
+
+    /**
+     *  文件夹内文件名已去重的文件列表 (每个文件名仅出现一次)。
+     */
+    folderUniqueFileNameFileList: string[]
+  }
+
+  /**
    *  Emby 文件夹扫描配置
    *  @description 用于配置 Emby 媒体库文件夹的扫描参数和定时提醒设置
    */

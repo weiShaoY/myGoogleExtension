@@ -1,6 +1,8 @@
 import { createPinia } from 'pinia'
 
-import useTestStore from './modules/test'
+import { useFolderStore } from './modules/folder'
+
+import { useTestStore } from './modules/test'
 
 import { chromeStorage } from './pinia-sync-plugin'
 
@@ -11,6 +13,8 @@ pinia.use(
 )
 
 export {
+
+  useFolderStore,
   useTestStore,
 }
 
