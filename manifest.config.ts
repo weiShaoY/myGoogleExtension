@@ -25,6 +25,8 @@ export default defineManifest({
     'storage',
     'system.storage',
     'unlimitedStorage',
+    'clipboardRead',
+    'clipboardWrite',
   ],
   side_panel: {
     default_path: 'src/sidepanel/index.html',

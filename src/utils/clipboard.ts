@@ -78,27 +78,3 @@ export async function copyToClipboard(text: string, showToast = true): Promise<b
 
   return success
 }
-
-/**
- * 安全地获取剪贴板内容（带用户交互检查）
- * @returns 剪贴板文本内容
- * @deprecated 使用 getClipboardText 替代，已集成权限检查
- */
-export async function getClipboardTextSafely(): Promise<string> {
-  try {
-    if (!isClipboardSupported()) {
-      return ''
-    }
-
-    const text = await navigator.clipboard.readText()
-
-    return text || ''
-  }
-  catch (error) {
-    if (error instanceof Error && error.name === 'NotAllowedError') {
-      console.warn('需要用户交互才能访问剪贴板')
-    }
-
-    return ''
-  }
-}
