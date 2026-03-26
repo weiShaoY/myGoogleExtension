@@ -36,13 +36,13 @@ function pathAlias(aliasName: string, targetPath: string) {
 export default defineConfig({
   resolve: {
     alias: {
-      ...pathAlias('@', './src'),
-      ...pathAlias('@assets', './src/assets'),
-      ...pathAlias('@svgs', './src/assets/svgs'),
-      ...pathAlias('@images', './src/assets/images'),
-      ...pathAlias('@hooks', './src/hooks'),
-      ...pathAlias('@stores', './src/stores'),
-      ...pathAlias('@utils', './src/utils'),
+      ...pathAlias('@/', './src'),
+      ...pathAlias('@assets/', './src/assets'),
+      ...pathAlias('@svgs/', './src/assets/svgs'),
+      ...pathAlias('@images/', './src/assets/images'),
+      ...pathAlias('@hooks/', './src/hooks'),
+      ...pathAlias('@stores/', './src/stores'),
+      ...pathAlias('@utils/', './src/utils'),
     },
 
     // 补充：省略文件扩展名，提升开发体验

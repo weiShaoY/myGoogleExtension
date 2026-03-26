@@ -1,8 +1,6 @@
-import { openLink } from '@utils'
-
 import { defineStore } from 'pinia'
 
-import { embyConfig } from '@/config'
+import { EmbyConfig } from '@/configs'
 
 export const useEmbyStore = defineStore(
   'emby',
@@ -23,11 +21,11 @@ export const useEmbyStore = defineStore(
 
         // 添加 Emby 特定的查询参数
         'X-Emby-Client': 'Emby Web',
-        'X-Emby-Device-Name': embyConfig.request.deviceName,
-        'X-Emby-Device-Id': embyConfig.request.deviceId,
-        'X-Emby-Client-Version': embyConfig.request.clientVersion,
-        'X-Emby-Token': embyConfig.request.token,
-        'X-Emby-Language': embyConfig.request.language,
+        'X-Emby-Device-Name': EmbyConfig.request.deviceName,
+        'X-Emby-Device-Id': EmbyConfig.request.deviceId,
+        'X-Emby-Client-Version': EmbyConfig.request.clientVersion,
+        'X-Emby-Token': EmbyConfig.request.token,
+        'X-Emby-Language': EmbyConfig.request.language,
       }
 
       const queryString = Object.entries(queryParams)
@@ -37,7 +35,7 @@ export const useEmbyStore = defineStore(
         )
         .join('&')
 
-      return `${embyConfig.request.url}:${embyConfig.request.port}/emby/Users/${embyConfig.request.userId}/Items?${queryString}`
+      return `${EmbyConfig.request.url}:${EmbyConfig.request.port}/emby/Users/${EmbyConfig.request.userId}/Items?${queryString}`
     }
 
     /**
@@ -45,86 +43,90 @@ export const useEmbyStore = defineStore(
      *  @param  videoName - 视频名称
      */
     function embySearch(videoName: string) {
-    /**
-     *  设置超时时间为 2 秒
-     */
+      console.log('🚀 ~ file: index.ts:46 ~ videoName:', videoName)
+
+      /**
+       *  设置超时时间为 2 秒
+       */
       const timeoutDuration = 10000
 
-      const timeoutId = setTimeout(() => {
-        window.$notification.error({
-          title: '请求超时, 请检查 Emby 服务器',
-          duration: 5000,
-        })
-      }, timeoutDuration)
+      console.log('🚀 ~ file: index.ts:50 ~ timeoutDuration:', timeoutDuration)
 
-      GM_xmlhttpRequest({
-        method: 'GET',
-        url: buildRequestUrl(videoName),
-        headers: {
-          'Accept': 'application/json',
-          'Accept-Language': 'zh,zh-CN;q=0.9,ja;q=0.8',
-          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36',
-        },
-        onload: (response: any) => {
-          // 请求成功，清除超时计时器
-          clearTimeout(timeoutId)
+      // const timeoutId = setTimeout(() => {
+      //   window.$notification.error({
+      //     title: '请求超时, 请检查 Emby 服务器',
+      //     duration: 5000,
+      //   })
+      // }, timeoutDuration)
 
-          if (response.status >= 200 && response.status < 300) {
-            GM_setValue('EMBY-BTN-VALUE', '')
+      // GM_xmlhttpRequest({
+      //   method: 'GET',
+      //   url: buildRequestUrl(videoName),
+      //   headers: {
+      //     'Accept': 'application/json',
+      //     'Accept-Language': 'zh,zh-CN;q=0.9,ja;q=0.8',
+      //     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36',
+      //   },
+      //   onload: (response: any) => {
+      //     // 请求成功，清除超时计时器
+      //     clearTimeout(timeoutId)
 
-            try {
-            // 将 JSON 字符串转换为 JSON 对象
-              const result = JSON.parse(response.responseText)
+      //     if (response.status >= 200 && response.status < 300) {
+      //       GM_setValue('EMBY-BTN-VALUE', '')
 
-              //  如果结果为空，则提示没有找到
-              if (result.Items.length === 0) {
-                window.$messageBox.confirm(`是否打开 Emby 首页?`, 'Emby中没有找到该视频!', {
-                  confirmButtonText: '确认',
-                  cancelButtonText: '取消',
-                  type: 'warning',
-                })
-                  .then(() => {
-                    openLink(`${embyConfig.request.url}:${embyConfig.request.port}/web/index.html#!/home`)
-                  })
-                  .catch(() => {
-                    window.$notification.error('Emby中没有找到该视频!')
-                  })
-              }
+      //       try {
+      //       // 将 JSON 字符串转换为 JSON 对象
+      //         const result = JSON.parse(response.responseText)
 
-              //  如果只有一个结果，则直接打开
-              else if (result.Items.length === 1) {
-                const id = result.Items[0].Id
+      //         //  如果结果为空，则提示没有找到
+      //         if (result.Items.length === 0) {
+      //           window.$messageBox.confirm(`是否打开 Emby 首页?`, 'Emby中没有找到该视频!', {
+      //             confirmButtonText: '确认',
+      //             cancelButtonText: '取消',
+      //             type: 'warning',
+      //           })
+      //             .then(() => {
+      //               openLink(`${embyConfig.request.url}:${embyConfig.request.port}/web/index.html#!/home`)
+      //             })
+      //             .catch(() => {
+      //               window.$notification.error('Emby中没有找到该视频!')
+      //             })
+      //         }
 
-                const serverId = result.Items[0].ServerId
+      //         //  如果只有一个结果，则直接打开
+      //         else if (result.Items.length === 1) {
+      //           const id = result.Items[0].Id
 
-                const url = `${embyConfig.request.url}:${embyConfig.request.port}/web/index.html#!/item?id=${id}&serverId=${serverId}`
+      //           const serverId = result.Items[0].ServerId
 
-                openLink(url)
-              }
-              else {
-                window.$notification.error('Emby中找到多个结果!')
+      //           const url = `${embyConfig.request.url}:${embyConfig.request.port}/web/index.html#!/item?id=${id}&serverId=${serverId}`
 
-                GM_setValue('EMBY-SEARCH-VALUE', videoName)
+      //           openLink(url)
+      //         }
+      //         else {
+      //           window.$notification.error('Emby中找到多个结果!')
 
-                openLink(`${embyConfig.request.url}:${embyConfig.request.port}/web/index.html#!/home`)
-              }
-            }
-            catch (e) {
-              console.error('请求失败:', e)
-              GM_setValue('EMBY-BTN-VALUE', '')
-            }
-          }
-          else {
-            console.error(`HTTP 错误: ${response.status}`)
-          }
-        },
-        onerror: () => {
-          window.$notification.error({
-            title: '请求失败, 请检查 Emby 服务器',
-            duration: 5000,
-          })
-        },
-      })
+      //           GM_setValue('EMBY-SEARCH-VALUE', videoName)
+
+      //           openLink(`${embyConfig.request.url}:${embyConfig.request.port}/web/index.html#!/home`)
+      //         }
+      //       }
+      //       catch (e) {
+      //         console.error('请求失败:', e)
+      //         GM_setValue('EMBY-BTN-VALUE', '')
+      //       }
+      //     }
+      //     else {
+      //       console.error(`HTTP 错误: ${response.status}`)
+      //     }
+      //   },
+      //   onerror: () => {
+      //     window.$notification.error({
+      //       title: '请求失败, 请检查 Emby 服务器',
+      //       duration: 5000,
+      //     })
+      //   },
+      // })
     }
 
     return {

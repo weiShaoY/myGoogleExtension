@@ -17,6 +17,7 @@ declare module 'vue' {
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
+    EmbyCatalogedList: typeof import('./../../components/EmbyCatalogedList/index.vue')['default']
     EmbyPlayButton: typeof import('./../../components/EmbyPlayButton/index.vue')['default']
     HelloWorld: typeof import('./../../components/HelloWorld.vue')['default']
     Main: typeof import('./../../components/Search/main.vue')['default']

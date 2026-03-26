@@ -1,12 +1,11 @@
 <!------  2025-08-12---16:47---星期二  ------>
 <!------------------------------------    ------------------------------------------------->
 <script lang="ts" setup>
+import ListPage from './listPage/index.vue'
 
 // import DetailsPage from './detailsPage/index.vue'
 
-import ListPage from './listPage/index.vue'
-
-// import './index.scss'
+import './index.scss'
 
 /**
  * 判断是列表页还是详情页

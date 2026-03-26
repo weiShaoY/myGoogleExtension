@@ -1,0 +1,155 @@
+.javdb {
+  .sub-header {
+    display: none;
+  }
+
+  #footer {
+    display: none;
+  }
+}
+
+// 列表页
+.javdb-list-page {
+  .tags {
+    .tag {
+      margin-right: 10px !important;
+    }
+  }
+
+  .video-title {
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    text-overflow: ellipsis !important;
+  }
+
+  // 盒子高亮
+  .is-highlight {
+    padding: 10px;
+
+    border-radius: 10px;
+
+    background-color: #ea1179;
+
+    .cover {
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    img {
+      border-radius: 10px;
+    }
+
+    strong {
+      color: #fff !important;
+
+      margin-right: 10px;
+    }
+
+    .video-title {
+      color: #fff !important;
+    }
+
+    .score {
+      color: #fff !important;
+    }
+
+    .meta {
+      color: #fff !important;
+    }
+  }
+}
+
+// 详情页
+.javdb-details-page {
+  // 盒子高亮
+  .is-highlight {
+    // padding: 10px;
+    border-radius: 10px;
+    background-color: #ea1179;
+  }
+
+  //  视频信息
+  .video-meta-panel {
+    // 左边图片
+    .column-video-cover {
+      width: 63% !important;
+
+      .cover-container {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        // 图片
+        .video-cover {
+          border-radius: 10px;
+
+          margin-bottom: 10px;
+        }
+      }
+    }
+
+    //  右边信息
+    .movie-panel-info {
+      border-radius: 10px;
+      height: 100%;
+      a {
+        color: #485fc7;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      .first-block {
+        .value {
+          font-size: 24px !important;
+          font-weight: 700 !important;
+        }
+      }
+
+      // 第8个
+      .panel-block {
+        strong {
+          color: #363636 !important;
+          margin-right: 10px;
+        }
+        &:nth-child(9) {
+          .value {
+            font-size: 0;
+
+            a {
+              font-size: 16px !important;
+            }
+
+            strong::before {
+              content: '';
+              /* 使用空内容覆盖 */
+            }
+
+            strong::after {
+              content: '\A';
+              /* 添加换行符 */
+              white-space: pre;
+              /* 保留空白符（包括换行符） */
+            }
+          }
+        }
+
+        &:nth-last-child(2) {
+          display: none;
+        }
+      }
+    }
+  }
+
+  //  种子列表
+  // 磁链  短评  相关清单
+  .tabs.no-bottom {
+    display: none;
+  }
+
+  //  官方App JavDB公告(Telegram频道）
+  .top-meta {
+    display: none;
+  }
+}

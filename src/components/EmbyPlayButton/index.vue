@@ -49,6 +49,9 @@ const props = withDefaults(defineProps<PropsType>(), {
 
 const embyStore = useEmbyStore()
 
+/**
+ * emby按钮点击处理函数
+ */
 function embyBtnHandler(event: MouseEvent) {
   event.preventDefault()
 
@@ -57,7 +60,6 @@ function embyBtnHandler(event: MouseEvent) {
 </script>
 
 <template>
-
   <div
     class="z-1000 m-x-auto m-y-5 w-[95%]"
     :class="props.class"
@@ -68,7 +70,6 @@ function embyBtnHandler(event: MouseEvent) {
       ...style,
     }"
   >
-
     <button
       class="h-full w-full flex translate-x-0 cursor-pointer cursor-pointer items-center items-center justify-between justify-between overflow-hidden border-3 border-solid bg-transparent p-x-1 text-lg font-bold before:absolute before:left-0 before:top-0 before:z-[-1] before:h-full before:w-full before:translate-x-[-100%] !border-[#52B54B] !bg-white before:bg-[#52B54B] !text-[#52B54B] before:transition-all-600 before:content-[''] hover:before:translate-x-0 !hover:text-white"
       @click="embyBtnHandler"
@@ -91,12 +92,9 @@ function embyBtnHandler(event: MouseEvent) {
           :size="30"
           class="hidden group-hover:block"
         />
-
       </div>
     </button>
-
   </div>
-
 </template>
 
 <style lang="scss" scoped></style>
