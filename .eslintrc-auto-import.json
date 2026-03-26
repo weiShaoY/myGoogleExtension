@@ -123,7 +123,7 @@
     "resolveComponent": true,
     "resolveRef": true,
     "setActivePinia": true,
-    "setClipboardText": true,
+    "setDirectives": true,
     "setMapStoreSuffix": true,
     "shallowReactive": true,
     "shallowReadonly": true,

@@ -26,55 +26,51 @@ export async function getClipboardText(): Promise<string> {
   }
   catch (error) {
     console.warn('读取剪贴板失败:', error)
+    window.$notification.error({
+      message: '读取剪贴板失败',
+      type: 'error',
+    })
     return ''
   }
 }
 
 /**
- * 设置剪贴板内容
- * @param text 要设置的文本内容
- * @returns 是否设置成功
- */
-export async function setClipboardText(text: string): Promise<boolean> {
-  try {
-    if (!isClipboardSupported()) {
-      return false
-    }
-
-    if (!text?.trim()) {
-      return false
-    }
-
-    await navigator.clipboard.writeText(text)
-    return true
-  }
-  catch (error) {
-    console.warn('设置剪贴板失败:', error)
-    return false
-  }
-}
-
-/**
- * 复制文本到剪贴板（带成功提示）
+ * 复制文本到剪贴板（带提示）
  * @param text 要复制的文本
- * @param showToast 是否显示成功提示
+ * @param showToast 是否显示成功/失败提示，默认 true
  * @returns 是否复制成功
  */
 export async function copyToClipboard(text: string, showToast = true): Promise<boolean> {
-  const success = await setClipboardText(text)
+  try {
+    // 1. 校验环境和文本
+    if (!isClipboardSupported() || !text?.trim()) {
+      return false
+    }
 
-  if (success && showToast) {
-    // 使用全局提示组件（如果已注册）
-    if (window.$message) {
-      window.$message({
+    // 2. 执行复制
+    await navigator.clipboard.writeText(text)
+
+    // 3. 成功提示
+    if (showToast && window.$notification) {
+      window.$notification.success({
         message: '已复制到剪贴板',
         type: 'success',
       })
     }
-    else {
-      console.log('已复制到剪贴板:', text)
-    }
-  }
 
-  return success
+    return true
+  }
+  catch (error) {
+    console.warn('复制到剪贴板失败:', error)
+
+    // 4. 失败提示
+    if (showToast && window.$notification) {
+      window.$notification.error({
+        message: '复制失败',
+        type: 'error',
+      })
+    }
+
+    return false
+  }
 }

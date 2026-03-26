@@ -1,8 +1,10 @@
 import { createApp } from 'vue'
 
+import { setDirectives } from '@/directives'
+
 import { setupPlugins } from '@/plugins'
 
-import Stores from '../stores'
+import Pinia from '../stores'
 
 import App from './App.vue'
 
@@ -24,9 +26,11 @@ function mountApp() {
 
   const app = createApp(App)
 
+  app.use(Pinia)
+
   setupPlugins(app)
 
-  app.use(Stores)
+  setDirectives(app)
 
   app.mount(container)
 }

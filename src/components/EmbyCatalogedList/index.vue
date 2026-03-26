@@ -58,9 +58,8 @@ const directoryPath = props.video.directoryPath.join('\\')
 function videoNameCopyToClipboard(event: any) {
   event.preventDefault()
 
-  setClipboardText(props.video.cleanName)
+  copyToClipboard(props.video.cleanName)
 
-  // Message.success('视频名称 已复制到剪切板')
   window.$notification.success('视频名称 已复制到剪切板')
 
   isShowCopy.value = !isShowCopy.value
@@ -73,7 +72,7 @@ function openFolder(event: any) {
   event.stopPropagation()
   event.preventDefault()
 
-  setClipboardText(directoryPath)
+  copyToClipboard(directoryPath)
 
   window.$notification.success(`视频位置已复制到剪切板:  ${directoryPath}`)
 

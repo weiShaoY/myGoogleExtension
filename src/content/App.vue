@@ -75,6 +75,15 @@ onMounted(() => {
       </el-button>
     </div>
 
+    <div
+      v-copy="{
+        text: '3333333333333333',
+      }"
+      class="mt-20 h-20 w-20 bg-red"
+    >
+      测试指令
+
+    </div>
   </div>
 
 </template>

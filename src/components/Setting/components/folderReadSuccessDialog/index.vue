@@ -28,15 +28,17 @@ function handleClose() {
 
   <el-dialog
     v-model="visible"
-    width="30%"
-    :show-close="false"
+    width="50%"
+    :close-on-click-modal="false"
     @close="handleClose"
   >
+    <!-- :show-close="false" -->
+
     <template
       #title
     >
       <div
-        class="flex items-center font-semibold"
+        class="w-full flex items-center justify-center font-semibold"
       >
         <span
           class=""
@@ -45,8 +47,9 @@ function handleClose() {
         </span>
 
         <el-link
-          class="m-x-2 w-30 truncate text-center font-bold !block !p-3 !text-4"
-          status="success"
+          class="m-x-2 w-[30%] truncate text-center font-bold !block !p-3 !text-6"
+          type="success"
+          underline="always"
         >
           {{ folderStore.embyFolder.folderName }}
         </el-link>
@@ -57,82 +60,101 @@ function handleClose() {
           读取成功
         </span>
       </div>
+
+      <el-divider />
+
     </template>
 
     <div
       class="w-auto font-semibold"
     >
-      <div
-        class="flex items-center"
+
+      <el-timeline
+        class="mt-4"
+        mode="alternate-reverse"
       >
-        <span>
-          总耗时
-        </span>
+        <el-timeline-item>
+          <div
+            class="flex items-center justify-end"
+          >
+            <span>
+              总耗时
+            </span>
 
-        <span
-          class="color-primary m-x-2 text-5"
-        >
-          {{ folderReadTime }}
-        </span>
+            <span
+              class="color-primary m-x-2 text-6 font-bold"
+            >
+              {{ folderReadTime }}
+            </span>
 
-        <span>
-          秒
-        </span>
-      </div>
+            <span>
+              秒
+            </span>
 
-      <div
-        class="flex items-center"
-      >
-        <span>
-          共读取
-        </span>
+          </div>
 
-        <span
-          class="color-primary m-x-2 text-5"
-        >
-          {{ folderStore.embyFolder.folderFileList.length }}
-        </span>
+        </el-timeline-item>
 
-        <span>
-          部
-        </span>
-      </div>
+        <el-timeline-item>
+          <div
+            class="flex items-center"
+          >
+            <span>
+              共读取
+            </span>
 
-      <div
-        class="flex items-center"
-      >
-        <span>
-          共发现
-        </span>
+            <span
+              class="color-primary m-x-2 text-6 font-bold"
+            >
+              {{ folderStore.embyFolder.folderFileList.length }}
+            </span>
 
-        <span
-          class="color-primary m-x-2 text-5"
-        >
-          {{ folderStore.embyFolder.folderDuplicateNameFileList.length }}
-        </span>
+            <span>
+              部
+            </span>
+          </div>
+        </el-timeline-item>
 
-        <span>
-          部重复视频
-        </span>
-      </div>
+        <el-timeline-item>
+          <div
+            class="flex items-center justify-end"
+          >
+            <span>
+              共发现
+            </span>
 
-      <div
-        class="flex items-center"
-      >
-        <span>
-          去重后
-        </span>
+            <span
+              class="color-primary m-x-2 text-6 font-bold"
+            >
+              {{ folderStore.embyFolder.folderDuplicateNameFileList.length }}
+            </span>
 
-        <span
-          class="color-primary m-x-2 text-5"
-        >
-          {{ folderStore.embyFolder.folderUniqueFileNameFileList.length }}
-        </span>
+            <span>
+              部重复视频
+            </span>
+          </div>
+        </el-timeline-item>
 
-        <span>
-          部
-        </span>
-      </div>
+        <el-timeline-item>
+          <div
+            class="flex items-center"
+          >
+            <span>
+              去重后
+            </span>
+
+            <span
+              class="color-primary m-x-2 text-6 font-bold"
+            >
+              {{ folderStore.embyFolder.folderUniqueFileNameFileList.length }}
+            </span>
+
+            <span>
+              部
+            </span>
+          </div>
+        </el-timeline-item>
+      </el-timeline>
 
     </div>
   </el-dialog>

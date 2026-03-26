@@ -1,7 +1,5 @@
 import type { Directive } from 'vue'
 
-import { copyText } from '@/utils'
-
 /**
  * 扩展的元素类型，挂载自定义属性
  */
@@ -22,10 +20,16 @@ async function handleClick(this: ElType) {
       return
     }
 
-    copyText(this.copyText, this.copyMessage)
+    copyToClipboard(this.copyText, false)
+
+    window.$notification.success({
+      title: '复制成功',
+      message: this.copyMessage || this.copyText,
+    })
   }
   catch (err) {
     console.error('复制操作不被支持或失败: ', err)
+    window.$notification.error('复制失败')
   }
 }
 

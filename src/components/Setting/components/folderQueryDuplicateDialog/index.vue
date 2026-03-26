@@ -49,9 +49,8 @@ const getFolderReadTimeoutText = computed(() => {
 
   <el-dialog
     v-model="visible"
-    title="添加"
     width="50%"
-    :show-close="false"
+    :close-on-click-modal="false"
   >
     <template
       #title
@@ -65,11 +64,11 @@ const getFolderReadTimeoutText = computed(() => {
           @click="isShowFolderUniqueFileNameFileList = false"
         >
           <span>
-            重复
+            已重复
           </span>
 
           <span
-            class="color-primary m-x-2 text-5"
+            class="color-primary m-x-2 text-6 font-bold"
           >
             {{ folderStore.embyFolder.folderDuplicateNameFileList.length }}
           </span>
@@ -134,11 +133,11 @@ const getFolderReadTimeoutText = computed(() => {
           @click="isShowFolderUniqueFileNameFileList = true"
         >
           <span>
-            去重
+            去重后
           </span>
 
           <span
-            class="color-primary m-x-2 text-5"
+            class="m-x-2 text-6 color-red font-bold"
           >
             {{ folderStore.embyFolder.folderUniqueFileNameFileList.length }}
           </span>
@@ -149,10 +148,87 @@ const getFolderReadTimeoutText = computed(() => {
         </div>
 
       </div>
+
+      <el-divider />
+
+      <el-descriptions
+        class="margin-top"
+        :column="3"
+        size="large"
+        border
+      >
+        <el-descriptions-item>
+          <template
+            #label
+          >
+            总共
+          </template>
+          {{ folderStore.embyFolder.folderFileList.length }}
+
+        </el-descriptions-item>
+
+        <el-descriptions-item>
+          <template
+            #label
+          >
+            已重复
+          </template>
+          {{ folderStore.embyFolder.folderDuplicateNameFileList.length }}
+        </el-descriptions-item>
+
+        <el-descriptions-item>
+          <template
+            #label
+          >
+            去重后
+          </template>
+          {{ folderStore.embyFolder.folderUniqueFileNameFileList.length }}
+
+        </el-descriptions-item>
+
+        <el-descriptions-item>
+          <template
+            #label
+          >
+            文件夹
+          </template>
+          {{ folderStore.embyFolder.folderName }}
+
+        </el-descriptions-item>
+
+        <el-descriptions-item>
+          <template
+            #label
+          >
+            <div
+              class="cell-item"
+            >
+              最后扫描时间
+            </div>
+          </template>
+          {{ formatTimestampToChineseDate(folderStore.embyFolder.folderReadTime) }}
+        </el-descriptions-item>
+
+        <el-descriptions-item>
+          <template
+            #label
+          >
+            <div
+              class="cell-item"
+            >
+              距上次扫描
+            </div>
+          </template>
+          {{ getFolderReadTimeoutText }}
+        </el-descriptions-item>
+      </el-descriptions>
+
+      <el-divider />
+
     </template>
 
     <el-scrollbar
-      height="60vh"
+      height="40vh"
       always
     >
       <template
@@ -183,77 +259,8 @@ const getFolderReadTimeoutText = computed(() => {
     <template
       #footer
     >
-      <div
-        class="w-full flex flex-col font-bold !text-4"
-      >
 
-        <div
-          class="flex items-center"
-        >
-          <div
-            class="m-r-3 flex items-center"
-          >
-            <span>
-              总共
-            </span>
-
-            <span
-              class="color-primary m-x-2 text-5"
-            >
-              {{ folderStore.embyFolder.folderFileList.length }}
-            </span>
-
-            <span>
-              部
-            </span>
-
-          </div>
-
-        </div>
-
-        <div
-          v-if="getFolderReadTimeoutText"
-          class="flex items-center"
-        >
-          <span>
-            {{ getFolderReadTimeoutText }}
-          </span>
-
-          <span
-            class="m-x-3"
-          >
-            未重新读取文件夹
-          </span>
-        </div>
-
-        <div
-          v-if="folderStore.embyFolder.folderReadTime"
-          class="flex items-center gap-5"
-        >
-
-          <span>
-            {{ formatTimestampToChineseDate(folderStore.embyFolder.folderReadTime) }}
-          </span>
-
-          <div
-            class=""
-          >
-            <span
-              class="m-x-3"
-            >
-              读取文件夹
-            </span>
-
-            <span
-              class="border-primary color-primary m-x-2 w-30 cursor-pointer truncate border-b-2 pb-1 text-center text-6 font-bold hover:scale-105"
-            >
-              {{ folderStore.embyFolder.folderName }}
-            </span>
-
-          </div>
-
-        </div>
-      </div>
+      <!-- # ////////////////////////// -->
 
     </template>
 

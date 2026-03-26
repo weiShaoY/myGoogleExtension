@@ -176,7 +176,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="fixed bottom-3 left-2 z-99999 flex flex-col gap-3 overflow-hidden border rounded-xl bg-white shadow-lg transition-all duration-200 ease-in-out"
+    class="fixed bottom-5 left-5 z-99999 flex flex-col gap-3 overflow-hidden border rounded-xl bg-white shadow-lg transition-all duration-200 ease-in-out"
     style="border-color: rgba(0, 0, 0, 0.1)"
   >
     <!-- 当前搜索引擎显示 -->
