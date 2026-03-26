@@ -53,7 +53,9 @@ export default defineConfig({
     vue(),
 
     // ===== 样式相关插件 =====
-    unoCSS(),
+    unoCSS({
+      mode: 'vue-scoped',
+    }),
 
     // ===== 自动导入插件 =====
     autoImport({
