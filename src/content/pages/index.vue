@@ -35,6 +35,8 @@ onMounted(() => {
   <Javbus
     v-else-if="isUrlMatch('javbus')"
   />
+
+  <Setting />
 </template>
 
 <style lang="scss" scoped>

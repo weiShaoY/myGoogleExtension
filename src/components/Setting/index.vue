@@ -5,8 +5,6 @@ import { folderConfig } from '@/configs'
 
 import { useFolderStore } from '@/stores'
 
-import { getFileTagIconArray, parseNfoContent } from '@/utils'
-
 // import FolderQueryDuplicateModal from './folder_query_duplicate_modal/index.vue'
 
 import FolderQueryDuplicateModal from './components/folderQueryDuplicateDialog/index.vue'
@@ -204,7 +202,7 @@ async function mainBtnHandler() {
     // 将 Set 中的视频文件信息存储到本地
     folderStore.saveEmbyFolderData(directoryHandle.name, videoFileSet)
 
-    console.log('%c Line:211 🥒 folderStore.folderFileList', 'color:#465975', folderStore.folderFileList)
+    console.log('%c Line:211 🥒 folderStore.folderFileList', 'color:#465975', folderStore.embyFolder.folderFileList)
 
     folderReadTime.value = ((Date.now() - startTime) / 1000).toFixed(2) // 秒
 

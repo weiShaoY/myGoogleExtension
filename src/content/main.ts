@@ -6,9 +6,11 @@ import Stores from '../stores'
 
 import App from './App.vue'
 
-import '../styles/index'
+import 'element-plus/dist/index.css'
 
-console.log('[CRXJS] Hello world from content script!')
+import 'element-plus/theme-chalk/dark/css-vars.css'
+
+import '../styles/index'
 
 /**
  * 将 Vue 应用挂载到 DOM。

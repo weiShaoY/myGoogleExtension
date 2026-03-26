@@ -76,6 +76,7 @@ function main() {
 }
 
 onMounted(() => {
+  window.$notification('列表页')
   main()
 })
 </script>

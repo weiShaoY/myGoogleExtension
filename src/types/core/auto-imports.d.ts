@@ -42,12 +42,14 @@ declare global {
   const eagerComputed: typeof import('@vueuse/core').eagerComputed
   const effectScope: typeof import('vue').effectScope
   const extendRef: typeof import('@vueuse/core').extendRef
+  const formatTimestampToChineseDate: typeof import('../../utils/formatTimestampToChineseDate').formatTimestampToChineseDate
   const getActivePinia: typeof import('pinia').getActivePinia
   const getClipboardText: typeof import('../../utils/clipboard').getClipboardText
   const getClipboardTextSafely: typeof import('../../utils/clipboard').getClipboardTextSafely
   const getCurrentInstance: typeof import('vue').getCurrentInstance
   const getCurrentScope: typeof import('vue').getCurrentScope
   const getCurrentWatcher: typeof import('vue').getCurrentWatcher
+  const getFileTagIconArray: typeof import('../../utils/getTagIconArray').getFileTagIconArray
   const h: typeof import('vue').h
   const ignorableWatch: typeof import('@vueuse/core').ignorableWatch
   const inject: typeof import('vue').inject
@@ -91,6 +93,7 @@ declare global {
   const onUpdated: typeof import('vue').onUpdated
   const onWatcherCleanup: typeof import('vue').onWatcherCleanup
   const openLink: typeof import('../../utils/openLink').openLink
+  const parseNfoContent: typeof import('../../utils/parseNfoContent').parseNfoContent
   const pausableWatch: typeof import('@vueuse/core').pausableWatch
   const piniaChromeStoragePlugin: typeof import('../../stores/piniaChromeStoragePlugin').piniaChromeStoragePlugin
   const provide: typeof import('vue').provide
@@ -374,11 +377,13 @@ declare module 'vue' {
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
+    readonly formatTimestampToChineseDate: UnwrapRef<typeof import('../../utils/formatTimestampToChineseDate')['formatTimestampToChineseDate']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getClipboardText: UnwrapRef<typeof import('../../utils/clipboard')['getClipboardText']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly getCurrentWatcher: UnwrapRef<typeof import('vue')['getCurrentWatcher']>
+    readonly getFileTagIconArray: UnwrapRef<typeof import('../../utils/getTagIconArray')['getFileTagIconArray']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
@@ -422,6 +427,7 @@ declare module 'vue' {
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
     readonly onWatcherCleanup: UnwrapRef<typeof import('vue')['onWatcherCleanup']>
     readonly openLink: UnwrapRef<typeof import('../../utils/openLink')['openLink']>
+    readonly parseNfoContent: UnwrapRef<typeof import('../../utils/parseNfoContent')['parseNfoContent']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
     readonly provideLocal: UnwrapRef<typeof import('@vueuse/core')['provideLocal']>

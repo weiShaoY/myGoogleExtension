@@ -48,7 +48,7 @@ function handleClose() {
           class="m-x-2 w-30 truncate text-center font-bold !block !p-3 !text-4"
           status="success"
         >
-          {{ folderStore.folderName }}
+          {{ folderStore.embyFolder.folderName }}
         </el-link>
 
         <span
@@ -70,7 +70,7 @@ function handleClose() {
         </span>
 
         <span
-          class="m-x-2 text-5 color-primary"
+          class="color-primary m-x-2 text-5"
         >
           {{ folderReadTime }}
         </span>
@@ -88,9 +88,9 @@ function handleClose() {
         </span>
 
         <span
-          class="m-x-2 text-5 color-primary"
+          class="color-primary m-x-2 text-5"
         >
-          {{ folderStore.folderFileList.length }}
+          {{ folderStore.embyFolder.folderFileList.length }}
         </span>
 
         <span>
@@ -106,9 +106,9 @@ function handleClose() {
         </span>
 
         <span
-          class="m-x-2 text-5 color-primary"
+          class="color-primary m-x-2 text-5"
         >
-          {{ folderStore.folderDuplicateNameFileList.length }}
+          {{ folderStore.embyFolder.folderDuplicateNameFileList.length }}
         </span>
 
         <span>
@@ -124,9 +124,9 @@ function handleClose() {
         </span>
 
         <span
-          class="m-x-2 text-5 color-primary"
+          class="color-primary m-x-2 text-5"
         >
-          {{ folderStore.folderUniqueFileNameFileList.length }}
+          {{ folderStore.embyFolder.folderUniqueFileNameFileList.length }}
         </span>
 
         <span>

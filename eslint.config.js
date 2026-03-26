@@ -184,6 +184,9 @@ export default antfu({
           max: 1,
         },
       ],
+      'e18e/prefer-static-regex': 'off',
+
     },
+
   },
 })

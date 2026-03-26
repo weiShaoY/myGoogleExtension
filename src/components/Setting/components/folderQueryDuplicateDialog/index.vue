@@ -2,8 +2,6 @@
 <script lang="ts" setup>
 import { useFolderStore } from '@/stores'
 
-import { formatTimestampToChineseDate } from '@/utils'
-
 const folderStore = useFolderStore()
 
 const visible = defineModel<boolean>({
@@ -25,7 +23,7 @@ const isShowFolderUniqueFileNameFileList = ref(false)
 const getFolderReadTimeoutText = computed(() => {
   const millisecondsInHour = 3600000 // 1 小时 = 3,600,000 毫秒
 
-  const lastReadTime = folderStore.folderReadTime
+  const lastReadTime = folderStore.embyFolder.folderReadTime
 
   if (!lastReadTime) {
     return ''
@@ -71,9 +69,9 @@ const getFolderReadTimeoutText = computed(() => {
           </span>
 
           <span
-            class="m-x-2 text-5 color-primary"
+            class="color-primary m-x-2 text-5"
           >
-            {{ folderStore.folderDuplicateNameFileList.length }}
+            {{ folderStore.embyFolder.folderDuplicateNameFileList.length }}
           </span>
 
           <span>
@@ -140,9 +138,9 @@ const getFolderReadTimeoutText = computed(() => {
           </span>
 
           <span
-            class="m-x-2 text-5 color-primary"
+            class="color-primary m-x-2 text-5"
           >
-            {{ folderStore.folderUniqueFileNameFileList.length }}
+            {{ folderStore.embyFolder.folderUniqueFileNameFileList.length }}
           </span>
 
           <span>
@@ -161,7 +159,7 @@ const getFolderReadTimeoutText = computed(() => {
         v-if="!isShowFolderUniqueFileNameFileList"
       >
         <EmbyPlayButton
-          v-for="(item, index) in folderStore.folderDuplicateNameFileList"
+          v-for="(item, index) in folderStore.embyFolder.folderDuplicateNameFileList"
           :key="index"
           :video-name="item.nameWithTags"
           :emby-search-name="item.cleanName"
@@ -173,7 +171,7 @@ const getFolderReadTimeoutText = computed(() => {
         v-else
       >
         <EmbyPlayButton
-          v-for="(item, index) in folderStore.folderUniqueFileNameFileList"
+          v-for="(item, index) in folderStore.embyFolder.folderUniqueFileNameFileList"
           :key="index"
           :video-name="item"
           :emby-search-name="item"
@@ -200,9 +198,9 @@ const getFolderReadTimeoutText = computed(() => {
             </span>
 
             <span
-              class="m-x-2 text-5 color-primary"
+              class="color-primary m-x-2 text-5"
             >
-              {{ folderStore.folderFileList.length }}
+              {{ folderStore.embyFolder.folderFileList.length }}
             </span>
 
             <span>
@@ -229,12 +227,12 @@ const getFolderReadTimeoutText = computed(() => {
         </div>
 
         <div
-          v-if="folderStore.folderReadTime"
+          v-if="folderStore.embyFolder.folderReadTime"
           class="flex items-center gap-5"
         >
 
           <span>
-            {{ formatTimestampToChineseDate(folderStore.folderReadTime) }}
+            {{ formatTimestampToChineseDate(folderStore.embyFolder.folderReadTime) }}
           </span>
 
           <div
@@ -247,9 +245,9 @@ const getFolderReadTimeoutText = computed(() => {
             </span>
 
             <span
-              class="m-x-2 w-30 cursor-pointer truncate border-b-2 border-primary pb-1 text-center text-6 color-primary font-bold hover:scale-105"
+              class="border-primary color-primary m-x-2 w-30 cursor-pointer truncate border-b-2 pb-1 text-center text-6 font-bold hover:scale-105"
             >
-              {{ folderStore.folderName }}
+              {{ folderStore.embyFolder.folderName }}
             </span>
 
           </div>

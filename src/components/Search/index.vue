@@ -10,14 +10,6 @@ const isShowSearch = computed(() => {
   return SearchConfig.displayOnPaths.some(site => isUrlMatch(site))
 })
 
-onMounted(() => {
-  console.log('🚀 ~ file: index.vue:16 ~ isShowSearch.value:', isShowSearch.value)
-  window.$message({
-    message: isShowSearch.value ? '显示搜索框' : '不显示搜索框',
-    duration: 113000,
-    type: 'success',
-  })
-})
 </script>
 
 <template>

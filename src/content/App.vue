@@ -13,6 +13,16 @@ function testValueClick() {
 function testObjClick() {
   testStore.testObj.a++
 }
+
+onMounted(() => {
+  // window.$message({
+  //   message: '显示搜索框',
+  //   duration: 113000,
+  //   type: 'success',
+  // })
+
+  console.log('🚀 ~ file: App.vue:25 ~ a:', '我的游览器插件')
+})
 </script>
 
 <template>

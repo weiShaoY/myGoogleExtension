@@ -56,7 +56,7 @@ export default defineConfig({
       ],
       resolvers: [
         ElementPlusResolver({
-          importStyle: false,
+          importStyle: 'sass',
         }),
       ],
       dts: 'src/types/core/auto-imports.d.ts',
