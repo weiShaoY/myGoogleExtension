@@ -1,9 +1,9 @@
 <!------  2025-08-12---16:47---星期二  ------>
 <!------------------------------------    ------------------------------------------------->
 <script lang="ts" setup>
-import ListPage from './listPage/index.vue'
+import DetailsPage from './detailsPage/index.vue'
 
-// import DetailsPage from './detailsPage/index.vue'
+import ListPage from './listPage/index.vue'
 
 import './index.scss'
 
@@ -28,15 +28,19 @@ else {
   bodyElement?.classList.add('javdb', 'javdb-details-page')
 }
 
+console.log('🚀 ~ file: index.vue:33 ~ isListPage.value:', isListPage.value)
+
 </script>
 
 <template>
 
-  <ListPage />
+  <ListPage
+    v-if="isListPage"
+  />
 
-  <!-- <DetailsPage
+  <DetailsPage
     v-else
-  /> -->
+  />
 
 </template>
 

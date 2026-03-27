@@ -11,7 +11,7 @@ const folderStore = useFolderStore()
  */
 const isLoading = ref(false)
 
-const isShowMainDialog = ref(true)
+const isShowMainDialog = ref(false)
 
 function onClick() {
   isShowMainDialog.value = true
@@ -73,7 +73,6 @@ function handleSelect(key: string, keyPath: string[]) {
     :lock-scroll="true"
     :append-to-body="true"
   >
-    {{ isLoading }}
 
     <div
       v-loading="isLoading"

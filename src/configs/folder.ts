@@ -28,6 +28,8 @@ const fileTagConfigs = [
  *  文件夹配置
  */
 export const folderConfig: FolderConfigType.FileProcessing = {
+  folderPath: 'Z:\\',
+
   fileExtensions: ['mp4', 'mkv', 'avi', 'flv', 'wmv', 'mov', 'rmvb'],
 
   fileTagConfigs,

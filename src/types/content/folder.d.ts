@@ -152,6 +152,11 @@ namespace FolderConfigType {
   type FileProcessing = {
 
     /**
+     *  文件夹地址
+     */
+    folderPath: string
+
+    /**
      * 支持的视频文件扩展名列表
      */
     fileExtensions: string[]

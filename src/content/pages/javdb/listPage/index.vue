@@ -23,11 +23,18 @@ const updateChineseBtnList = ref<string[]>([])
 const WHITESPACE_REGEX = /\s+/g
 
 function main() {
+  console.log('🚀 ~ file: index.vue:28 ~ folderStore.embyFolder:', folderStore.embyFolder)
+
+  console.log('🚀 ~ file: index.vue:27 ~ folderStore.embyFolder.folderFileList.length:', folderStore.embyFolder.folderFileList.length)
+  console.log('🚀 ~ file: index.vue:27 ~ folderStore.embyFolder.folderFileList:', folderStore.embyFolder.folderFileList)
+
   if (!folderStore.embyFolder.folderFileList.length) {
     return
   }
 
   const itemList = document.querySelectorAll('.movie-list .item')
+
+  console.log('🚀 ~ file: index.vue:31 ~ itemList:', itemList)
 
   itemList.forEach((item) => {
     /**
@@ -76,8 +83,13 @@ function main() {
 }
 
 onMounted(() => {
-  window.$notification('列表页')
-  main()
+  window.$notification.success('列表页')
+
+  // main()
+
+  setTimeout(() => {
+    main()
+  }, 1000)
 })
 </script>
 

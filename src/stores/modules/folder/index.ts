@@ -45,9 +45,6 @@ export const useFolderStore = defineStore(
      *  @description 保存 Emby 文件夹数据，并将其存储到 GM_setValue 和 Pinia store 中
      */
     function saveEmbyFolderData(_folderName: string, videoFileSet: Set<FolderConfigType.File>, startTime: number) {
-      console.log('🚀 ~ file: index.ts:48 ~ startTime:', startTime)
-      console.log('🚀 ~ file: index.ts:53 ~ Date.now():', Date.now())
-
       embyFolder.value = {
         folderName: _folderName,
         folderScanTimestamp: Date.now(),
