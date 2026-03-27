@@ -12,6 +12,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppProvider: typeof import('./../../components/AppProvider/index.vue')['default']
+    copy: typeof import('./../../components/Setting copy/index.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
     ElDescriptions: typeof import('element-plus/es')['ElDescriptions']
@@ -22,8 +23,11 @@ declare module 'vue' {
     ElLink: typeof import('element-plus/es')['ElLink']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
+    ElMenuItemGroup: typeof import('element-plus/es')['ElMenuItemGroup']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
+    ElTabPane: typeof import('element-plus/es')['ElTabPane']
+    ElTabs: typeof import('element-plus/es')['ElTabs']
     ElText: typeof import('element-plus/es')['ElText']
     ElTimeline: typeof import('element-plus/es')['ElTimeline']
     ElTimelineItem: typeof import('element-plus/es')['ElTimelineItem']
@@ -32,10 +36,16 @@ declare module 'vue' {
     FolderQueryDuplicateDialog: typeof import('./../../components/Setting/components/folderQueryDuplicateDialog/index.vue')['default']
     FolderReadSuccessDialog: typeof import('./../../components/Setting/components/folderReadSuccessDialog/index.vue')['default']
     HelloWorld: typeof import('./../../components/HelloWorld.vue')['default']
+    Info: typeof import('./../../components/Setting/components/testDialog/info.vue')['default']
     Main: typeof import('./../../components/Search/main.vue')['default']
+    Menu: typeof import('./../../components/Setting/components/testDialog/menu.vue')['default']
+    One: typeof import('../../components/Setting/components/testDialog/read.vue')['default']
     PendingUpdateChineseButton: typeof import('./../../components/PendingUpdateChineseButton/index.vue')['default']
+    Read: typeof import('./../../components/Setting/components/testDialog/read.vue')['default']
     Search: typeof import('./../../components/Search/index.vue')['default']
     Setting: typeof import('./../../components/Setting/index.vue')['default']
+    'Setting copy': typeof import('./../../components/Setting copy/index.vue')['default']
     SvgIcon: typeof import('./../../components/SvgIcon/index.vue')['default']
+    TestDialog: typeof import('./../../components/Setting/components/testDialog/index.vue')['default']
   }
 }

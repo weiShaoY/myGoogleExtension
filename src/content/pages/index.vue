@@ -36,7 +36,9 @@ onMounted(() => {
     v-else-if="isUrlMatch('javbus')"
   />
 
-  <Setting />
+  <Setting
+    v-if="isUrlMatch('emby') || isUrlMatch('javdb') || isUrlMatch('javbus')"
+  />
 </template>
 
 <style lang="scss" scoped>

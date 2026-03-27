@@ -11,8 +11,6 @@ import FolderQueryDuplicateModal from './components/folderQueryDuplicateDialog/i
 
 import FolderReadSuccessDialog from './components/folderReadSuccessDialog/index.vue'
 
-import TestDialog from './components/testDialog/index.vue'
-
 // import FolderReminderReadModal from './folder_reminder_read_modal/index.vue'
 
 // import SettingModal from './setting_modal/index.vue'
@@ -226,20 +224,14 @@ async function mainBtnHandler() {
 //   // siteStore.openEmby()
 // }
 
-const isShowTestDialog = ref(true)
+const isShowTestDialog = ref(false)
 
 function onClick() {
-  isShowTestDialog.value = true
+
 }
 </script>
 
 <template>
-
-  <TestDialog
-    v-if="isShowTestDialog"
-    v-model="isShowTestDialog"
-  />
-
   <!-- 文件夹提醒读取弹窗 -->
   <!-- <FolderReminderReadModal /> -->
 
@@ -346,6 +338,43 @@ function onClick() {
         >
           测试按钮
         </el-button>
+
+        <!-- <div
+          class="h-12 flex items-center justify-center gap-2 rounded-full bg-gray-200 p-3 shadow-lg duration-600 hover:scale-120 hover:cursor-pointer"
+          @click="($event) => {
+            $event.stopPropagation()
+            isShowSettingModal = true
+          }"
+        >
+
+          <SvgIcon
+            icon="setting"
+            class="h-full w-full"
+          />
+
+          <span
+            class="whitespace-nowrap color-[#4F6171] font-bold duration-600"
+          >
+            设置
+          </span>
+        </div>
+
+        <div
+          class="h-12 flex items-center justify-center gap-2 rounded-full bg-gray-200 p-3 shadow-lg duration-600 hover:scale-120 hover:cursor-pointer"
+          @click="openEmby"
+        >
+
+          <SvgIcon
+            icon="logo"
+            class="h-full w-full"
+          />
+
+          <span
+            class="whitespace-nowrap color-[#52B44B] font-bold duration-600"
+          >
+            Emby
+          </span>
+        </div> -->
 
       </div>
     </div>
