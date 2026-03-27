@@ -73,11 +73,9 @@ function getTorrentList() {
       return
     }
 
-    const copyBtn = item.querySelector('.copy-to-clipboard') as HTMLElement
-
     const tdList = item.children
 
-    const url = tdList[0]?.children[0]?.href || ''
+    const url = (tdList[0]?.querySelector('a') as HTMLAnchorElement)?.href ?? ''
 
     const name = tdList[0].children[0]?.textContent?.trim() as string
 
