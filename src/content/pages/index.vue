@@ -10,6 +10,8 @@ import Javbus from './javbus/index.vue'
 
 import Javdb from './javdb/index.vue'
 
+import Missav from './missav/index.vue'
+
 // const folderStore = useFolderStore()
 
 onMounted(() => {
@@ -27,24 +29,8 @@ onMounted(() => {
 <template>
 
   <Setting
-    v-if="isUrlMatch('emby') || isUrlMatch('javdb') || isUrlMatch('javbus')"
+    v-if="isUrlMatch('emby') || isUrlMatch('javdb') || isUrlMatch('javbus') || isUrlMatch('missav')"
   />
-
-  <!-- <template
-    v-if="folderStore.embyFolder.folderFileList"
-  >
-    <Emby
-      v-if="isUrlMatch('emby')"
-    />
-
-    <Javdb
-      v-else-if="isUrlMatch('javdb')"
-    />
-
-    <Javbus
-      v-else-if="isUrlMatch('javbus')"
-    />
-  </template> -->
 
   <Emby
     v-if="isUrlMatch('emby')"
@@ -56,6 +42,10 @@ onMounted(() => {
 
   <Javbus
     v-else-if="isUrlMatch('javbus')"
+  />
+
+  <Missav
+    v-else-if="isUrlMatch('missav')"
   />
 
 </template>

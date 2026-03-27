@@ -163,7 +163,9 @@ function main() {
 
 onMounted(() => {
   getTorrentList()
-  delayRun(main)
+  delayRun(() => {
+    main()
+  }, 800)
 })
 </script>
 

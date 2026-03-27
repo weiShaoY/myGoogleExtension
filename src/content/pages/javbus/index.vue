@@ -1,17 +1,26 @@
-<!------  2026-03-24---21:40---星期二  ------>
-<!------------------------------------    ------------------------------------------------->
-<script lang="ts" setup>
+<script setup lang="ts">
 
+import DetailsPage from './detailsPage/index.vue'
+
+import ListPage from './listPage/index.vue'
+
+const isListPage = !!$('.movie-list')
+
+const bodyClass = isListPage ? 'javdb-list-page' : 'javdb-details-page'
+
+document.body.classList.add('javdb', bodyClass)
 </script>
 
 <template>
-  <div
-    class=""
-  >
-    javbus
-  </div>
+  <ListPage
+    v-if="isListPage"
+  />
+
+  <DetailsPage
+    v-else
+  />
 </template>
 
-<style lang="scss" scoped>
-
+<style lang="scss">
+@use './index.scss';
 </style>
