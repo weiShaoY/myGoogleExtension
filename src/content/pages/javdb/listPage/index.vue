@@ -3,13 +3,6 @@
 
 import { onMounted, ref } from 'vue'
 
-import {
-  $$,
-  addClassAndPush,
-  cleanVideoName,
-  delayRun,
-} from '@/utils/helper'
-
 const embyBtnList = ref<string[]>([])
 
 const updateChineseBtnList = ref<string[]>([])

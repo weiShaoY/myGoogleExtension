@@ -1,14 +1,6 @@
-<!------------------------------------    ------------------------------------------------->
 <script setup lang="ts">
 
-import { onMounted, ref } from 'vue'
-
-import {
-  $$,
-  addClassAndPush,
-  cleanVideoName,
-  delayRun,
-} from '@/utils/helper'
+const folderStore = useFolderStore()
 
 const embyBtnList = ref<string[]>([])
 
@@ -16,11 +8,12 @@ const updateChineseBtnList = ref<string[]>([])
 
 const addedToInventoryBtnList = ref<FolderConfigType.File[]>([])
 
-const folderStore = useFolderStore()
-
 function main() {
-  $$('.movie-list .item').forEach((item) => {
-    const name = item.querySelector('strong')?.textContent
+  $$('#waterfall .movie-box').forEach((item) => {
+    const name = item
+      .getAttribute('href')
+      ?.split('/')
+      .pop() ?? ''
 
     const cleanName = cleanVideoName(name)
 
@@ -28,7 +21,7 @@ function main() {
       return
     }
 
-    const box = asHTMLElement(item.querySelector('.box'))
+    const box = item
 
     const matchedList = folderStore.matchVideos(cleanName)
 
@@ -37,7 +30,7 @@ function main() {
 
       addClassAndPush(box, `emby_btn_${cleanName}`, embyBtnList.value, cleanName)
 
-      const hasChineseTag = !!item.querySelector('.is-warning')
+      const hasChineseTag = !!item.querySelector('.btn-warning')
 
       matchedList.forEach((video) => {
         addClassAndPush(
@@ -64,13 +57,11 @@ onMounted(() => delayRun(main))
 </script>
 
 <template>
-
   <!-- 在Emby打开按钮 -->
   <template
     v-for="videoName in embyBtnList"
     :key="videoName"
   >
-
     <Teleport
       :to="`.emby_btn_${videoName}`"
     >

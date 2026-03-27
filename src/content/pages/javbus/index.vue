@@ -4,11 +4,13 @@ import DetailsPage from './detailsPage/index.vue'
 
 import ListPage from './listPage/index.vue'
 
-const isListPage = !!$('.movie-list')
+const isListPage = !!$('#waterfall')
 
-const bodyClass = isListPage ? 'javdb-list-page' : 'javdb-details-page'
+console.log('🚀 ~ file: index.vue:8 ~ isListPage:', isListPage)
 
-document.body.classList.add('javdb', bodyClass)
+const bodyClass = isListPage ? 'javbus-list-page' : 'javbus-details-page'
+
+document.body.classList.add('javbus', bodyClass)
 </script>
 
 <template>

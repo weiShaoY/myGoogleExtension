@@ -46,23 +46,25 @@ const torrentList = ref<TorrentType[]>([])
  * 获取详情页视频名称
  */
 function getPageVideoName(): string {
-  const el = $('.video-detail strong')
+  const url = window.location.href
 
-  return cleanVideoName(el?.textContent)
+  return url.substring(url.lastIndexOf('/') + 1)
+    .trim()
+    .toLowerCase() || ''
 }
 
 /**
  * 获取页面中的磁链列表
  */
 function getTorrentList() {
-  const magnetsContent = $('#magnets-content')
+  const magnetsContent = $('#magnet-table')
 
   if (!magnetsContent || magnetsContent.children.length === 0) {
     console.warn('未找到 magnetsContent 元素或其子元素为空')
     return
   }
 
-  const items = Array.from(magnetsContent.querySelectorAll('.columns'))
+  const items = Array.from(magnetsContent.querySelectorAll('tr'))
 
   items.forEach((itemElement) => {
     const item = asHTMLElement(itemElement)
@@ -73,26 +75,15 @@ function getTorrentList() {
 
     const copyBtn = item.querySelector('.copy-to-clipboard') as HTMLElement
 
-    const url = copyBtn?.dataset?.clipboardText || ''
+    const tdList = item.children
 
-    const name = item.querySelector('.name')?.textContent?.trim() || ''
+    const url = tdList[0]?.children[0]?.href || ''
 
-    const sizeText = item.querySelector('.meta')?.textContent?.trim() || ''
+    const name = tdList[0].children[0]?.textContent?.trim() as string
 
-    const time = item.querySelector('.time')?.textContent?.trim() || ''
+    const size = Number.parseFloat(tdList[1].children[0]?.textContent?.trim().match(/(\d+(\.\d+)?)GB/)?.[1] || '0')
 
-    let size = 0
-
-    const sizeMatch = sizeText.match(/(\d+(\.\d+)?)\s*(GB|MB)/i)
-
-    if (sizeMatch) {
-      const value = Number.parseFloat(sizeMatch[1])
-
-      const unit = sizeMatch[3]?.toUpperCase()
-
-      size = unit === 'MB' ? value / 1024 : value
-      size = Math.round(size * 100) / 100
-    }
+    const time = tdList[2].children[0]?.textContent?.trim()
 
     const tagArray = getFileTagIconArray(name)
 
@@ -114,7 +105,7 @@ function getTorrentList() {
     torrentList.value.push(torrentListItem)
   })
 
-  const targetElement = $('.no-bottom')
+  const targetElement = $('.container #magneturlpost')
 
   if (targetElement) {
     targetElement.insertAdjacentHTML('afterend', '<div id="TorrentList"></div>')
@@ -143,7 +134,7 @@ function main() {
     return
   }
 
-  const highlightElement = $('.video-meta-panel')
+  const highlightElement = $('.movie')
 
   highlightElement?.classList.add('is-highlight')
 
@@ -153,6 +144,7 @@ function main() {
 
   const embyHasChinese = matchedList.some(item => item.hasChineseSubtitles)
 
+  // 页面上有中文磁链但你Emby库里没有中文
   if (
     isVideoHaveChineseTorrent.value
     && !embyHasChinese
@@ -161,11 +153,35 @@ function main() {
   }
 }
 
+/**
+ * Javbus 详情页 元素顺序修改
+ */
+function javbusDetailElementsModifier() {
+  // 调整 预览图的顺序
+
+  const sampleWaterfall = $('#sample-waterfall')
+
+  const torrentList = $('#TorrentList')
+
+  // 将 sampleWaterfall 元素剪切并插入到 TorrentList 之前
+  if (sampleWaterfall && torrentList) {
+    sampleWaterfall.style.margin = '24px auto'
+
+    torrentList.parentNode?.insertBefore(sampleWaterfall, torrentList)
+  }
+
+  // 移除  磁力連結投稿
+  $('#mag-submit-show')?.remove()
+}
+
 onMounted(() => {
-  getTorrentList()
   delayRun(() => {
+    getTorrentList()
     main()
-  }, 800)
+
+    // Javbus 详情页元素顺序修改
+    javbusDetailElementsModifier()
+  })
 })
 </script>
 

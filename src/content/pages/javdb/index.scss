@@ -6,6 +6,11 @@
   #footer {
     display: none;
   }
+
+  //  官方App JavDB公告(Telegram频道）
+  .app-desktop-banner {
+    display: none !important;
+  }
 }
 
 // 列表页
@@ -149,7 +154,7 @@
   }
 
   //  官方App JavDB公告(Telegram频道）
-  .top-meta {
+  .app-desktop-banner {
     display: none;
   }
 }
