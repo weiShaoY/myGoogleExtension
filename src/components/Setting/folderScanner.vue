@@ -241,7 +241,7 @@ async function mainBtnHandler() {
         </span>
 
         <span
-          class="color-primary m-x-2 text-6 font-bold"
+          class="m-x-2 text-6 color-primary font-bold"
         >
           {{ folderStore.embyFolder.folderName }}
         </span>
@@ -259,7 +259,7 @@ async function mainBtnHandler() {
         </span>
 
         <span
-          class="color-primary m-x-2 text-6 font-bold"
+          class="m-x-2 text-6 color-primary font-bold"
         >
           {{ folderStore.embyFolder.folderFileList.length }}
         </span>
@@ -281,7 +281,7 @@ async function mainBtnHandler() {
         </span>
 
         <span
-          class="color-primary m-x-2 text-6 font-bold"
+          class="m-x-2 text-6 color-primary font-bold"
         >
           {{ folderStore.embyFolder.folderDuplicateNameFileList.length }}
         </span>
@@ -301,7 +301,7 @@ async function mainBtnHandler() {
         </span>
 
         <span
-          class="color-primary m-x-2 text-6 font-bold"
+          class="m-x-2 text-6 color-primary font-bold"
         >
           {{ folderStore.embyFolder.folderUniqueFileNameFileList.length }}
         </span>
@@ -321,7 +321,7 @@ async function mainBtnHandler() {
         </span>
 
         <span
-          class="color-primary m-x-2 text-6 font-bold"
+          class="m-x-2 text-6 color-primary font-bold"
         >
           {{ getElapsedTime(folderStore.embyFolder.folderScanTimestamp) }}
         </span>
@@ -337,7 +337,7 @@ async function mainBtnHandler() {
         </span>
 
         <span
-          class="color-primary m-x-2 text-6 font-bold"
+          class="m-x-2 text-6 color-primary font-bold"
         >
           {{ folderStore.embyFolder.folderScanDuration }}
         </span>
@@ -353,7 +353,7 @@ async function mainBtnHandler() {
         </span>
 
         <span
-          class="color-primary m-x-2 text-6 font-bold"
+          class="m-x-2 text-6 color-primary font-bold"
         >
           {{ formatTimestampToChineseDate(folderStore.embyFolder.folderScanTimestamp) }}        </span>
 

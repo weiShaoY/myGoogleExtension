@@ -25,14 +25,14 @@ export function addClassAndUpdateList(
  * @param {{ value: string[] }} list - 按钮列表对象，包含 `value` 属性
  * @param {string} videoName - 视频名称
  */
-export function addClassIfNotExists(
-  element: Element | null,
-  className: string,
-  list: { value: string[] },
-  videoName: string,
-) {
-  if (!element?.classList.contains(className)) {
-    element?.classList.add(className)
-    list.value.push(videoName)
-  }
-}
+// export function addClassIfNotExists(
+//   element: Element | null,
+//   className: string,
+//   list: { value: string[] },
+//   videoName: string,
+// ) {
+//   if (!element?.classList.contains(className)) {
+//     element?.classList.add(className)
+//     list.value.push(videoName)
+//   }
+// }

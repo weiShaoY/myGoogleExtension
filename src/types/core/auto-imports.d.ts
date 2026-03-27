@@ -6,13 +6,19 @@
 // biome-ignore lint: disable
 export {}
 declare global {
+  const $: typeof import('../../utils/helper').$
+  const $$: typeof import('../../utils/helper').$$
   const EffectScope: typeof import('vue').EffectScope
+  const WHITESPACE_REGEX: typeof import('../../utils/folder').WHITESPACE_REGEX
   const acceptHMRUpdate: typeof import('pinia').acceptHMRUpdate
+  const addClassAndPush: typeof import('../../utils/helper').addClassAndPush
   const addClassAndUpdateList: typeof import('../../utils/classHelper').addClassAndUpdateList
-  const addClassIfNotExists: typeof import('../../utils/classHelper').addClassIfNotExists
+  const addClassIfNotExists: typeof import('../../utils/helper').addClassIfNotExists
+  const asHTMLElement: typeof import('../../utils/helper').asHTMLElement
   const asyncComputed: typeof import('@vueuse/core').asyncComputed
   const autoResetRef: typeof import('@vueuse/core').autoResetRef
   const chromeStorage: typeof import('../../stores/pinia-sync-plugin').chromeStorage
+  const cleanVideoName: typeof import('../../utils/helper').cleanVideoName
   const computed: typeof import('vue').computed
   const computedAsync: typeof import('@vueuse/core').computedAsync
   const computedEager: typeof import('@vueuse/core').computedEager
@@ -39,10 +45,11 @@ declare global {
   const defineAsyncComponent: typeof import('vue').defineAsyncComponent
   const defineComponent: typeof import('vue').defineComponent
   const defineStore: typeof import('pinia').defineStore
+  const delayRun: typeof import('../../utils/helper').delayRun
   const eagerComputed: typeof import('@vueuse/core').eagerComputed
   const effectScope: typeof import('vue').effectScope
   const extendRef: typeof import('@vueuse/core').extendRef
-  const formatTimestampToChineseDate: typeof import('../../utils/formatTimestampToChineseDate').formatTimestampToChineseDate
+  const formatTimestampToChineseDate: typeof import('../../utils/time').formatTimestampToChineseDate
   const getActivePinia: typeof import('pinia').getActivePinia
   const getClipboardText: typeof import('../../utils/clipboard').getClipboardText
   const getClipboardTextSafely: typeof import('../../utils/clipboard').getClipboardTextSafely
@@ -100,6 +107,7 @@ declare global {
   const piniaChromeStoragePlugin: typeof import('../../stores/piniaChromeStoragePlugin').piniaChromeStoragePlugin
   const provide: typeof import('vue').provide
   const provideLocal: typeof import('@vueuse/core').provideLocal
+  const queryDom: typeof import('../../utils/helper').queryDom
   const reactify: typeof import('@vueuse/core').reactify
   const reactifyObject: typeof import('@vueuse/core').reactifyObject
   const reactive: typeof import('vue').reactive
@@ -345,13 +353,18 @@ import { UnwrapRef } from 'vue'
 declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
+    readonly $$: UnwrapRef<typeof import('../../utils/helper')['$$']>
+    readonly $: UnwrapRef<typeof import('../../utils/helper')['$']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly WHITESPACE_REGEX: UnwrapRef<typeof import('../../utils/folder')['WHITESPACE_REGEX']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
+    readonly addClassAndPush: UnwrapRef<typeof import('../../utils/helper')['addClassAndPush']>
     readonly addClassAndUpdateList: UnwrapRef<typeof import('../../utils/classHelper')['addClassAndUpdateList']>
-    readonly addClassIfNotExists: UnwrapRef<typeof import('../../utils/classHelper')['addClassIfNotExists']>
+    readonly asHTMLElement: UnwrapRef<typeof import('../../utils/helper')['asHTMLElement']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
     readonly chromeStorage: UnwrapRef<typeof import('../../stores/pinia-sync-plugin')['chromeStorage']>
+    readonly cleanVideoName: UnwrapRef<typeof import('../../utils/helper')['cleanVideoName']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly computedAsync: UnwrapRef<typeof import('@vueuse/core')['computedAsync']>
     readonly computedEager: UnwrapRef<typeof import('@vueuse/core')['computedEager']>
@@ -377,10 +390,11 @@ declare module 'vue' {
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly defineStore: UnwrapRef<typeof import('pinia')['defineStore']>
+    readonly delayRun: UnwrapRef<typeof import('../../utils/helper')['delayRun']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
-    readonly formatTimestampToChineseDate: UnwrapRef<typeof import('../../utils/formatTimestampToChineseDate')['formatTimestampToChineseDate']>
+    readonly formatTimestampToChineseDate: UnwrapRef<typeof import('../../utils/time')['formatTimestampToChineseDate']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getClipboardText: UnwrapRef<typeof import('../../utils/clipboard')['getClipboardText']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>

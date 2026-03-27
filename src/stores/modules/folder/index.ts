@@ -95,6 +95,19 @@ export const useFolderStore = defineStore(
       return Object.keys(propertyMap).filter(key => propertyMap[key].length > 1)
     }
 
+    /**
+     * 根据清洗后的名称匹配视频
+     */
+    function matchVideos(cleanName: string) {
+      const list = embyFolder.value.folderFileList ?? []
+
+      if (!list.length || !cleanName) {
+        return []
+      }
+
+      return list.filter(item => item.cleanName.includes(cleanName))
+    }
+
     return {
 
       /**
@@ -115,9 +128,13 @@ export const useFolderStore = defineStore(
        */
       saveEmbyFolderData,
 
+      /**
+       * 根据清洗后的名称匹配视频
+       * @param cleanName - 清洗后的名称
+       * @return 匹配到的视频列表
+       */
+      matchVideos,
     }
   },
 
 )
-
-// export default useFolderStore

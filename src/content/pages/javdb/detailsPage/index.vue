@@ -1,79 +1,62 @@
-<!------  2025-08-12---16:47---星期二  ------>
-<!------------------------------------    ------------------------------------------------->
 <script lang="ts" setup>
-import { useFolderStore } from '@/stores'
 
 const folderStore = useFolderStore()
 
 /**
- *  页面视频名称
+ * 页面视频名称
  */
 const pageVideoName = ref<string>('')
 
 /**
- *  是否视频存在中文磁链
+ * 是否视频存在中文磁链
  */
-const isVideoHaveChineseTorrent = ref(false)
+const isVideoHaveChineseTorrent = ref<boolean>(false)
 
 /**
- *  是否显示 提示更新中文磁链按钮
+ * 是否显示 提示更新中文磁链按钮
  */
-const isShowPendingUpdateChineseButton = ref(false)
+const isShowPendingUpdateChineseButton = ref<boolean>(false)
 
 /**
- *  是否显示 emby按钮
+ * 是否显示 emby按钮
  */
-const isShowEmbyButton = ref(false)
+const isShowEmbyButton = ref<boolean>(false)
 
 /**
- *  emby已入库列表
+ * emby已入库列表
  */
 const embyCatalogedList = ref<FolderConfigType.File[]>([])
 
 /**
- *  是否显示在线播放组件
+ * 是否显示在线播放组件
  */
-const isShowOnlinePlay = ref(false)
+const isShowOnlinePlay = ref<boolean>(false)
 
 /**
- *  是否显示自定义磁链列表
+ * 是否显示自定义磁链列表
  */
-const isShowTorrentList = ref(false)
+const isShowTorrentList = ref<boolean>(false)
 
 /**
- *  磁链列表
+ * 磁链列表
  */
 const torrentList = ref<TorrentType[]>([])
 
 /**
  * 获取详情页视频名称
- * @returns 视频标题文本
  */
 function getPageVideoName(): string {
-  const strongElements = document.querySelectorAll('.video-detail strong')
+  const el = $('.video-detail strong')
 
-  if (strongElements.length > 0) {
-    const titleText = strongElements[0].textContent
-      ?.trim()
-      .toLowerCase()
-      .replace(/\s+/g, '')
-
-    return titleText || ''
-  }
-
-  return ''
+  return cleanVideoName(el?.textContent)
 }
 
 /**
  * 获取页面中的磁链列表
  */
-/**
- * 获取种子列表
- */
 function getTorrentList() {
-  const magnetsContent = document.getElementById('magnets-content')
+  const magnetsContent = $('#magnets-content')
 
-  // 使用 ! 简化非空判断
   if (!magnetsContent || magnetsContent.children.length === 0) {
     console.warn('未找到 magnetsContent 元素或其子元素为空')
     return
@@ -82,38 +65,37 @@ function getTorrentList() {
   const items = Array.from(magnetsContent.querySelectorAll('.columns'))
 
   items.forEach((itemElement) => {
-    // 类型断言，确保 item 是 HTMLElement 类型
-    const item = itemElement as HTMLElement
+    const item = asHTMLElement(itemElement)
 
-    const url = (item.querySelector('.copy-to-clipboard') as HTMLElement)?.dataset?.clipboardText || '' // 类型断言
+    if (!item) {
+      return
+    }
+
+    const copyBtn = item.querySelector('.copy-to-clipboard') as HTMLElement
+
+    const url = copyBtn?.dataset?.clipboardText || ''
 
     const name = item.querySelector('.name')?.textContent?.trim() || ''
 
     const sizeText = item.querySelector('.meta')?.textContent?.trim() || ''
 
-    // 使用更简洁的正则表达式匹配，忽略大小写
-    const sizeMatch = sizeText.match(/(\d+(\.\d+)?)\s*(GB|MB)/i)
+    const time = item.querySelector('.time')?.textContent?.trim() || ''
 
     let size = 0
+
+    const sizeMatch = sizeText.match(/(\d+(\.\d+)?)\s*(GB|MB)/i)
 
     if (sizeMatch) {
       const value = Number.parseFloat(sizeMatch[1])
 
-      const unit = sizeMatch[3]?.toUpperCase() // 获取单位并转换为大写
+      const unit = sizeMatch[3]?.toUpperCase()
 
-      // 使用三元运算符简化大小转换
       size = unit === 'MB' ? value / 1024 : value
-
-      // 保留两位小数
       size = Math.round(size * 100) / 100
     }
 
-    const time = item.querySelector('.time')?.textContent?.trim() || ''
-
-    //  获取 tagArray 的方法，需要自己实现
     const tagArray = getFileTagIconArray(name)
 
-    // 判断是否存在 中文磁链
     if (
       name.toLowerCase().includes('-c')
       && !isVideoHaveChineseTorrent.value
@@ -132,9 +114,7 @@ function getTorrentList() {
     torrentList.value.push(torrentListItem)
   })
 
-  //  添加挂载点
-
-  const targetElement = document.querySelector('.no-bottom')
+  const targetElement = $('.no-bottom')
 
   if (targetElement) {
     targetElement.insertAdjacentHTML('afterend', '<div id="TorrentList"></div>')
@@ -145,44 +125,37 @@ function getTorrentList() {
   }
 }
 
+/**
+ * 主逻辑
+ */
 function main() {
-  if (!folderStore.embyFolder.folderFileList.length) {
+  const name = getPageVideoName()
+
+  if (!name) {
     return
   }
 
-  // 获取视频名称 (小写，去除空格)
-  pageVideoName.value = getPageVideoName()
+  pageVideoName.value = name
 
-  if (!pageVideoName.value) {
+  const matchedList = folderStore.matchVideos(name)
+
+  if (!matchedList.length) {
     return
   }
 
-  // 当前视频名称已入库的视频列表
-  const matchedVideoList = folderStore.embyFolder.folderFileList.filter(item =>
+  const highlightElement = $('.video-meta-panel')
 
-    item.cleanName.includes(pageVideoName.value),
-  )
+  highlightElement?.classList.add('is-highlight')
 
-  /**
-   *  emby中是否有中文磁链
-   */
-  const isEmbyHaveChineseTorrent = matchedVideoList.some(item => item.hasChineseSubtitles)
+  embyCatalogedList.value = matchedList
 
-  const highlightElement = document.querySelector('.video-meta-panel')
+  isShowEmbyButton.value = true
 
-  if (matchedVideoList.length) {
-    highlightElement?.classList.add('is-highlight')
+  const embyHasChinese = matchedList.some(item => item.hasChineseSubtitles)
 
-    embyCatalogedList.value.push(...matchedVideoList)
-
-    isShowEmbyButton.value = true
-  }
-
-  // 如果当前视频有中文磁链可用并且 Emby 中已经存在的视频没有中文磁链，则添加提示更新中文磁链按钮
   if (
     isVideoHaveChineseTorrent.value
-    && !isEmbyHaveChineseTorrent
-    && matchedVideoList.length
+    && !embyHasChinese
   ) {
     isShowPendingUpdateChineseButton.value = true
   }
@@ -190,15 +163,13 @@ function main() {
 
 onMounted(() => {
   getTorrentList()
-
-  setTimeout(() => {
+  delayRun(() => {
     main()
-  }, 1000)
+  }, 800)
 })
 </script>
 
 <template>
-
   <!-- 挂载到右侧 -->
   <div
     class="sm-50 fixed left-2 top-60 w-30 lg:w-70 md:w-50"
@@ -242,7 +213,6 @@ onMounted(() => {
     scroll-target=".video-panel"
     :torrent-list="torrentList"
   />
-
 </template>
 
 <style lang="scss" scoped>

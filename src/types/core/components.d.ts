@@ -52,6 +52,7 @@ declare module 'vue' {
     Setting: typeof import('./../../components/Setting/index.vue')['default']
     SvgIcon: typeof import('./../../components/SvgIcon/index.vue')['default']
     TestDialog: typeof import('./../../components/Setting copy/components/testDialog/index.vue')['default']
+    TorrentList: typeof import('./../../components/TorrentList/index.vue')['default']
     UniqueDuplicate: typeof import('./../../components/Setting/uniqueDuplicate.vue')['default']
   }
   export interface GlobalDirectives {

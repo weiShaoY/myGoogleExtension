@@ -1,96 +1,66 @@
 <!------------------------------------    ------------------------------------------------->
-<script lang="ts" setup>
-import { useFolderStore } from '@/stores'
+<script setup lang="ts">
+
+import { onMounted, ref } from 'vue'
+
+import {
+  $$,
+  addClassAndPush,
+  cleanVideoName,
+  delayRun,
+} from '@/utils/helper'
+
+const embyBtnList = ref<string[]>([])
+
+const updateChineseBtnList = ref<string[]>([])
+
+const addedToInventoryBtnList = ref<FolderConfigType.File[]>([])
 
 const folderStore = useFolderStore()
 
-/**
- *  已入库的视频
- */
-const addedToInventoryBtnList = ref<FolderConfigType.File[]>([])
-
-/**
- *  在Emby打开按钮
- */
-const embyBtnList = ref<string[]>([])
-
-/**
- *  更新中文磁链按钮
- */
-const updateChineseBtnList = ref<string[]>([])
-
-// 顶部定义，只编译一次
-const WHITESPACE_REGEX = /\s+/g
-
 function main() {
-  console.log('🚀 ~ file: index.vue:28 ~ folderStore.embyFolder:', folderStore.embyFolder)
+  $$('.movie-list .item').forEach((item) => {
+    const name = item.querySelector('strong')?.textContent
 
-  console.log('🚀 ~ file: index.vue:27 ~ folderStore.embyFolder.folderFileList.length:', folderStore.embyFolder.folderFileList.length)
-  console.log('🚀 ~ file: index.vue:27 ~ folderStore.embyFolder.folderFileList:', folderStore.embyFolder.folderFileList)
+    const cleanName = cleanVideoName(name)
 
-  if (!folderStore.embyFolder.folderFileList.length) {
-    return
-  }
-
-  const itemList = document.querySelectorAll('.movie-list .item')
-
-  console.log('🚀 ~ file: index.vue:31 ~ itemList:', itemList)
-
-  itemList.forEach((item) => {
-    /**
-     *  获取视频名称 (小写，去除空格)
-     */
-    const itemVideoName = item
-      .querySelector('strong')
-      ?.textContent
-      ?.toLowerCase()
-      .replace(WHITESPACE_REGEX, '') as string
-
-    if (!itemVideoName) {
+    if (!cleanName) {
       return
     }
 
-    const boxElement = item.querySelector('.box')
+    const box = asHTMLElement(item.querySelector('.box'))
 
-    /**
-     * 当前视频名称已入库的视频列表
-     */
-    const matchedVideoList = folderStore.embyFolder.folderFileList.filter(sub => sub.cleanName.includes(itemVideoName))
+    const matchedList = folderStore.matchVideos(cleanName)
 
-    if (matchedVideoList.length) {
-      //  添加高亮
-      boxElement?.classList.add('is-highlight')
+    if (matchedList.length) {
+      box?.classList.add('is-highlight')
 
-      // 添加 Emby 按钮的类名并更新列表
-      addClassIfNotExists(boxElement, `emby_btn_${itemVideoName}`, embyBtnList, itemVideoName)
+      addClassAndPush(box, `emby_btn_${cleanName}`, embyBtnList.value, cleanName)
 
-      /**
-       *  页面列表当前视频是否含中文磁链
-       */
-      const isItemHaveChineseTorrent = !!item.querySelector('.is-warning')
+      const hasChineseTag = !!item.querySelector('.is-warning')
 
-      matchedVideoList.forEach((video: FolderConfigType.File) => {
-        // 添加已入库视频按钮的类名并更新列表
-        addClassAndUpdateList(boxElement, `added_to_emby_btn_${video.nameWithTags}`, addedToInventoryBtnList, video)
+      matchedList.forEach((video) => {
+        addClassAndPush(
+          box,
+          `added_to_emby_btn_${video.nameWithTags}`,
+          addedToInventoryBtnList.value,
+          video,
+        )
 
-        if (!video.hasChineseSubtitles && isItemHaveChineseTorrent) {
-          // 添加更新中文磁链按钮的类名并更新列表
-          addClassIfNotExists(boxElement, `update_chinese_btn_${itemVideoName}`, updateChineseBtnList, itemVideoName)
+        if (!video.hasChineseSubtitles && hasChineseTag) {
+          addClassAndPush(
+            box,
+            `update_chinese_btn_${cleanName}`,
+            updateChineseBtnList.value,
+            cleanName,
+          )
         }
       })
     }
   })
 }
 
-onMounted(() => {
-  window.$notification.success('列表页')
-
-  // main()
-
-  setTimeout(() => {
-    main()
-  }, 1000)
-})
+onMounted(() => delayRun(main))
 </script>
 
 <template>
@@ -140,4 +110,4 @@ onMounted(() => {
   </template>
 </template>
 
-<style lang="less" scoped></style>
+<style lang="scss" scoped></style>
