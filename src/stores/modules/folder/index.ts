@@ -7,7 +7,8 @@ export const useFolderStore = defineStore(
   () => {
     const embyFolder = ref<FolderConfigType.EmbyFolder>({
       folderName: 'emby名称',
-      folderReadTime: 0,
+      folderScanTimestamp: 0,
+      folderScanDuration: '',
       folderFileList: [],
       folderDuplicateNameFileList: [],
       folderUniqueFileNameFileList: [],
@@ -43,10 +44,14 @@ export const useFolderStore = defineStore(
      *  @param videoFileSet - 视频文件集合
      *  @description 保存 Emby 文件夹数据，并将其存储到 GM_setValue 和 Pinia store 中
      */
-    function saveEmbyFolderData(_folderName: string, videoFileSet: Set<FolderConfigType.File>) {
+    function saveEmbyFolderData(_folderName: string, videoFileSet: Set<FolderConfigType.File>, startTime: number) {
+      console.log('🚀 ~ file: index.ts:48 ~ startTime:', startTime)
+      console.log('🚀 ~ file: index.ts:53 ~ Date.now():', Date.now())
+
       embyFolder.value = {
         folderName: _folderName,
-        folderReadTime: Date.now(),
+        folderScanTimestamp: Date.now(),
+        folderScanDuration: getDuration(startTime, Date.now()),
         folderFileList: Array.from(videoFileSet),
         folderDuplicateNameFileList: getFolderDuplicateNameFileList(Array.from(videoFileSet), 'cleanName'),
         folderUniqueFileNameFileList: getFolderUniqueFileNameFileList(Array.from(videoFileSet), 'cleanName'),

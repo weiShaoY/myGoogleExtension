@@ -23,7 +23,7 @@ const isShowFolderUniqueFileNameFileList = ref(false)
 const getFolderReadTimeoutText = computed(() => {
   const millisecondsInHour = 3600000 // 1 小时 = 3,600,000 毫秒
 
-  const lastReadTime = folderStore.embyFolder.folderReadTime
+  const lastReadTime = folderStore.embyFolder.folderScanTimestamp
 
   if (!lastReadTime) {
     return ''
@@ -68,7 +68,7 @@ const getFolderReadTimeoutText = computed(() => {
           </span>
 
           <span
-            class="color-primary m-x-2 text-6 font-bold"
+            class="m-x-2 text-6 color-primary font-bold"
           >
             {{ folderStore.embyFolder.folderDuplicateNameFileList.length }}
           </span>
@@ -206,7 +206,7 @@ const getFolderReadTimeoutText = computed(() => {
               最后扫描时间
             </div>
           </template>
-          {{ formatTimestampToChineseDate(folderStore.embyFolder.folderReadTime) }}
+          {{ formatTimestampToChineseDate(folderStore.embyFolder.folderScanTimestamp) }}
         </el-descriptions-item>
 
         <el-descriptions-item>

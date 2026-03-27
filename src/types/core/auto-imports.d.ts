@@ -49,6 +49,8 @@ declare global {
   const getCurrentInstance: typeof import('vue').getCurrentInstance
   const getCurrentScope: typeof import('vue').getCurrentScope
   const getCurrentWatcher: typeof import('vue').getCurrentWatcher
+  const getDuration: typeof import('../../utils/time').getDuration
+  const getElapsedTime: typeof import('../../utils/time').getElapsedTime
   const getFileTagIconArray: typeof import('../../utils/getTagIconArray').getFileTagIconArray
   const h: typeof import('vue').h
   const ignorableWatch: typeof import('@vueuse/core').ignorableWatch
@@ -384,6 +386,8 @@ declare module 'vue' {
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly getCurrentWatcher: UnwrapRef<typeof import('vue')['getCurrentWatcher']>
+    readonly getDuration: UnwrapRef<typeof import('../../utils/time')['getDuration']>
+    readonly getElapsedTime: UnwrapRef<typeof import('../../utils/time')['getElapsedTime']>
     readonly getFileTagIconArray: UnwrapRef<typeof import('../../utils/getTagIconArray')['getFileTagIconArray']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>

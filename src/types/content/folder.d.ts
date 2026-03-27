@@ -14,9 +14,14 @@ namespace FolderConfigType {
     folderName: string
 
     /**
-     * 文件读取时间-时间戳
+     * 文件夹扫描时间戳
      */
-    folderReadTime: number
+    folderScanTimestamp: number
+
+    /**
+     *  文件夹扫描耗时
+     */
+    folderScanDuration: string
 
     /**
      *  文件列表

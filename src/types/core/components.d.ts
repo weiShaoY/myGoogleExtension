@@ -11,6 +11,9 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    1: typeof import('./../../components/Setting/1.vue']
+    All: typeof import('../../com../../components/Setting/1.vue']
+    AllDuplicate: typeof import('./../../components/Setting/allDuplicate.vue')['default']
     AppProvider: typeof import('./../../components/AppProvider/index.vue')['default']
     copy: typeof import('./../../components/Setting copy/index.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
@@ -33,19 +36,26 @@ declare module 'vue' {
     ElTimelineItem: typeof import('element-plus/es')['ElTimelineItem']
     EmbyCatalogedList: typeof import('./../../components/EmbyCatalogedList/index.vue')['default']
     EmbyPlayButton: typeof import('./../../components/EmbyPlayButton/index.vue')['default']
+    FindDuplicate: typeof import('./../../components/Setting/findDuplicate.vue')['default']
+    Folder: typeof import('../../components/Setting/folderScanner.vue')['default']
     FolderQueryDuplicateDialog: typeof import('./../../components/Setting/components/folderQueryDuplicateDialog/index.vue')['default']
-    FolderReadSuccessDialog: typeof import('./../../components/Setting/components/folderReadSuccessDialog/index.vue')['default']
+    FolderReadSuccessDialog: typeof import('./../../components/Setting copy/components/folderReadSuccessDialog/index.vue')['default']
+    FolderScanner: typeof import('./../../components/Setting/folderScanner.vue')['default']
     HelloWorld: typeof import('./../../components/HelloWorld.vue')['default']
-    Info: typeof import('./../../components/Setting/components/testDialog/info.vue')['default']
+    Info: typeof import('./../../components/Setting/info.vue')['default']
     Main: typeof import('./../../components/Search/main.vue')['default']
-    Menu: typeof import('./../../components/Setting/components/testDialog/menu.vue')['default']
-    One: typeof import('../../components/Setting/components/testDialog/read.vue')['default']
+    Menu: typeof import(../../components/Setting/allDuplicate.vuetDialog/menu.vue')['default']
+    One: typeof import('../../components/Setting/findDuplicate.vue')['default']
     PendingUpdateChineseButton: typeof import('./../../components/PendingUpdateChineseButton/index.vue')['default']
-    Read: typeof import('./../../components/Setting/components/testDialog/read.vue')['default']
+    Read: typeof import('../../components/Setting/findDuplicate.vue')['default']
     Search: typeof import('./../../components/Search/index.vue')['default']
     Setting: typeof import('./../../components/Setting/index.vue')['default']
     'Setting copy': typeof import('./../../components/Setting copy/index.vue')['default']
     SvgIcon: typeof import('./../../components/SvgIcon/index.vue')['default']
-    TestDialog: typeof import('./../../components/Setting/components/testDialog/index.vue')['default']
+    TestDialog: typeof import('./../../components/Setting copy/components/testDialog/index.vue')['default']
+    UniqueDuplicate: typeof import('./../../components/Setting/uniqueDuplicate.vue')['default']
+  }
+  export interface GlobalDirectives {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

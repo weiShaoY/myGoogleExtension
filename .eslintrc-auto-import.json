@@ -58,6 +58,8 @@
     "getCurrentInstance": true,
     "getCurrentScope": true,
     "getCurrentWatcher": true,
+    "getDuration": true,
+    "getElapsedTime": true,
     "getFileTagIconArray": true,
     "h": true,
     "ignorableWatch": true,
