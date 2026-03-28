@@ -3,7 +3,11 @@
 
 import AdultInventory from '@/components/Adult/adult-inventory.vue'
 
-// const addedToInventoryBtnList = ref<FolderConfigType.File[]>([])
+const embyBtnList = ref<string[]>([])
+
+const updateChineseBtnList = ref<string[]>([])
+
+const addedToInventoryBtnList = ref<FolderConfigType.File[]>([])
 
 const folderStore = useFolderStore()
 
@@ -32,19 +36,20 @@ function main() {
     const matchedList = folderStore.matchVideos(cleanName)
 
     if (matchedList.length) {
-      boxElement?.classList.add(cleanName)
-      boxElement?.classList.add('is-highlight')
-
       const only = ref({
-        fileName: cleanName,
-        fileList: matchedList,
-        isShowUpdateChinese: false,
+        name: cleanName,
+        list: matchedList,
+        isUpdateChinese: false,
         isShowEmby: true,
       })
 
       // //
 
+      boxElement?.classList.add(cleanName)
+
       // @////////////
+
+      boxElement?.classList.add('is-highlight')
 
       // 添加 Emby 打开按钮
       // addClassAndPush(
@@ -67,7 +72,7 @@ function main() {
 
         // 需要更新中文
         if (!video.hasChineseSubtitles && hasChineseTag) {
-          only.value.isShowUpdateChinese = true
+          only.value.isUpdateChinese = true
 
           // addClassAndPush(
           //   boxElement,
@@ -77,7 +82,7 @@ function main() {
           // )
         }
       })
-      allList.value.push(only.value)
+      allList.value.push(only)
     }
   })
 
@@ -91,8 +96,68 @@ onMounted(() => delayRun(main))
 </script>
 
 <template>
+  <!-- 在Emby打开按钮 -->
+  <template
+    v-for="videoName in embyBtnList"
+    :key="videoName"
+  >
+    <Teleport
+      :to="`.emby_btn_${videoName}`"
+    >
+      <EmbyPlayButton
+        :emby-search-name="videoName"
+        :video-name="videoName"
+      />
+    </Teleport>
+  </template>
+
+  <!-- 可更新中文磁链按钮 -->
+  <template
+    v-for="videoName in updateChineseBtnList"
+    :key="videoName"
+  >
+    <Teleport
+      :to="`.update_chinese_btn_${videoName}`"
+    >
+      <PendingUpdateChineseButton
+        :radius="0"
+      />
+    </Teleport>
+  </template>
+
+  <!-- 已入库的视频 -->
+  <template
+    v-for="item in addedToInventoryBtnList"
+    :key="item.id"
+  >
+    <Teleport
+      :to="`.added_to_emby_btn_${item.id}`"
+    >
+      <EmbyCatalogedList
+        :video="item"
+      />
+    </Teleport>
+  </template>
 
   <!-- <template
+    v-if="testShow"
+  >
+    <Teleport
+      to=".testTest"
+    >
+      <div
+        class="grid grid-cols-2 grid-rows-2 w-full gap-2 text-white font-bold"
+      >
+        <AdultInventory />
+
+        <AdultChinese />
+
+        <AdultEmby />
+
+      </div>
+    </Teleport> -->
+
+  <template
     v-if="testShow"
   >
     <template
@@ -114,29 +179,6 @@ onMounted(() => delayRun(main))
         </div>
       </Teleport>
     </template>
-  </template> -->
-
-  <template
-    v-for="value in allList"
-    :key="value.name"
-  >
-    <Teleport
-      :to="`.${value.name}`"
-    >
-      <div
-        class="grid grid-cols-2 grid-rows-2 w-full gap-2 text-white font-bold"
-      >
-        <AdultInventory
-          v-for="(item,) in value.list"
-          :key="item.id"
-        />
-
-        <AdultChinese />
-
-        <AdultEmby />
-
-      </div>
-    </Teleport>
   </template>
 
 </template>
