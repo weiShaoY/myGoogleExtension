@@ -4,7 +4,7 @@
 
 import Pages from './pages/index.vue'
 
-import Search from './search1/index.vue'
+import Search from './search/index.vue'
 
 const testStore = useTestStore()
 
