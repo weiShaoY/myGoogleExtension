@@ -1,15 +1,11 @@
 <!------  2025-08-12---16:47---星期二  ------>
 <!------------------------------------    ------------------------------------------------->
 <script lang="ts" setup>
-import DetailsPage from './detailsPage/index.vue'
+import DetailsPage from './missavDetailsPage.vue'
 
-import ListPage from './listPage/index.vue'
+import ListPage from './missavListPage.vue'
 
 const isListPage = !$('#sprite-plyr')
-
-console.log('🚀 ~ file: index.vue:9 ~ isListPage:', isListPage)
-
-console.log('🚀 ~ file: index.vue:9 ~ isListPage:', isListPage)
 
 const bodyClass = isListPage ? 'missav-details-page' : 'missav-list-page'
 

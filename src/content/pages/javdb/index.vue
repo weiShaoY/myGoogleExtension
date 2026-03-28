@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
-import DetailsPage from './detailsPage/index.vue'
+import DetailsPage from './javdbDetailsPage.vue'
 
-import ListPage from './listPage/index.vue'
+import ListPage from './javdbListPage.vue'
 
 const isListPage = !!$('.movie-list')
 
