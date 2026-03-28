@@ -1,95 +1,129 @@
-<!------------------------------------    ------------------------------------------------->
+<!------------------------------------  JavDB 列表页面优化  ------------------------------------------------->
 <script setup lang="ts">
-
 import AdultInventory from '@/components/Adult/adult-inventory.vue'
 
-// const addedToInventoryBtnList = ref<FolderConfigType.File[]>([])
-
+/**
+ * 文件夹存储
+ */
 const folderStore = useFolderStore()
 
-const testShow = ref<boolean>(false)
+/**
+ * 是否显示组件
+ */
+const isComponentVisible = ref<boolean>(false)
 
-const allList = ref<any[]>([])
+/**
+ * 已匹配的视频列表
+ */
+const matchedVideoList = ref<MatchedVideoItem[]>([])
 
-function main() {
-  $$('.movie-list .item').forEach((item) => {
-    const name = item.querySelector('strong')?.textContent
+/**
+ * 匹配的视频项接口
+ */
+type MatchedVideoItem = {
 
-    const cleanName = cleanVideoName(name)
+  /** 清理后的文件名（用于标识） */
+  cleanFileName: string
 
-    if (!cleanName) {
+  /** 匹配到的本地视频文件列表 */
+  matchedFileList: FolderConfigType.File[]
+
+  /** 是否显示更新中文字幕按钮 */
+  isShowUpdateChinese: boolean
+
+  /** 是否显示 Emby 按钮 */
+  isShowEmby: boolean
+}
+
+/**
+ * 处理页面主要逻辑
+ * 遍历电影列表，匹配本地视频文件
+ */
+function processVideoList() {
+  const movieItems = $$('.movie-list .item')
+
+  movieItems.forEach((movieItem) => {
+    const videoName = movieItem.querySelector('strong')?.textContent
+
+    const cleanedVideoName = cleanVideoName(videoName)
+
+    if (!cleanedVideoName) {
       return
     }
 
-    /**
-     *  目标元素
-     */
-    const boxElement = asHTMLElement(item.querySelector('.box'))
+    const boxElement = asHTMLElement(movieItem.querySelector('.box'))
 
-    /**
-     *  匹配已入库视频
-     */
-    const matchedList = folderStore.matchVideos(cleanName)
+    const matchedFiles = folderStore.matchVideos(cleanedVideoName)
 
-    if (matchedList.length) {
-      boxElement?.classList.add(cleanName)
-      boxElement?.classList.add('is-highlight')
-
-      const only = ref({
-        fileName: cleanName,
-        fileList: matchedList,
-        isShowUpdateChinese: false,
-        isShowEmby: true,
-      })
-
-      const hasChineseTag = !!item.querySelector('.is-warning')
-
-      matchedList.forEach((video) => {
-        // 需要更新中文
-        if (!video.hasChineseSubtitles && hasChineseTag) {
-          only.value.isShowUpdateChinese = true
-        }
-      })
-      allList.value.push(only.value)
+    if (matchedFiles.length === 0) {
+      return
     }
+
+    // 添加样式类
+    boxElement?.classList.add(cleanedVideoName)
+    boxElement?.classList.add('is-highlight')
+
+    // 创建匹配项
+    const matchedItem: MatchedVideoItem = {
+      cleanFileName: cleanedVideoName,
+      matchedFileList: matchedFiles,
+      isShowUpdateChinese: false,
+      isShowEmby: true,
+    }
+
+    // 检查是否需要更新中文字幕
+    const hasChineseTag = !!movieItem.querySelector('.is-warning')
+
+    const needsChineseUpdate = matchedFiles.some(
+      file => !file.hasChineseSubtitles && hasChineseTag,
+    )
+
+    matchedItem.isShowUpdateChinese = needsChineseUpdate
+
+    matchedVideoList.value.push(matchedItem)
   })
 
-  testShow.value = true
-  console.log('🚀 ~ file: javdbListPage.vue:90 ~ testShow.value:', testShow.value)
+  isComponentVisible.value = true
 
-  console.log('🚀 ~ file: javdbListPage.vue:96 ~ allList.value:', allList.value)
+  console.log('🚀 ~ 组件可见性:', isComponentVisible.value)
+  console.log('🚀 ~ 匹配视频列表:', matchedVideoList.value)
 }
 
-onMounted(() => delayRun(main))
+onMounted(() => delayRun(processVideoList))
 </script>
 
 <template>
-
   <template
-    v-for="value in allList"
-    :key="value.fileName"
+    v-for="videoItem in matchedVideoList"
+    :key="videoItem.cleanFileName"
   >
     <Teleport
-      :to="`.${value.fileName}`"
+      :to="`.${videoItem.cleanFileName}`"
     >
+      <!-- 关键：套一层真实 div，把 stop 写在这里 -->
       <div
-        class="grid grid-cols-2 grid-rows-2 w-full gap-2 text-white font-bold"
+        class="teleport-wrapper"
+        @click.native.prevent
+        @click.stop
       >
-        <AdultInventory
-          v-for="(item,) in value.fileList"
-          :key="item.id"
-        />
+        <div
+          class="grid grid-cols-2 grid-rows-2 w-full gap-2 text-white font-bold"
+        >
+          <AdultInventory
+            v-for="file in videoItem.matchedFileList"
+            :key="file.id"
+          />
 
-        <AdultChinese
-          v-if="value.isShowUpdateChinese"
-        />
+          <AdultChinese
+            v-if="videoItem.isShowUpdateChinese"
+            @click.stop
+          />
 
-        <AdultEmby />
-
+          <AdultEmby />
+        </div>
       </div>
     </Teleport>
   </template>
-
 </template>
 
 <style lang="scss" scoped></style>
