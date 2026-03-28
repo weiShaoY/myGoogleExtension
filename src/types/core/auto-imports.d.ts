@@ -356,7 +356,6 @@ declare module 'vue' {
     readonly $$: UnwrapRef<typeof import('../../utils/helper')['$$']>
     readonly $: UnwrapRef<typeof import('../../utils/helper')['$']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
-    readonly WHITESPACE_REGEX: UnwrapRef<typeof import('../../utils/folder')['WHITESPACE_REGEX']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly addClassAndPush: UnwrapRef<typeof import('../../utils/helper')['addClassAndPush']>
     readonly asHTMLElement: UnwrapRef<typeof import('../../utils/helper')['asHTMLElement']>

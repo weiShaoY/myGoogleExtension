@@ -19,7 +19,6 @@
     "Slot": true,
     "Slots": true,
     "VNode": true,
-    "WHITESPACE_REGEX": true,
     "WritableComputedRef": true,
     "acceptHMRUpdate": true,
     "addClassAndPush": true,
