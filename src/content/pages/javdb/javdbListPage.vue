@@ -42,39 +42,12 @@ function main() {
         isShowEmby: true,
       })
 
-      // //
-
-      // @////////////
-
-      // 添加 Emby 打开按钮
-      // addClassAndPush(
-      //   boxElement,
-      //   `emby_btn_${cleanName}`,
-      //   embyBtnList.value,
-      //   cleanName,
-      // )
-
       const hasChineseTag = !!item.querySelector('.is-warning')
 
       matchedList.forEach((video) => {
-        // 已入库按钮
-        // addClassAndPush(
-        //   boxElement,
-        //   `added_to_emby_btn_${video.id}`,
-        //   addedToInventoryBtnList.value,
-        //   video,
-        // )
-
         // 需要更新中文
         if (!video.hasChineseSubtitles && hasChineseTag) {
           only.value.isShowUpdateChinese = true
-
-          // addClassAndPush(
-          //   boxElement,
-          //   `update_chinese_btn_${cleanName}`,
-          //   updateChineseBtnList.value,
-          //   cleanName,
-          // )
         }
       })
       allList.value.push(only.value)
@@ -92,46 +65,24 @@ onMounted(() => delayRun(main))
 
 <template>
 
-  <!-- <template
-    v-if="testShow"
-  >
-    <template
-      v-for="value in allList"
-      :key="value.name"
-    >
-      <Teleport
-        :to="`.${value.name}`"
-      >
-        <div
-          class="grid grid-cols-2 grid-rows-2 w-full gap-2 text-white font-bold"
-        >
-          <AdultInventory />
-
-          <AdultChinese />
-
-          <AdultEmby />
-
-        </div>
-      </Teleport>
-    </template>
-  </template> -->
-
   <template
     v-for="value in allList"
-    :key="value.name"
+    :key="value.fileName"
   >
     <Teleport
-      :to="`.${value.name}`"
+      :to="`.${value.fileName}`"
     >
       <div
         class="grid grid-cols-2 grid-rows-2 w-full gap-2 text-white font-bold"
       >
         <AdultInventory
-          v-for="(item,) in value.list"
+          v-for="(item,) in value.fileList"
           :key="item.id"
         />
 
-        <AdultChinese />
+        <AdultChinese
+          v-if="value.isShowUpdateChinese"
+        />
 
         <AdultEmby />
 
