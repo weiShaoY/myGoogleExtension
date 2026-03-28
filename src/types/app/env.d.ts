@@ -1,3 +1,8 @@
+/**
+ * Vite 环境变量类型定义
+ * @description 定义 import.meta.env 的类型
+ */
+
 // eslint-disable-next-line ts/consistent-type-definitions
 interface ImportMeta {
   readonly env: Env.ImportMeta

@@ -1,6 +1,8 @@
 /**
- *  搜索组件配置类型
+ * 搜索组件配置类型
+ * @description 搜索功能相关的类型定义
  */
+
 namespace SearchConfigType {
 
   /**

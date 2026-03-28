@@ -1,3 +1,8 @@
+/**
+ * 全局指令类型定义
+ * @description 自定义 Vue 指令的类型声明
+ */
+
 /* 全局指令类型命名空间 */
 namespace DirectiveType {
 
@@ -65,6 +70,7 @@ namespace DirectiveType {
    * @description 必须使用 v- 前缀
    */
   type DirectivesMapType = {
+    vAnimatedText: BaseDirectiveType
     vCopy: import('vue').Directive<HTMLElement, CopyParamsType>
     vDebounce: import('vue').Directive<HTMLElement, DebounceParamsType>
     vThrottle: import('vue').Directive<HTMLElement, ThrottleParamsType>

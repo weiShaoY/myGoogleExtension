@@ -1,3 +1,7 @@
+/**
+ * Emby 服务器配置类型
+ * @description 用于 Emby 媒体服务器的连接和请求配置
+ */
 namespace EmbyConfigType {
   export type RequestQueryParams = {
 

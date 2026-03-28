@@ -1,3 +1,8 @@
+/**
+ * 全局 Window 对象类型扩展
+ * @description 为 Window 对象添加全局插件和工具的类型定义
+ */
+
 export {}
 
 declare global {
