@@ -1,137 +1,63 @@
 import { defineStore } from 'pinia'
 
-import { EmbyConfig } from '@/configs'
+import {
+  getEmbyHomeUrl,
+  getEmbyItemUrl,
+  searchEmby,
+} from '@/apis/modules/emby'
 
 export const useEmbyStore = defineStore(
   'emby',
   () => {
     /**
-     * 构建 Emby 请求 URL
-     * @param  videoName - 视频名称
-     * @returns   完整的请求 URL
-     */
-    function buildRequestUrl(videoName: string) {
-      const queryParams = {
-        'SearchTerm': videoName,
-        'Recursive': true,
-        'Fields': 'PrimaryImageAspectRatio,PremiereDate,ProductionYear',
-        'EnableUserData': false,
-        'GroupProgramsBySeries': true,
-        'Limit': 30,
-
-        // 添加 Emby 特定的查询参数
-        'X-Emby-Client': 'Emby Web',
-        'X-Emby-Device-Name': EmbyConfig.request.deviceName,
-        'X-Emby-Device-Id': EmbyConfig.request.deviceId,
-        'X-Emby-Client-Version': EmbyConfig.request.clientVersion,
-        'X-Emby-Token': EmbyConfig.request.token,
-        'X-Emby-Language': EmbyConfig.request.language,
-      }
-
-      const queryString = Object.entries(queryParams)
-        .map(
-          ([key, value]) =>
-            `${encodeURIComponent(key)}=${encodeURIComponent(value as string)}`,
-        )
-        .join('&')
-
-      return `${EmbyConfig.request.url}:${EmbyConfig.request.port}/emby/Users/${EmbyConfig.request.userId}/Items?${queryString}`
-    }
-
-    /**
-     *  搜索 Emby 服务器上的视频。
+     *  搜索 Emby 服务器上的视频
      *  @param  videoName - 视频名称
      */
-    function embySearch(videoName: string) {
-      console.log('🚀 ~ file: index.ts:46 ~ videoName:', videoName)
+    async function embySearch(videoName: string) {
+      console.log('🚀 ~ file: index.ts:10 ~ videoName:', videoName)
 
-      /**
-       *  设置超时时间为 2 秒
-       */
-      const timeoutDuration = 10000
+      try {
+        const result = await searchEmby(videoName)
 
-      console.log('🚀 ~ file: index.ts:50 ~ timeoutDuration:', timeoutDuration)
+        //  如果结果为空，则提示没有找到
+        if (result.Items.length === 0) {
+          window.$messageBox.confirm(`是否打开 Emby 首页?`, 'Emby中没有找到该视频!', {
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+            type: 'warning',
+          })
+            .then(() => {
+              openLink(getEmbyHomeUrl())
+            })
+            .catch(() => {
+              window.$notification.error('Emby中没有找到该视频!')
+            })
+        }
 
-      // const timeoutId = setTimeout(() => {
-      //   window.$notification.error({
-      //     title: '请求超时, 请检查 Emby 服务器',
-      //     duration: 5000,
-      //   })
-      // }, timeoutDuration)
+        //  如果只有一个结果，则直接打开
+        else if (result.Items.length === 1) {
+          const item = result.Items[0]
 
-      // GM_xmlhttpRequest({
-      //   method: 'GET',
-      //   url: buildRequestUrl(videoName),
-      //   headers: {
-      //     'Accept': 'application/json',
-      //     'Accept-Language': 'zh,zh-CN;q=0.9,ja;q=0.8',
-      //     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36',
-      //   },
-      //   onload: (response: any) => {
-      //     // 请求成功，清除超时计时器
-      //     clearTimeout(timeoutId)
+          const url = getEmbyItemUrl(item)
 
-      //     if (response.status >= 200 && response.status < 300) {
-      //       GM_setValue('EMBY-BTN-VALUE', '')
-
-      //       try {
-      //       // 将 JSON 字符串转换为 JSON 对象
-      //         const result = JSON.parse(response.responseText)
-
-      //         //  如果结果为空，则提示没有找到
-      //         if (result.Items.length === 0) {
-      //           window.$messageBox.confirm(`是否打开 Emby 首页?`, 'Emby中没有找到该视频!', {
-      //             confirmButtonText: '确认',
-      //             cancelButtonText: '取消',
-      //             type: 'warning',
-      //           })
-      //             .then(() => {
-      //               openLink(`${embyConfig.request.url}:${embyConfig.request.port}/web/index.html#!/home`)
-      //             })
-      //             .catch(() => {
-      //               window.$notification.error('Emby中没有找到该视频!')
-      //             })
-      //         }
-
-      //         //  如果只有一个结果，则直接打开
-      //         else if (result.Items.length === 1) {
-      //           const id = result.Items[0].Id
-
-      //           const serverId = result.Items[0].ServerId
-
-      //           const url = `${embyConfig.request.url}:${embyConfig.request.port}/web/index.html#!/item?id=${id}&serverId=${serverId}`
-
-      //           openLink(url)
-      //         }
-      //         else {
-      //           window.$notification.error('Emby中找到多个结果!')
-
-      //           GM_setValue('EMBY-SEARCH-VALUE', videoName)
-
-      //           openLink(`${embyConfig.request.url}:${embyConfig.request.port}/web/index.html#!/home`)
-      //         }
-      //       }
-      //       catch (e) {
-      //         console.error('请求失败:', e)
-      //         GM_setValue('EMBY-BTN-VALUE', '')
-      //       }
-      //     }
-      //     else {
-      //       console.error(`HTTP 错误: ${response.status}`)
-      //     }
-      //   },
-      //   onerror: () => {
-      //     window.$notification.error({
-      //       title: '请求失败, 请检查 Emby 服务器',
-      //       duration: 5000,
-      //     })
-      //   },
-      // })
+          openLink(url)
+        }
+        else {
+          window.$notification.error('Emby中找到多个结果!')
+          openLink(getEmbyHomeUrl())
+        }
+      }
+      catch (error) {
+        console.error('Emby 搜索失败:', error)
+        window.$notification.error({
+          title: '请求失败, 请检查 Emby 服务器',
+          duration: 5000,
+        })
+      }
     }
 
     return {
       embySearch,
     }
   },
-
 )

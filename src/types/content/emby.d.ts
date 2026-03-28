@@ -2,6 +2,31 @@
  * Emby 服务器配置类型
  * @description 用于 Emby 媒体服务器的连接和请求配置
  */
+
+/**
+ * Emby 搜索结果项接口
+ */
+export type EmbyItem = {
+  Id: string
+  ServerId: string
+  Name: string
+  PremiereDate?: string
+  ProductionYear?: number
+  PrimaryImageAspectRatio?: number
+
+  // 其他可能的字段
+  [key: string]: any
+}
+
+/**
+ * Emby 搜索响应接口
+ */
+export type EmbySearchResponse = {
+  Items: EmbyItem[]
+  TotalRecordCount: number
+  StartIndex: number
+}
+
 namespace EmbyConfigType {
   export type RequestQueryParams = {
 
