@@ -167,6 +167,9 @@ async function mainBtnHandler() {
           file.name.includes('-c')
           || file.name.includes('-C')
           || file.name.includes('_ch'),
+
+        id: getRandomNumber(),
+
       }
 
       // 将该视频信息对象添加到 Set 中

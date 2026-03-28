@@ -65,6 +65,7 @@
     "getDuration": true,
     "getElapsedTime": true,
     "getFileTagIconArray": true,
+    "getRandomNumber": true,
     "h": true,
     "ignorableWatch": true,
     "inject": true,

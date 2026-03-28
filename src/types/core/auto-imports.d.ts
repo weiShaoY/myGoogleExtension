@@ -59,6 +59,7 @@ declare global {
   const getDuration: typeof import('../../utils/time').getDuration
   const getElapsedTime: typeof import('../../utils/time').getElapsedTime
   const getFileTagIconArray: typeof import('../../utils/getTagIconArray').getFileTagIconArray
+  const getRandomNumber: typeof import('../../utils/number').getRandomNumber
   const h: typeof import('vue').h
   const ignorableWatch: typeof import('@vueuse/core').ignorableWatch
   const inject: typeof import('vue').inject
@@ -401,6 +402,7 @@ declare module 'vue' {
     readonly getDuration: UnwrapRef<typeof import('../../utils/time')['getDuration']>
     readonly getElapsedTime: UnwrapRef<typeof import('../../utils/time')['getElapsedTime']>
     readonly getFileTagIconArray: UnwrapRef<typeof import('../../utils/getTagIconArray')['getFileTagIconArray']>
+    readonly getRandomNumber: UnwrapRef<typeof import('../../utils/number')['getRandomNumber']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>

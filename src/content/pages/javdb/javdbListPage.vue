@@ -1,5 +1,8 @@
 <!------------------------------------    ------------------------------------------------->
 <script setup lang="ts">
+
+import AdultInventory from '@/components/Adult/adult-inventory.vue'
+
 const embyBtnList = ref<string[]>([])
 
 const updateChineseBtnList = ref<string[]>([])
@@ -7,6 +10,8 @@ const updateChineseBtnList = ref<string[]>([])
 const addedToInventoryBtnList = ref<FolderConfigType.File[]>([])
 
 const folderStore = useFolderStore()
+
+const testShow = ref<boolean>(false)
 
 function main() {
   $$('.movie-list .item').forEach((item) => {
@@ -29,7 +34,9 @@ function main() {
     const matchedList = folderStore.matchVideos(cleanName)
 
     if (matchedList.length) {
-      boxElement?.classList.add('.test')
+      boxElement?.classList.add('testTest')
+
+      testShow.value = true
 
       // @////////////
 
@@ -46,13 +53,17 @@ function main() {
       const hasChineseTag = !!item.querySelector('.is-warning')
 
       matchedList.forEach((video) => {
+        console.log('🚀 ~ file: javdbListPage.vue:56 ~ video:', video)
+
         // 已入库按钮
         addClassAndPush(
           boxElement,
-          `added_to_emby_btn_${video.nameWithTags}`,
+          `added_to_emby_btn_${video.id}`,
           addedToInventoryBtnList.value,
           video,
         )
+
+        console.log('🚀 ~ file: javdbListPage.vue:66 ~ addedToInventoryBtnList.value.length:', addedToInventoryBtnList.value.length)
 
         // 需要更新中文
         if (!video.hasChineseSubtitles && hasChineseTag) {
@@ -104,10 +115,10 @@ onMounted(() => delayRun(main))
   <!-- 已入库的视频 -->
   <template
     v-for="item in addedToInventoryBtnList"
-    :key="item.originalName"
+    :key="item.id"
   >
     <Teleport
-      :to="`.added_to_emby_btn_${item.nameWithTags}`"
+      :to="`.added_to_emby_btn_${item.id}`"
     >
       <EmbyCatalogedList
         :video="item"
@@ -115,21 +126,25 @@ onMounted(() => delayRun(main))
     </Teleport>
   </template>
 
-  <Teleport
-    to=".test"
+  <template
+    v-if="testShow"
   >
-
-    <div
-      class=""
+    <Teleport
+      to=".testTest"
     >
-      2
-      2
-      2
-      2
-      2
+      <div
+        class="grid grid-cols-2 grid-rows-2 w-full gap-2 text-white font-bold"
+      >
+        <AdultInventory />
 
-    </div>
-  </Teleport>
+        <AdultChinese />
+
+        <AdultEmby />
+
+      </div>
+    </Teleport>
+  </template>
+
 </template>
 
 <style lang="scss" scoped></style>

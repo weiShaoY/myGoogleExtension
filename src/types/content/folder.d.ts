@@ -144,6 +144,11 @@ namespace FolderConfigType {
      */
     resolution: string
 
+    /**
+     * 唯一值
+     */
+    id: string
+
   }
 
   /**
