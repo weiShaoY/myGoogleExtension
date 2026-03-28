@@ -359,7 +359,6 @@ declare module 'vue' {
     readonly WHITESPACE_REGEX: UnwrapRef<typeof import('../../utils/folder')['WHITESPACE_REGEX']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly addClassAndPush: UnwrapRef<typeof import('../../utils/helper')['addClassAndPush']>
-    readonly addClassAndUpdateList: UnwrapRef<typeof import('../../utils/classHelper')['addClassAndUpdateList']>
     readonly asHTMLElement: UnwrapRef<typeof import('../../utils/helper')['asHTMLElement']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>

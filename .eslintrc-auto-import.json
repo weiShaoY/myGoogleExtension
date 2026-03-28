@@ -23,7 +23,6 @@
     "WritableComputedRef": true,
     "acceptHMRUpdate": true,
     "addClassAndPush": true,
-    "addClassAndUpdateList": true,
     "asHTMLElement": true,
     "asyncComputed": true,
     "autoResetRef": true,
