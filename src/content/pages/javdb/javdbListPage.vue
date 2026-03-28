@@ -36,6 +36,17 @@ type MatchedVideoItem = {
 }
 
 /**
+ * 处理包装器的事件，阻止事件透传到原始页面
+ * @param event 事件对象
+ */
+function handleWrapperClick(event: Event) {
+  event.stopPropagation()
+  event.stopImmediatePropagation()
+  event.preventDefault()
+  return false
+}
+
+/**
  * 处理页面主要逻辑
  * 遍历电影列表，匹配本地视频文件
  */
@@ -100,11 +111,15 @@ onMounted(() => delayRun(processVideoList))
     <Teleport
       :to="`.${videoItem.cleanFileName}`"
     >
-      <!-- 关键：套一层真实 div，把 stop 写在这里 -->
+      <!-- 事件处理包装器 -->
       <div
         class="teleport-wrapper"
-        @click.native.prevent
-        @click.stop
+        style="pointer-events: auto;"
+        @click="handleWrapperClick"
+        @mousedown="handleWrapperClick"
+        @mouseup="handleWrapperClick"
+        @pointerdown="handleWrapperClick"
+        @pointerup="handleWrapperClick"
       >
         <div
           class="grid grid-cols-2 grid-rows-2 w-full gap-2 text-white font-bold"
@@ -116,7 +131,6 @@ onMounted(() => delayRun(processVideoList))
 
           <AdultChinese
             v-if="videoItem.isShowUpdateChinese"
-            @click.stop
           />
 
           <AdultEmby />
