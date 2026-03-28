@@ -71,7 +71,6 @@
     "injectLocal": true,
     "isClipboardSupported": true,
     "isDefined": true,
-    "isHostnameMatch": true,
     "isProxy": true,
     "isReactive": true,
     "isReadonly": true,

@@ -32,42 +32,42 @@ src/types/
 
 Content 脚本相关的类型定义，主要用于浏览器扩展的内容脚本模块。
 
-| 文件 | 说明 | 命名空间 |
-|------|------|----------|
-| `emby.d.ts` | Emby 服务器连接和请求配置类型 | `EmbyConfigType` |
-| `folder.d.ts` | 文件夹扫描和监控配置类型 | `FolderConfigType` |
-| `online-play.d.ts` | 在线播放站点配置类型 | `OnlinePlayConfigType` |
-| `torrent.d.ts` | 种子/磁链列表和排序规则类型 | - |
+| 文件               | 说明                          | 命名空间               |
+| ------------------ | ----------------------------- | ---------------------- |
+| `emby.d.ts`        | Emby 服务器连接和请求配置类型 | `EmbyConfigType`       |
+| `folder.d.ts`      | 文件夹扫描和监控配置类型      | `FolderConfigType`     |
+| `online-play.d.ts` | 在线播放站点配置类型          | `OnlinePlayConfigType` |
+| `torrent.d.ts`     | 种子/磁链列表和排序规则类型   | -                      |
 
 ### app/
 
 应用框架相关的类型定义，包括环境变量、全局扩展、模块声明等。
 
-| 文件 | 说明 |
-|------|------|
-| `env.d.ts` | Vite 环境变量类型定义 (`import.meta.env`) |
-| `global.d.ts` | 全局 Window 对象类型扩展 |
-| `styles.d.ts` | SCSS/CSS 文件模块声明 |
-| `vue.d.ts` | Vue 单文件组件类型声明和全局属性扩展 |
+| 文件          | 说明                                      |
+| ------------- | ----------------------------------------- |
+| `env.d.ts`    | Vite 环境变量类型定义 (`import.meta.env`) |
+| `global.d.ts` | 全局 Window 对象类型扩展                  |
+| `styles.d.ts` | SCSS/CSS 文件模块声明                     |
+| `vue.d.ts`    | Vue 单文件组件类型声明和全局属性扩展      |
 
 ### core/
 
 **注意**：此目录下的文件由构建工具自动生成，请勿手动修改。
 
-| 文件 | 生成工具 | 说明 |
-|------|----------|------|
-| `auto-imports.d.ts` | `unplugin-auto-import` | 自动导入的 API 类型 |
-| `components.d.ts` | `unplugin-vue-components` | 全局组件类型声明 |
-| `vue.d.ts` | 手动维护 | Vue 核心类型扩展 |
+| 文件                | 生成工具                  | 说明                |
+| ------------------- | ------------------------- | ------------------- |
+| `auto-imports.d.ts` | `unplugin-auto-import`    | 自动导入的 API 类型 |
+| `components.d.ts`   | `unplugin-vue-components` | 全局组件类型声明    |
+| `vue.d.ts`          | 手动维护                  | Vue 核心类型扩展    |
 
 ### shared/
 
 跨模块共享的通用类型定义。
 
-| 文件 | 说明 | 命名空间 |
-|------|------|----------|
-| `directives.d.ts` | 自定义 Vue 指令类型 | `DirectiveType` |
-| `search.d.ts` | 搜索组件配置类型 | `SearchConfigType` |
+| 文件              | 说明                | 命名空间           |
+| ----------------- | ------------------- | ------------------ |
+| `directives.d.ts` | 自定义 Vue 指令类型 | `DirectiveType`    |
+| `search.d.ts`     | 搜索组件配置类型    | `SearchConfigType` |
 
 ## 使用方式
 
@@ -86,7 +86,7 @@ Content 脚本相关的类型定义，主要用于浏览器扩展的内容脚本
 ### 单独引用某个类型
 
 ```typescript
-/// <reference path="../types/content/emby.d.ts" />
+// / <reference path="../types/content/emby.d.ts" />
 ```
 
 ## 命名规范
