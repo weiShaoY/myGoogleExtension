@@ -84,7 +84,7 @@ function getSearchKeyword(): string {
     if (item.siteGroups) {
       // 检查子菜单中的搜索引擎
       for (const subItem of item.siteGroups) {
-        if (subItem.hostname && isHostnameMatch(subItem.hostname)) {
+        if (subItem.hostname && isUrlMatch(subItem.hostname)) {
           keyword = getKeywordFromEngine(subItem)
           if (keyword) {
             matchedEngine = subItem
@@ -99,7 +99,7 @@ function getSearchKeyword(): string {
     }
     else {
       // 检查顶级搜索引擎
-      if (item.hostname && isHostnameMatch(item.hostname)) {
+      if (item.hostname && isUrlMatch(item.hostname)) {
         keyword = getKeywordFromEngine(item)
         if (keyword) {
           matchedEngine = item
@@ -128,7 +128,7 @@ async function handlePerformSearch(engine: SearchConfigType.SiteItem): Promise<v
     currentSearchEngine.value = engine
 
     // 检查是否在当前页面
-    if (engine.hostname && isHostnameMatch(engine.hostname)) {
+    if (engine.hostname && isUrlMatch(engine.hostname)) {
       console.log('当前页面匹配，不执行搜索')
       window.$notification.warning('点击的是当前页面搜索引擎,不执行搜索')
       return

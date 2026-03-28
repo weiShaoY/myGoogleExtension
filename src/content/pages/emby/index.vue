@@ -4,7 +4,7 @@
 import { onMounted } from 'vue'
 
 onMounted(() => {
-  const a = isHostnameMatch('emby') ? 'emby' : '不是 emby'
+  const a = isUrlMatch('emby') ? 'emby' : '不是 emby'
 
   window.$message({
     message: a,
