@@ -117,23 +117,25 @@ function getTorrentList() {
       isVideoHaveChineseTorrent.value = true
     }
 
-    torrentList.value.push({
+    const torrentListItem: TorrentType = {
       url,
       name,
       size,
       time,
       tags: tagArray,
-    })
+    }
+
+    torrentList.value.push(torrentListItem)
   })
 
   // 插入挂载点
-  const target = $(
+  const targetElement = $(
     '.grid.grid-cols-2.md\\:grid-cols-3.xl\\:grid-cols-4.gap-5',
   )
 
-  if (target) {
-    target.insertAdjacentHTML('afterend', '<div id="TorrentList"></div>')
-    target.insertAdjacentHTML('afterend', '<div id="OnlinePlay"></div>')
+  if (targetElement) {
+    targetElement.insertAdjacentHTML('afterend', '<div id="TorrentList"></div>')
+    targetElement.insertAdjacentHTML('afterend', '<div id="OnlinePlay"></div>')
     isShowTorrentList.value = true
     isShowOnlinePlay.value = true
   }
@@ -167,11 +169,11 @@ function main() {
   }
 
   // 高亮
-  const highlightEl = $(
+  const highlightElement = $(
     '.relative.-mx-4.sm\\:m-0.-mt-6',
   )
 
-  const parent = asHTMLElement(highlightEl?.parentNode as HTMLElement)
+  const parent = asHTMLElement(highlightElement?.parentNode as HTMLElement)
 
   parent?.classList.add('is-highlight')
 
@@ -181,7 +183,10 @@ function main() {
   // 判断中文
   const embyHasChinese = matchedVideoList.some(i => i.hasChineseSubtitles)
 
-  if (isVideoHaveChineseTorrent.value && !embyHasChinese) {
+  // 页面上有中文磁链但你Emby库里没有中文
+  if (
+    isVideoHaveChineseTorrent.value && !embyHasChinese
+  ) {
     isShowPendingUpdateChineseButton.value = true
   }
 }

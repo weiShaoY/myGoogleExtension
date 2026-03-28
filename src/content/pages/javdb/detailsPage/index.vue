@@ -97,7 +97,10 @@ function getTorrentList() {
     const tagArray = getFileTagIconArray(name)
 
     if (
-      name.toLowerCase().includes('-c')
+      (
+        name.toLowerCase().includes('-c')
+        || name.toLowerCase().includes('中文')
+      )
       && !isVideoHaveChineseTorrent.value
     ) {
       isVideoHaveChineseTorrent.value = true

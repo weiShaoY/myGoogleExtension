@@ -1,8 +1,6 @@
 <!------------------------------------    ------------------------------------------------->
 <script setup lang="ts">
 
-import { onMounted, ref } from 'vue'
-
 const embyBtnList = ref<string[]>([])
 
 const updateChineseBtnList = ref<string[]>([])
@@ -21,20 +19,25 @@ function main() {
       return
     }
 
-    const box = asHTMLElement(item.querySelector('.box'))
+    const boxElement = asHTMLElement(item.querySelector('.box'))
 
     const matchedList = folderStore.matchVideos(cleanName)
 
     if (matchedList.length) {
-      box?.classList.add('is-highlight')
+      boxElement?.classList.add('is-highlight')
 
-      addClassAndPush(box, `emby_btn_${cleanName}`, embyBtnList.value, cleanName)
+      addClassAndPush(
+        boxElement,
+        `emby_btn_${cleanName}`,
+        embyBtnList.value,
+        cleanName,
+      )
 
       const hasChineseTag = !!item.querySelector('.is-warning')
 
       matchedList.forEach((video) => {
         addClassAndPush(
-          box,
+          boxElement,
           `added_to_emby_btn_${video.nameWithTags}`,
           addedToInventoryBtnList.value,
           video,
@@ -42,7 +45,7 @@ function main() {
 
         if (!video.hasChineseSubtitles && hasChineseTag) {
           addClassAndPush(
-            box,
+            boxElement,
             `update_chinese_btn_${cleanName}`,
             updateChineseBtnList.value,
             cleanName,

@@ -86,7 +86,10 @@ function getTorrentList() {
     const tagArray = getFileTagIconArray(name)
 
     if (
-      name.toLowerCase().includes('-c')
+      (
+        name.toLowerCase().includes('-c')
+        || name.toLowerCase().includes('中文')
+      )
       && !isVideoHaveChineseTorrent.value
     ) {
       isVideoHaveChineseTorrent.value = true
@@ -144,8 +147,7 @@ function main() {
 
   // 页面上有中文磁链但你Emby库里没有中文
   if (
-    isVideoHaveChineseTorrent.value
-    && !embyHasChinese
+    isVideoHaveChineseTorrent.value && !embyHasChinese
   ) {
     isShowPendingUpdateChineseButton.value = true
   }

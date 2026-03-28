@@ -1,23 +1,12 @@
 <script lang="ts" setup>
 
-const folderStore = useFolderStore()
-
-/**
- * 已入库的视频
- */
-const addedToInventoryBtnList = ref<FolderConfigType.File[]>([])
-
-console.log('🚀 ~ file: index.vue:10 ~ addedToInventoryBtnList:', addedToInventoryBtnList)
-
-/**
- * 在Emby打开按钮
- */
 const embyBtnList = ref<string[]>([])
 
-/**
- * 更新中文磁链按钮
- */
 const updateChineseBtnList = ref<string[]>([])
+
+const addedToInventoryBtnList = ref<FolderConfigType.File[]>([])
+
+const folderStore = useFolderStore()
 
 function main() {
   const fileList = folderStore.embyFolder.folderFileList ?? []
@@ -68,7 +57,11 @@ function main() {
       )
 
       // 判断页面是否有中文标记
-      const isItemHaveChineseTorrent = !!item.querySelector('.is-warning')
+      const hasChineseTag = Boolean(
+        item.querySelector('span')?.textContent?.includes('中文字幕'),
+      )
+
+      console.log('🚀 ~ file: index.vue:61 ~ item:', item)
 
       matchedVideoList.forEach((video) => {
         // 已入库按钮
@@ -80,7 +73,7 @@ function main() {
         )
 
         // 需要更新中文
-        if (!video.hasChineseSubtitles && isItemHaveChineseTorrent) {
+        if (!video.hasChineseSubtitles && hasChineseTag) {
           addClassAndPush(
             boxElement,
             `update_chinese_btn_${itemVideoName}`,
@@ -142,4 +135,4 @@ onMounted(() => delayRun(main))
   </template>
 </template>
 
-<style lang="less" sc></style>
+<style lang="scss" scoped></style>
