@@ -7,11 +7,11 @@ export const EmbyConfig: {
   request: {
     url: 'http://192.168.0.3',
     port: '8096',
-    userId: '2409e0a7f21047ba9c74b41be14c6729',
+    userId: '705ae9fe2a814cb9bfb4133f2def52e6',
     deviceName: 'Chrome macOS',
-    deviceId: 'a6f53c21-ff50-4ccd-a6ba-94f5f4830e87',
-    clientVersion: '4.8.11.0',
-    token: '8713e19e82f64fd3a50207b0321f3538',
+    deviceId: 'e8b45a84-0a7e-4481-906a-3b0555555e0a',
+    clientVersion: '4.9.3.0',
+    token: '1d454f71e9e14cb0acebf66834d77044',
     language: 'zh-cn',
     queryParams: {
       SearchTerm: '',

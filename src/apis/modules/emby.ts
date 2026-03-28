@@ -10,7 +10,7 @@ import { get } from '../index'
 /**
  * Emby 搜索结果项接口
  */
-export type EmbyItem = {
+type EmbyItem = {
   Id: string
   ServerId: string
   Name: string
@@ -25,7 +25,7 @@ export type EmbyItem = {
 /**
  * Emby 搜索响应接口
  */
-export type EmbySearchResponse = {
+type EmbySearchResponse = {
   Items: EmbyItem[]
   TotalRecordCount: number
   StartIndex: number

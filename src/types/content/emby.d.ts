@@ -6,7 +6,7 @@
 /**
  * Emby 搜索结果项接口
  */
-export type EmbyItem = {
+type EmbyItem = {
   Id: string
   ServerId: string
   Name: string
@@ -21,13 +21,17 @@ export type EmbyItem = {
 /**
  * Emby 搜索响应接口
  */
-export type EmbySearchResponse = {
+type EmbySearchResponse = {
   Items: EmbyItem[]
   TotalRecordCount: number
   StartIndex: number
 }
 
+/**
+ *  Emby 配置
+ */
 namespace EmbyConfigType {
+
   export type RequestQueryParams = {
 
     /**
