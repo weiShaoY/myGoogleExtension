@@ -23,7 +23,6 @@ onMounted(() => {
   //   type: 'success',
   // })
 
-  console.log('🚀 ~ file: App.vue:25 ~ a:', '我的游览器插件')
 })
 </script>
 
