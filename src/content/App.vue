@@ -4,6 +4,8 @@
 
 import Pages from './pages/index.vue'
 
+import Search from './search1/index.vue'
+
 const testStore = useTestStore()
 
 function testValueClick() {

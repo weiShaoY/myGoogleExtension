@@ -197,7 +197,6 @@ onMounted(() => {
 
     <el-menu
       default-active="1"
-      class="el-menu-vertical-demo"
     >
       <!-- 搜索引擎菜单项 -->
       <template
