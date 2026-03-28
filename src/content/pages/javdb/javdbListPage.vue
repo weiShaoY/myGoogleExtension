@@ -1,6 +1,5 @@
 <!------------------------------------    ------------------------------------------------->
 <script setup lang="ts">
-
 const embyBtnList = ref<string[]>([])
 
 const updateChineseBtnList = ref<string[]>([])
@@ -19,13 +18,24 @@ function main() {
       return
     }
 
+    /**
+     *  目标元素
+     */
     const boxElement = asHTMLElement(item.querySelector('.box'))
 
+    /**
+     *  匹配已入库视频
+     */
     const matchedList = folderStore.matchVideos(cleanName)
 
     if (matchedList.length) {
+      boxElement?.classList.add('.test')
+
+      // @////////////
+
       boxElement?.classList.add('is-highlight')
 
+      // 添加 Emby 打开按钮
       addClassAndPush(
         boxElement,
         `emby_btn_${cleanName}`,
@@ -36,6 +46,7 @@ function main() {
       const hasChineseTag = !!item.querySelector('.is-warning')
 
       matchedList.forEach((video) => {
+        // 已入库按钮
         addClassAndPush(
           boxElement,
           `added_to_emby_btn_${video.nameWithTags}`,
@@ -43,6 +54,7 @@ function main() {
           video,
         )
 
+        // 需要更新中文
         if (!video.hasChineseSubtitles && hasChineseTag) {
           addClassAndPush(
             boxElement,
@@ -60,13 +72,11 @@ onMounted(() => delayRun(main))
 </script>
 
 <template>
-
   <!-- 在Emby打开按钮 -->
   <template
     v-for="videoName in embyBtnList"
     :key="videoName"
   >
-
     <Teleport
       :to="`.emby_btn_${videoName}`"
     >
@@ -104,6 +114,22 @@ onMounted(() => delayRun(main))
       />
     </Teleport>
   </template>
+
+  <Teleport
+    to=".test"
+  >
+
+    <div
+      class=""
+    >
+      2
+      2
+      2
+      2
+      2
+
+    </div>
+  </Teleport>
 </template>
 
 <style lang="scss" scoped></style>

@@ -182,6 +182,13 @@ async function mainBtnHandler() {
       folderStore.embyFolder.folderFileList,
     )
 
+    window.$notification.success({
+      // title: `扫描完成，共扫描到 ${videoFileSet.size} 个文件`,
+      title: `${directoryHandle.name} 扫描完成`,
+      message: `共扫描到 ${videoFileSet.size} 个文件`,
+      duration: 300000,
+    })
+
     isLoading.value = false
   }
   catch (error) {
