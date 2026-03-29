@@ -1,35 +1,32 @@
 <!------  2026-03-29---02:21---星期天  ------>
 <!------------------------------------    ------------------------------------------------->
 <script lang="ts" setup>
-import {
-  getEmbyHomeUrl,
-  getEmbyItemUrl,
-  searchEmby,
-} from '@/apis/modules/emby'
+import { AdultApi } from '@/apis'
 
 const cleanName = defineModel<string>('cleanName', {
   default: '',
 })
 
 /**
-     *  搜索 Emby 服务器上的视频
-     *  @param  videoName - 视频名称
-     */
+ *  搜索 Emby 服务器上的视频
+ *  @param  videoName - 视频名称
+ */
 async function embySearch(videoName: string) {
   console.log('🚀 ~ file: index.ts:10 ~ videoName:', videoName)
 
   try {
-    const result = await searchEmby(videoName)
+    const result = await AdultApi.searchEmby(videoName)
 
     //  如果结果为空，则提示没有找到
     if (result.Items.length === 0) {
-      window.$messageBox.confirm(`是否打开 Emby 首页?`, 'Emby中没有找到该视频!', {
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      window.$messageBox
+        .confirm(`是否打开 Emby 首页?`, 'Emby中没有找到该视频!', {
+          confirmButtonText: '确认',
+          cancelButtonText: '取消',
+          type: 'warning',
+        })
         .then(() => {
-          openLink(getEmbyHomeUrl())
+          openLink(AdultApi.getEmbyHomeUrl())
         })
         .catch(() => {
           window.$notification.error('Emby中没有找到该视频!')
@@ -75,10 +72,7 @@ function embyBtnHandler() {
       icon="adult-emby"
       :size="70"
     />
-
   </div>
 </template>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

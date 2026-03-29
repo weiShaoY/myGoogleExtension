@@ -5,7 +5,7 @@
 
 import { EmbyConfig } from '@/configs'
 
-import { get } from '../index'
+import { get } from '../http/fetch'
 
 /**
  * Emby 搜索结果项接口
