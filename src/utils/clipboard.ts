@@ -37,23 +37,33 @@ export async function getClipboardText(): Promise<string> {
 /**
  * 复制文本到剪贴板（带提示）
  * @param text 要复制的文本
- * @param showToast 是否显示成功/失败提示，默认 true
+ * @param options 提示选项
  * @returns 是否复制成功
  */
-export async function copyToClipboard(text: string, showToast = true): Promise<boolean> {
+export async function copyToClipboard(
+  text: string,
+  {
+    showToast = true,
+    title = '已复制到剪贴板',
+    message = '',
+  }: {
+    showToast?: boolean
+    title?: string
+    message?: string
+  } = {
+  }, // 👈 关键：整个对象默认 = 空对象，变成可选
+): Promise<boolean> {
   try {
-    // 1. 校验环境和文本
     if (!isClipboardSupported() || !text?.trim()) {
       return false
     }
 
-    // 2. 执行复制
     await navigator.clipboard.writeText(text)
 
-    // 3. 成功提示
     if (showToast && window.$notification) {
       window.$notification.success({
-        message: '已复制到剪贴板',
+        title,
+        message,
         type: 'success',
       })
     }
@@ -63,7 +73,6 @@ export async function copyToClipboard(text: string, showToast = true): Promise<b
   catch (error) {
     console.warn('复制到剪贴板失败:', error)
 
-    // 4. 失败提示
     if (showToast && window.$notification) {
       window.$notification.error({
         message: '复制失败',

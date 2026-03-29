@@ -8,25 +8,20 @@ import AdultInventory from '@/components/Adult/adult-inventory.vue'
 const folderStore = useFolderStore()
 
 /**
- * 是否显示组件
+ * 页面上匹配到的视频结果列表
  */
-const isComponentVisible = ref<boolean>(false)
+const pageMatchResultList = ref<VideoMatchItem[]>([])
 
 /**
- * 已匹配的视频列表
+ * 单个视频匹配结果项接口
  */
-const matchedVideoList = ref<MatchedVideoItem[]>([])
-
-/**
- * 匹配的视频项接口
- */
-type MatchedVideoItem = {
+type VideoMatchItem = {
 
   /** 清理后的文件名（用于标识） */
-  cleanFileName: string
+  cleanName: string
 
-  /** 匹配到的本地视频文件列表 */
-  matchedFileList: FolderConfigType.File[]
+  /** 本地匹配到的视频文件数组 */
+  localMatchedFileList: FolderConfigType.File[]
 
   /** 是否显示更新中文字幕按钮 */
   isShowUpdateChinese: boolean
@@ -56,28 +51,28 @@ function processVideoList() {
   movieItems.forEach((movieItem) => {
     const videoName = movieItem.querySelector('strong')?.textContent
 
-    const cleanedVideoName = cleanVideoName(videoName)
+    const cleanName = cleanVideoName(videoName)
 
-    if (!cleanedVideoName) {
+    if (!cleanName) {
       return
     }
 
     const boxElement = asHTMLElement(movieItem.querySelector('.box'))
 
-    const matchedFiles = folderStore.matchVideos(cleanedVideoName)
+    const localMatchedFileList = folderStore.matchVideos(cleanName)
 
-    if (matchedFiles.length === 0) {
+    if (localMatchedFileList.length === 0) {
       return
     }
 
     // 添加样式类
-    boxElement?.classList.add(cleanedVideoName)
+    boxElement?.classList.add(cleanName)
     boxElement?.classList.add('is-highlight')
 
-    // 创建匹配项
-    const matchedItem: MatchedVideoItem = {
-      cleanFileName: cleanedVideoName,
-      matchedFileList: matchedFiles,
+    // 创建匹配结果项
+    const matchResultItem: VideoMatchItem = {
+      cleanName,
+      localMatchedFileList,
       isShowUpdateChinese: false,
       isShowEmby: true,
     }
@@ -85,19 +80,16 @@ function processVideoList() {
     // 检查是否需要更新中文字幕
     const hasChineseTag = !!movieItem.querySelector('.is-warning')
 
-    const needsChineseUpdate = matchedFiles.some(
+    const needsChineseUpdate = localMatchedFileList.some(
       file => !file.hasChineseSubtitles && hasChineseTag,
     )
 
-    matchedItem.isShowUpdateChinese = needsChineseUpdate
+    matchResultItem.isShowUpdateChinese = needsChineseUpdate
 
-    matchedVideoList.value.push(matchedItem)
+    pageMatchResultList.value.push(matchResultItem)
   })
 
-  isComponentVisible.value = true
-
-  console.log('🚀 ~ 组件可见性:', isComponentVisible.value)
-  console.log('🚀 ~ 匹配视频列表:', matchedVideoList.value)
+  console.log('🚀 ~ 匹配视频结果列表:', pageMatchResultList.value)
 }
 
 onMounted(() => delayRun(processVideoList))
@@ -105,11 +97,11 @@ onMounted(() => delayRun(processVideoList))
 
 <template>
   <template
-    v-for="videoItem in matchedVideoList"
-    :key="videoItem.cleanFileName"
+    v-for="matchResult in pageMatchResultList"
+    :key="matchResult.cleanName"
   >
     <Teleport
-      :to="`.${videoItem.cleanFileName}`"
+      :to="`.${matchResult.cleanName}`"
     >
       <!-- 事件处理包装器 -->
       <div
@@ -125,15 +117,18 @@ onMounted(() => delayRun(processVideoList))
           class="grid grid-cols-2 grid-rows-2 w-full gap-2 text-white font-bold"
         >
           <AdultInventory
-            v-for="file in videoItem.matchedFileList"
+            v-for="file in matchResult.localMatchedFileList"
             :key="file.id"
+            :file="file"
           />
 
           <AdultChinese
-            v-if="videoItem.isShowUpdateChinese"
+            v-if="matchResult.isShowUpdateChinese"
           />
 
-          <AdultEmby />
+          <AdultEmby
+            v-model:clean-name="matchResult.cleanName"
+          />
         </div>
       </div>
     </Teleport>

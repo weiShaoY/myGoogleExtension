@@ -20,7 +20,9 @@ async function handleClick(this: ElType) {
       return
     }
 
-    copyToClipboard(this.copyText, false)
+    copyToClipboard(this.copyText, {
+      message: this.copyMessage,
+    })
 
     window.$notification.success({
       title: '复制成功',

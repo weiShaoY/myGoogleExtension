@@ -1,6 +1,66 @@
 <!------  2026-03-29---00:34---星期天  ------>
 <!------------------------------------    ------------------------------------------------->
 <script lang="ts" setup>
+import type { CSSProperties } from 'vue'
+
+type PropsType = {
+
+  /**
+   *   视频
+   */
+  file: FolderConfigType.File
+
+  /**
+   *   按钮宽度
+   */
+  width?: string | number
+
+  /**
+   *   按钮高度
+   */
+  height?: string | number
+
+  /**
+   *   圆角
+   */
+  radius?: string | number
+
+  /**
+   *   按钮类名
+   */
+  class?: string
+
+  /**
+   *   按钮样式
+   */
+  style?: CSSProperties
+}
+
+const props = withDefaults(defineProps<PropsType>(), {
+  width: '',
+  height: '',
+  radius: 0,
+  class: '',
+})
+
+/**
+ *  视频位置复制到 剪切板
+ */
+function copyFileName() {
+  copyToClipboard((props.file.cleanName), {
+    title: '文件名 已复制到剪切板',
+    message: props.file.cleanName,
+  })
+}
+
+function copyFilePath() {
+  const path = props.file.directoryPath.join('\\')
+
+  copyToClipboard((path), {
+    title: '文件位置 复制到剪切板',
+    message: path,
+  })
+}
 </script>
 
 <template>
@@ -19,9 +79,10 @@
         class="flex items-center justify-between"
       >
         <div
-          class="text-5"
+          class="text-5 hover:text-primary"
+          @click="copyFileName"
         >
-          ipz-644
+          {{ props.file.cleanName }}
         </div>
 
         <div
@@ -32,9 +93,10 @@
       </div>
 
       <div
-        class="mt-1"
+        class="mt-2 hover:text-primary"
+        @click="copyFilePath"
       >
-        aaa\2_副本\IPZ-644.mp4IPZ-644.mp4IPZ-644.mp4
+        {{ props.file.directoryPath.join('\\') }}
       </div>
     </div>
   </div>
