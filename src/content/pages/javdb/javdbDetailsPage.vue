@@ -13,21 +13,6 @@ const pageVideoName = ref<string>('')
 const isVideoHaveChineseTorrent = ref<boolean>(false)
 
 /**
- * 是否显示 提示更新中文磁链按钮
- */
-const isShowPendingUpdateChineseButton = ref<boolean>(false)
-
-/**
- * 是否显示 emby按钮
- */
-const isShowEmbyButton = ref<boolean>(false)
-
-/**
- * emby已入库列表
- */
-const embyCatalogedList = ref<FolderConfigType.File[]>([])
-
-/**
  * 是否显示在线播放组件
  */
 const isShowOnlinePlay = ref<boolean>(false)
@@ -43,13 +28,29 @@ const isShowTorrentList = ref<boolean>(false)
 const torrentList = ref<TorrentType[]>([])
 
 /**
- * 获取详情页视频名称
+ * 单个视频匹配结果项接口
  */
-function getPageVideoName(): string {
-  const el = $('.video-detail strong')
+type FileMatchItemType = {
 
-  return cleanVideoName(el?.textContent)
+  /** 清理后的文件名（用于标识） */
+  cleanName: string
+
+  /** 本地匹配到的视频文件数组 */
+  localMatchedFileList: FolderConfigType.File[]
+
+  /** 是否显示更新中文字幕按钮 */
+  isShowUpdateChinese: boolean
+
 }
+
+/**
+   * 详情页
+   */
+const detailsPageMatchResult = ref<FileMatchItemType>({
+  cleanName: '',
+  localMatchedFileList: [],
+  isShowUpdateChinese: false,
+})
 
 /**
  * 获取页面中的磁链列表
@@ -132,17 +133,21 @@ function getTorrentList() {
  * 主逻辑
  */
 function main() {
-  const name = getPageVideoName()
+  const el = $('.video-detail strong')
 
-  if (!name) {
+  const cleanName = cleanVideoName(el?.textContent)
+
+  if (!cleanName) {
     return
   }
 
-  pageVideoName.value = name
+  pageVideoName.value = cleanName
 
-  const matchedList = folderStore.matchVideos(name)
+  const localMatchedFileList = folderStore.matchVideos(cleanName)
 
-  if (!matchedList.length) {
+  detailsPageMatchResult.value.localMatchedFileList = localMatchedFileList
+
+  if (localMatchedFileList.length === 0) {
     return
   }
 
@@ -150,18 +155,11 @@ function main() {
 
   highlightElement?.classList.add('is-highlight')
 
-  embyCatalogedList.value = matchedList
+  const needsChineseUpdate = localMatchedFileList.some(
+    file => !file.hasChineseSubtitles && isVideoHaveChineseTorrent.value,
+  )
 
-  isShowEmbyButton.value = true
-
-  const embyHasChinese = matchedList.some(item => item.hasChineseSubtitles)
-
-  if (
-    isVideoHaveChineseTorrent.value
-    && !embyHasChinese
-  ) {
-    isShowPendingUpdateChineseButton.value = true
-  }
+  detailsPageMatchResult.value.isShowUpdateChinese = needsChineseUpdate
 }
 
 onMounted(() => {
@@ -171,41 +169,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- 挂载到右侧 -->
-  <div
-    class="sm-50 fixed left-2 top-60 w-30 lg:w-70 md:w-50"
-  >
-    <!-- 提示更新中文磁链按钮 -->
-    <PendingUpdateChineseButton
-      v-if="isShowPendingUpdateChineseButton"
-      class="w-full"
-    />
-
-    <!-- emby播放按钮 -->
-    <EmbyPlayButton
-      v-if="isShowEmbyButton"
-      :video-name="pageVideoName"
-      :emby-search-name="pageVideoName"
-    />
-
-    <!-- emby已入库列表 -->
-    <div
-      v-if="embyCatalogedList.length"
-      class="w-full rounded-2 bg-[#FF8400] p-2"
-    >
-      <EmbyCatalogedList
-        v-for="(item, index) in embyCatalogedList"
-        :key="index"
-        :video="item"
-      />
-    </div>
-  </div>
 
   <!-- 在线播放 -->
   <OnlinePlay
     v-if="isShowOnlinePlay"
     to="#OnlinePlay"
-    :video-name="pageVideoName"
+    :video-name="detailsPageMatchResult.cleanName"
   />
   <!-- 自定义磁链列表 -->
   <TorrentList
@@ -214,6 +183,31 @@ onMounted(() => {
     scroll-target=".video-panel"
     :torrent-list="torrentList"
   />
+
+  <!-- 到右侧 -->
+  <div
+    v-if="detailsPageMatchResult.localMatchedFileList.length > 0 "
+    class="fixed left-2 top-60 !w-70"
+  >
+    <div
+      class="grid grid-cols-2 grid-rows-2 w-full gap-2 text-white font-bold"
+    >
+      <AdultInventory
+        v-for="file in detailsPageMatchResult.localMatchedFileList"
+        :key="file.id"
+        :file="file"
+      />
+
+      <AdultChinese
+        v-if="detailsPageMatchResult.isShowUpdateChinese"
+      />
+
+      <AdultEmby
+        v-model:clean-name="detailsPageMatchResult.cleanName"
+      />
+    </div>
+
+  </div>
 </template>
 
 <style lang="scss" scoped>

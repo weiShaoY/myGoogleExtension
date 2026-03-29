@@ -68,7 +68,7 @@ function embyBtnHandler() {
 
 <template>
   <div
-    class="aspect-square flex flex-col items-center justify-center gap-3 rounded-3 bg-white text-4 text-amber font-bold duration-300 hover:scale-105"
+    class="aspect-square flex flex-col cursor-pointer items-center justify-center gap-3 rounded-3 bg-white text-4 text-amber font-bold duration-300 hover:scale-105"
     @click="embyBtnHandler"
   >
     <SvgIcon

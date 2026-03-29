@@ -1,6 +1,5 @@
 <!------------------------------------  JavDB 列表页面优化  ------------------------------------------------->
 <script setup lang="ts">
-import AdultInventory from '@/components/Adult/adult-inventory.vue'
 
 /**
  * 文件夹存储
@@ -8,14 +7,9 @@ import AdultInventory from '@/components/Adult/adult-inventory.vue'
 const folderStore = useFolderStore()
 
 /**
- * 页面上匹配到的视频结果列表
- */
-const pageMatchResultList = ref<VideoMatchItem[]>([])
-
-/**
  * 单个视频匹配结果项接口
  */
-type VideoMatchItem = {
+type FileMatchItemType = {
 
   /** 清理后的文件名（用于标识） */
   cleanName: string
@@ -26,9 +20,12 @@ type VideoMatchItem = {
   /** 是否显示更新中文字幕按钮 */
   isShowUpdateChinese: boolean
 
-  /** 是否显示 Emby 按钮 */
-  isShowEmby: boolean
 }
+
+/**
+ * 列表页 页面上匹配到的视频结果列表
+ */
+const listPageMatchResultList = ref<FileMatchItemType[]>([])
 
 /**
  * 处理包装器的事件，阻止事件透传到原始页面
@@ -70,11 +67,10 @@ function processVideoList() {
     boxElement?.classList.add('is-highlight')
 
     // 创建匹配结果项
-    const matchResultItem: VideoMatchItem = {
+    const matchResultItem: FileMatchItemType = {
       cleanName,
       localMatchedFileList,
       isShowUpdateChinese: false,
-      isShowEmby: true,
     }
 
     // 检查是否需要更新中文字幕
@@ -86,10 +82,10 @@ function processVideoList() {
 
     matchResultItem.isShowUpdateChinese = needsChineseUpdate
 
-    pageMatchResultList.value.push(matchResultItem)
+    listPageMatchResultList.value.push(matchResultItem)
   })
 
-  console.log('🚀 ~ 匹配视频结果列表:', pageMatchResultList.value)
+  console.log('🚀 ~ 匹配视频结果列表:', listPageMatchResultList.value)
 }
 
 onMounted(() => delayRun(processVideoList))
@@ -97,10 +93,11 @@ onMounted(() => delayRun(processVideoList))
 
 <template>
   <template
-    v-for="matchResult in pageMatchResultList"
+    v-for="matchResult in listPageMatchResultList"
     :key="matchResult.cleanName"
   >
     <Teleport
+      v-if="matchResult.localMatchedFileList.length"
       :to="`.${matchResult.cleanName}`"
     >
       <!-- 事件处理包装器 -->

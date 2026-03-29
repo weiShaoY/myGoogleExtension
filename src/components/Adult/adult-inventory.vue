@@ -66,13 +66,13 @@ function copyFilePath() {
 <template>
 
   <div
-    class="col-span-2 w-full origin-left scale-100 cursor-pointer select-text rounded-lg bg-[#fff] p-3 transition-all duration-300 ease-in-out"
+    class="col-span-2 box-border w-full origin-left scale-100 cursor-pointer cursor-pointer select-text overflow-hidden rounded-lg bg-[#fff] p-3 transition-all duration-300 ease-in-out"
     :style="{
       boxShadow: 'inset 20px 20px 8px #bebebe, inset -20px -20px 8px #ffffff',
     }"
   >
     <div
-      class="h-full border border-[#52382f] rounded-3 border-solid bg-[#2a2b2f] p-3"
+      class="box-border h-full w-full border border-[#52382f] rounded-3 border-solid bg-[#2a2b2f] p-3"
     >
 
       <div
@@ -93,7 +93,7 @@ function copyFilePath() {
       </div>
 
       <div
-        class="mt-2 hover:text-primary"
+        class="mt-2 break-all hover:text-primary"
         @click="copyFilePath"
       >
         {{ props.file.directoryPath.join('\\') }}
