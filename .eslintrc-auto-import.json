@@ -233,6 +233,7 @@
     "useIntersectionObserver": true,
     "useInterval": true,
     "useIntervalFn": true,
+    "useJavdbMatch": true,
     "useKeyModifier": true,
     "useLastChanged": true,
     "useLink": true,

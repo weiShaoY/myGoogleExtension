@@ -1,5 +1,10 @@
-<!------------------------------------  JavDB 列表页面优化  ------------------------------------------------->
+<!------------------------------------  JavDB 列表页面  ------------------------------------------------->
 <script setup lang="ts">
+import type { ListPageMatchResultList } from '@/types/content/javdb'
+
+import { onMounted, ref } from 'vue'
+
+import { useJavdbMatch } from '@/composables/useJavdbMatch'
 
 /**
  * 文件夹存储
@@ -7,36 +12,14 @@
 const folderStore = useFolderStore()
 
 /**
- * 单个视频匹配结果项接口
+ * 页面上匹配到的视频结果列表
  */
-type FileMatchItemType = {
-
-  /** 清理后的文件名（用于标识） */
-  cleanName: string
-
-  /** 本地匹配到的视频文件数组 */
-  localMatchedFileList: FolderConfigType.File[]
-
-  /** 是否显示更新中文字幕按钮 */
-  isShowUpdateChinese: boolean
-
-}
+const listPageMatchResultList = ref<ListPageMatchResultList>([])
 
 /**
- * 列表页 页面上匹配到的视频结果列表
+ * 导入共享逻辑
  */
-const listPageMatchResultList = ref<FileMatchItemType[]>([])
-
-/**
- * 处理包装器的事件，阻止事件透传到原始页面
- * @param event 事件对象
- */
-function handleWrapperClick(event: Event) {
-  event.stopPropagation()
-  event.stopImmediatePropagation()
-  event.preventDefault()
-  return false
-}
+const { handleWrapperClick, createMatchResult, isElementExists } = useJavdbMatch()
 
 /**
  * 处理页面主要逻辑
@@ -63,24 +46,20 @@ function processVideoList() {
     }
 
     // 添加样式类
-    boxElement?.classList.add(cleanName)
-    boxElement?.classList.add('is-highlight')
-
-    // 创建匹配结果项
-    const matchResultItem: FileMatchItemType = {
-      cleanName,
-      localMatchedFileList,
-      isShowUpdateChinese: false,
+    if (isElementExists(boxElement)) {
+      boxElement.classList.add(cleanName)
+      boxElement.classList.add('is-highlight')
     }
 
-    // 检查是否需要更新中文字幕
+    // 检查是否有中文字幕标签
     const hasChineseTag = !!movieItem.querySelector('.is-warning')
 
-    const needsChineseUpdate = localMatchedFileList.some(
-      file => !file.hasChineseSubtitles && hasChineseTag,
+    // 创建匹配结果项
+    const matchResultItem = createMatchResult(
+      cleanName,
+      localMatchedFileList,
+      hasChineseTag,
     )
-
-    matchResultItem.isShowUpdateChinese = needsChineseUpdate
 
     listPageMatchResultList.value.push(matchResultItem)
   })
@@ -132,4 +111,6 @@ onMounted(() => delayRun(processVideoList))
   </template>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+</style>

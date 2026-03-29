@@ -1,5 +1,13 @@
 <script lang="ts" setup>
+import type { DetailsPageMatchResult } from '@/types/content/javdb'
 
+import { onMounted, ref } from 'vue'
+
+import { useJavdbMatch } from '@/composables/useJavdbMatch'
+
+/**
+ * 文件夹存储
+ */
 const folderStore = useFolderStore()
 
 /**
@@ -28,25 +36,14 @@ const isShowTorrentList = ref<boolean>(false)
 const torrentList = ref<TorrentType[]>([])
 
 /**
- * 单个视频匹配结果项接口
+ * 导入共享逻辑
  */
-type FileMatchItemType = {
-
-  /** 清理后的文件名（用于标识） */
-  cleanName: string
-
-  /** 本地匹配到的视频文件数组 */
-  localMatchedFileList: FolderConfigType.File[]
-
-  /** 是否显示更新中文字幕按钮 */
-  isShowUpdateChinese: boolean
-
-}
+const { createMatchResult } = useJavdbMatch()
 
 /**
-   * 详情页
-   */
-const detailsPageMatchResult = ref<FileMatchItemType>({
+ * 详情页匹配结果
+ */
+const detailsPageMatchResult = ref<DetailsPageMatchResult>({
   cleanName: '',
   localMatchedFileList: [],
   isShowUpdateChinese: false,
@@ -145,8 +142,6 @@ function main() {
 
   const localMatchedFileList = folderStore.matchVideos(cleanName)
 
-  detailsPageMatchResult.value.localMatchedFileList = localMatchedFileList
-
   if (localMatchedFileList.length === 0) {
     return
   }
@@ -155,11 +150,12 @@ function main() {
 
   highlightElement?.classList.add('is-highlight')
 
-  const needsChineseUpdate = localMatchedFileList.some(
-    file => !file.hasChineseSubtitles && isVideoHaveChineseTorrent.value,
+  // 使用共享函数创建匹配结果
+  detailsPageMatchResult.value = createMatchResult(
+    cleanName,
+    localMatchedFileList,
+    isVideoHaveChineseTorrent.value,
   )
-
-  detailsPageMatchResult.value.isShowUpdateChinese = needsChineseUpdate
 }
 
 onMounted(() => {
