@@ -1,7 +1,5 @@
 import { createPinia } from 'pinia'
 
-import { useEmbyStore } from './modules/emby'
-
 import { useFolderStore } from './modules/folder'
 
 import { useTestStore } from './modules/test'
@@ -15,7 +13,6 @@ pinia.use(
 )
 
 export {
-  useEmbyStore,
   useFolderStore,
   useTestStore,
 }

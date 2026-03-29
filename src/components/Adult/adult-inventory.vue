@@ -64,9 +64,9 @@ function copyFilePath() {
 </script>
 
 <template>
-
+  <!-- col-span-2 -->
   <div
-    class="col-span-2 box-border w-full origin-left scale-100 cursor-pointer cursor-pointer select-text overflow-hidden rounded-lg bg-[#fff] p-3 transition-all duration-300 ease-in-out"
+    class="col-span-2 box-border aspect-[2/1] w-full origin-left scale-100 cursor-pointer cursor-pointer select-text overflow-hidden rounded-lg bg-[#fff] p-3 transition-all duration-300 ease-in-out"
     :style="{
       boxShadow: 'inset 20px 20px 8px #bebebe, inset -20px -20px 8px #ffffff',
     }"

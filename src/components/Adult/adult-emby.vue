@@ -1,7 +1,11 @@
 <!------  2026-03-29---02:21---星期天  ------>
 <!------------------------------------    ------------------------------------------------->
 <script lang="ts" setup>
-import { AdultApi } from '@/apis'
+import {
+  getEmbyHomeUrl,
+  getEmbyItemUrl,
+  searchEmby,
+} from '@/apis'
 
 const cleanName = defineModel<string>('cleanName', {
   default: '',
@@ -15,7 +19,7 @@ async function embySearch(videoName: string) {
   console.log('🚀 ~ file: index.ts:10 ~ videoName:', videoName)
 
   try {
-    const result = await AdultApi.searchEmby(videoName)
+    const result = await searchEmby(videoName)
 
     //  如果结果为空，则提示没有找到
     if (result.Items.length === 0) {
@@ -26,7 +30,7 @@ async function embySearch(videoName: string) {
           type: 'warning',
         })
         .then(() => {
-          openLink(AdultApi.getEmbyHomeUrl())
+          openLink(getEmbyHomeUrl())
         })
         .catch(() => {
           window.$notification.error('Emby中没有找到该视频!')

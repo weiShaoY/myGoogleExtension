@@ -210,7 +210,6 @@
     "useElementHover": true,
     "useElementSize": true,
     "useElementVisibility": true,
-    "useEmbyStore": true,
     "useEventBus": true,
     "useEventListener": true,
     "useEventSource": true,

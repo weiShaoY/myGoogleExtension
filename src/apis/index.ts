@@ -1,5 +1,1 @@
-import AdultApi from './modules/adult'
-
-export {
-  AdultApi,
-}
+export * from './modules/adult'

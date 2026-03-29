@@ -2,8 +2,6 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
 
-import { useEmbyStore } from '@/stores'
-
 type PropsType = {
 
   /**
@@ -47,15 +45,11 @@ const props = withDefaults(defineProps<PropsType>(), {
   class: '',
 })
 
-const embyStore = useEmbyStore()
-
 /**
  * emby按钮点击处理函数
  */
 function embyBtnHandler(event: MouseEvent) {
   event.preventDefault()
-
-  embyStore.embySearch(props.embySearchName)
 }
 </script>
 
