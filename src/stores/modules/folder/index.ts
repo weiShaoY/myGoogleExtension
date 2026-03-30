@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 
 import { ref } from 'vue'
 
-export const useFolderStore = defineStore(
-  'folder',
+export const useAdultStore = defineStore(
+  'adult',
   () => {
     const embyFolder = ref<FolderConfigType.EmbyFolder>({
       folderName: 'emby名称',

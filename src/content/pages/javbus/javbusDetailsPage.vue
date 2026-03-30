@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 
-const folderStore = useFolderStore()
+const adultStore = useAdultStore()
 
 /**
  * 页面视频名称
@@ -129,7 +129,7 @@ function main() {
 
   pageVideoName.value = name
 
-  const matchedList = folderStore.matchVideos(name)
+  const matchedList = adultStore.matchVideos(name)
 
   if (!matchedList.length) {
     return

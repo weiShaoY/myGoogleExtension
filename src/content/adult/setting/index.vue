@@ -1,10 +1,10 @@
 <!------------------------------------  设置按钮  ------------------------------------------------->
 <script lang="ts" setup>
-import { useFolderStore } from '@/stores'
+import { useAdultStore } from '@/stores'
 
 import FolderScanner from './folderScanner.vue'
 
-const folderStore = useFolderStore()
+const adultStore = useAdultStore()
 
 /**
  *  全局的加载状态
@@ -105,7 +105,7 @@ function handleSelect(key: string, keyPath: string[]) {
 
         <!-- Find Duplicate -->
         <el-sub-menu
-          v-if="folderStore.embyFolder.folderDuplicateNameFileList.length > 0 || folderStore.embyFolder.folderUniqueFileNameFileList.length > 0"
+          v-if="adultStore.embyFolder.folderDuplicateNameFileList.length > 0 || adultStore.embyFolder.folderUniqueFileNameFileList.length > 0"
           index="1"
           class="m-x-auto mb-2 w-[calc(100%-16px)] rounded-3"
         >
@@ -173,7 +173,7 @@ function handleSelect(key: string, keyPath: string[]) {
             view-class="p-5 box-border"
           >
             <AdultEmby
-              v-for="(item, index) in folderStore.embyFolder.folderDuplicateNameFileList"
+              v-for="(item, index) in adultStore.embyFolder.folderDuplicateNameFileList"
               :key="index"
               :video-name="item.cleanName"
               :is-from-setting-dialog="true"
@@ -193,7 +193,7 @@ function handleSelect(key: string, keyPath: string[]) {
           >
 
             <AdultEmby
-              v-for="(item, index) in folderStore.embyFolder.folderUniqueFileNameFileList"
+              v-for="(item, index) in adultStore.embyFolder.folderUniqueFileNameFileList"
               :key="index"
               :video-name="item"
               :is-from-setting-dialog="true"

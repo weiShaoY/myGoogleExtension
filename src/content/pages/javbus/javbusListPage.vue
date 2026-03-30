@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-const folderStore = useFolderStore()
+const adultStore = useAdultStore()
 
 const embyBtnList = ref<string[]>([])
 
@@ -23,7 +23,7 @@ function main() {
 
     const box = item
 
-    const matchedList = folderStore.matchVideos(cleanName)
+    const matchedList = adultStore.matchVideos(cleanName)
 
     if (matchedList.length) {
       box?.classList.add('is-highlight')

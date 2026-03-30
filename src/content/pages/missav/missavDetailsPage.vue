@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 
-const folderStore = useFolderStore()
+const adultStore = useAdultStore()
 
 /**
  * 页面视频名称
@@ -145,7 +145,7 @@ function getTorrentList() {
  * 主逻辑
  */
 function main() {
-  const fileList = folderStore.embyFolder?.folderFileList ?? []
+  const fileList = adultStore.embyFolder?.folderFileList ?? []
 
   if (!fileList.length) {
     return

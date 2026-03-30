@@ -8,7 +8,7 @@ const isLoading = defineModel<boolean>('isLoading', { // 注意这里对应 v-mo
   default: false,
 })
 
-const folderStore = useFolderStore()
+const adultStore = useAdultStore()
 
 /**
  *  表示文件数据的类型
@@ -177,12 +177,12 @@ async function mainBtnHandler() {
     }
 
     // 将 Set 中的视频文件信息存储到本地
-    folderStore.saveEmbyFolderData(directoryHandle.name, videoFileSet, startTime)
+    adultStore.saveEmbyFolderData(directoryHandle.name, videoFileSet, startTime)
 
     console.log(
-      '%c Line:211 🥒 folderStore.folderFileList',
+      '%c Line:211 🥒 adultStore.folderFileList',
       'color:#465975',
-      folderStore.embyFolder.folderFileList,
+      adultStore.embyFolder.folderFileList,
     )
 
     window.$notification.success({
@@ -262,7 +262,7 @@ async function mainBtnHandler() {
         <span
           class="m-x-2 text-6 color-primary font-bold"
         >
-          {{ folderStore.embyFolder.folderName }}
+          {{ adultStore.embyFolder.folderName }}
         </span>
 
       </div>
@@ -280,7 +280,7 @@ async function mainBtnHandler() {
         <span
           class="m-x-2 text-6 color-primary font-bold"
         >
-          {{ folderStore.embyFolder.folderFileList.length }}
+          {{ adultStore.embyFolder.folderFileList.length }}
         </span>
 
         <span>
@@ -302,7 +302,7 @@ async function mainBtnHandler() {
         <span
           class="m-x-2 text-6 color-primary font-bold"
         >
-          {{ folderStore.embyFolder.folderDuplicateNameFileList.length }}
+          {{ adultStore.embyFolder.folderDuplicateNameFileList.length }}
         </span>
 
         <span>
@@ -322,7 +322,7 @@ async function mainBtnHandler() {
         <span
           class="m-x-2 text-6 color-primary font-bold"
         >
-          {{ folderStore.embyFolder.folderUniqueFileNameFileList.length }}
+          {{ adultStore.embyFolder.folderUniqueFileNameFileList.length }}
         </span>
 
         <span>
@@ -342,7 +342,7 @@ async function mainBtnHandler() {
         <span
           class="m-x-2 text-6 color-primary font-bold"
         >
-          {{ getElapsedTime(folderStore.embyFolder.folderScanTimestamp) }}
+          {{ getElapsedTime(adultStore.embyFolder.folderScanTimestamp) }}
         </span>
       </div>
     </el-timeline-item>
@@ -358,7 +358,7 @@ async function mainBtnHandler() {
         <span
           class="m-x-2 text-6 color-primary font-bold"
         >
-          {{ folderStore.embyFolder.folderScanDuration }}
+          {{ adultStore.embyFolder.folderScanDuration }}
         </span>
       </div>
     </el-timeline-item>
@@ -374,7 +374,7 @@ async function mainBtnHandler() {
         <span
           class="m-x-2 text-6 color-primary font-bold"
         >
-          {{ formatTimestampToChineseDate(folderStore.embyFolder.folderScanTimestamp) }}        </span>
+          {{ formatTimestampToChineseDate(adultStore.embyFolder.folderScanTimestamp) }}        </span>
 
       </div>
     </el-timeline-item>

@@ -1,6 +1,6 @@
 import { createPinia } from 'pinia'
 
-import { useFolderStore } from './modules/folder'
+import { useAdultStore } from './modules/folder'
 
 import { useTestStore } from './modules/test'
 
@@ -13,7 +13,7 @@ pinia.use(
 )
 
 export {
-  useFolderStore,
+  useAdultStore,
   useTestStore,
 }
 

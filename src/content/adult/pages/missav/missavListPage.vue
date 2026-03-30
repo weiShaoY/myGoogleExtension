@@ -6,10 +6,10 @@ const updateChineseBtnList = ref<string[]>([])
 
 const addedToInventoryBtnList = ref<FolderConfigType.File[]>([])
 
-const folderStore = useFolderStore()
+const adultStore = useAdultStore()
 
 function main() {
-  const fileList = folderStore.embyFolder.folderFileList ?? []
+  const fileList = adultStore.embyFolder.folderFileList ?? []
 
   console.log('🚀 ~ file: index.vue:24 ~ fileList:', fileList)
 

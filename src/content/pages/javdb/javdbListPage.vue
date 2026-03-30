@@ -9,7 +9,7 @@ import { useJavdbMatch } from '@/composables/useJavdbMatch'
 /**
  * 文件夹存储
  */
-const folderStore = useFolderStore()
+const adultStore = useAdultStore()
 
 /**
  * 页面上匹配到的视频结果列表
@@ -39,7 +39,7 @@ function processVideoList() {
 
     const boxElement = asHTMLElement(movieItem.querySelector('.box'))
 
-    const localMatchedFileList = folderStore.matchVideos(cleanName)
+    const localMatchedFileList = adultStore.matchVideos(cleanName)
 
     if (localMatchedFileList.length === 0) {
       return

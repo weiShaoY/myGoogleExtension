@@ -8,7 +8,7 @@ import { useJavdbMatch } from '@/composables/useJavdbMatch'
 /**
  * 文件夹存储
  */
-const folderStore = useFolderStore()
+const adultStore = useAdultStore()
 
 /**
  * 页面视频名称
@@ -140,7 +140,7 @@ function main() {
 
   pageVideoName.value = cleanName
 
-  const localMatchedFileList = folderStore.matchVideos(cleanName)
+  const localMatchedFileList = adultStore.matchVideos(cleanName)
 
   if (localMatchedFileList.length === 0) {
     return
