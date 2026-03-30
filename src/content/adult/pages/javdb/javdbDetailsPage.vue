@@ -169,11 +169,11 @@ onMounted(() => {
 <template>
 
   <!-- 在线播放 -->
-  <OnlinePlay
+  <!-- <OnlinePlay
     v-if="isShowOnlinePlay"
     to="#OnlinePlay"
     :video-name="detailsPageMatchResult.cleanName"
-  />
+  /> -->
   <!-- 自定义磁链列表 -->
   <TorrentList
     v-if="isShowTorrentList"
