@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { DetailsPageMatchResult } from '@/types/content/javdb'
 
 import { onMounted, ref } from 'vue'
 
@@ -43,10 +42,10 @@ const { createMatchResult } = useJavdbMatch()
 /**
  * 详情页匹配结果
  */
-const detailsPageMatchResult = ref<DetailsPageMatchResult>({
+const detailsPageMatchResult = ref<AdultConfigType.DetailsPageMatchResult>({
   cleanName: '',
-  localMatchedFileList: [],
   isShowUpdateChinese: false,
+  folderMatchedVideoList: [],
 })
 
 /**
@@ -157,7 +156,7 @@ function main() {
     isVideoHaveChineseTorrent.value,
   )
 
-  console.log('🚀 ~ file: javdbDetailsPage.vue:161 ~ detailsPageMatchResult.localMatchedFileList:', detailsPageMatchResult.value.localMatchedFileList)
+  console.log('🚀 ~ file: javdbDetailsPage.vue:161 ~ detailsPageMatchResult.localMatchedFileList:', detailsPageMatchResult.value.folderMatchedVideoList)
 }
 
 onMounted(() => {
@@ -184,7 +183,7 @@ onMounted(() => {
 
   <!-- 到右侧 -->
   <div
-    v-if="detailsPageMatchResult.localMatchedFileList.length > 0 "
+    v-if="detailsPageMatchResult.folderMatchedVideoList.length > 0 "
     class="fixed left-2 top-60 !w-70"
   >
     <div
@@ -194,7 +193,7 @@ onMounted(() => {
         class="w-full space-y-2"
       >
         <AdultInventory
-          v-for="file in detailsPageMatchResult.localMatchedFileList"
+          v-for="file in detailsPageMatchResult.folderMatchedVideoList"
           :key="file.id"
           :file="file"
         />

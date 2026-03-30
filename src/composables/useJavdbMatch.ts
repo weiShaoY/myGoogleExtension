@@ -1,5 +1,3 @@
-import type { FileMatchItemType } from '@/types/content/javdb'
-
 /**
  * JavDB 视频匹配逻辑
  * @returns 匹配相关的状态和方法
@@ -19,22 +17,22 @@ export function useJavdbMatch() {
   /**
    * 创建匹配结果项
    * @param cleanName 清理后的文件名
-   * @param localMatchedFileList 本地匹配的文件列表
+   * @param folderMatchedVideoList 文件夹中匹配到的视频列表
    * @param hasChineseTag 是否有中文字幕标签
    * @returns 匹配结果项
    */
   function createMatchResult(
     cleanName: string,
-    localMatchedFileList: AdultConfigType.VideoFile[],
+    folderMatchedVideoList: AdultConfigType.VideoFile[],
     hasChineseTag: boolean,
-  ): FileMatchItemType {
-    const needsChineseUpdate = localMatchedFileList.some(
+  ): AdultConfigType.PageVideoMatchItem {
+    const needsChineseUpdate = folderMatchedVideoList.some(
       file => !file.hasChineseSubtitle && hasChineseTag,
     )
 
     return {
       cleanName,
-      localMatchedFileList,
+      folderMatchedVideoList,
       isShowUpdateChinese: needsChineseUpdate,
     }
   }

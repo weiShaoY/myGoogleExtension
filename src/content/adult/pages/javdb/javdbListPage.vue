@@ -1,6 +1,5 @@
 <!------------------------------------  JavDB 列表页面  ------------------------------------------------->
 <script setup lang="ts">
-import type { ListPageMatchResultList } from '@/types/content/javdb'
 
 import { onMounted, ref } from 'vue'
 
@@ -14,7 +13,7 @@ const adultStore = useAdultStore()
 /**
  * 页面上匹配到的视频结果列表
  */
-const listPageMatchResultList = ref<ListPageMatchResultList>([])
+const listPageMatchResultList = ref<AdultConfigType.ListPageMatchResultList>([])
 
 /**
  * 导入共享逻辑
@@ -39,9 +38,9 @@ function processVideoList() {
 
     const boxElement = asHTMLElement(movieItem.querySelector('.box'))
 
-    const localMatchedFileList = adultStore.matchVideos(cleanName)
+    const folderMatchedVideoList = adultStore.matchVideos(cleanName)
 
-    if (localMatchedFileList.length === 0) {
+    if (folderMatchedVideoList.length === 0) {
       return
     }
 
@@ -57,7 +56,7 @@ function processVideoList() {
     // 创建匹配结果项
     const matchResultItem = createMatchResult(
       cleanName,
-      localMatchedFileList,
+      folderMatchedVideoList,
       hasChineseTag,
     )
 
@@ -76,7 +75,7 @@ onMounted(() => delayRun(processVideoList))
     :key="matchResult.cleanName"
   >
     <Teleport
-      v-if="matchResult.localMatchedFileList.length"
+      v-if="matchResult.folderMatchedVideoList.length"
       :to="`.${matchResult.cleanName}`"
     >
       <!-- 事件处理包装器 -->
@@ -96,7 +95,7 @@ onMounted(() => delayRun(processVideoList))
             class="w-full space-y-2"
           >
             <AdultInventory
-              v-for="file in matchResult.localMatchedFileList"
+              v-for="file in matchResult.folderMatchedVideoList"
               :key="file.id"
               :file="file"
             />

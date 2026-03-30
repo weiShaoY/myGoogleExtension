@@ -127,6 +127,7 @@ namespace AdultConfigType {
 
     /**
      * 视频文件处理后的名称（去除扩展名、去除所有标签、转换为小写）
+     * 标准化文件名（唯一标识)
      * 用于 Emby 媒体库匹配和搜索
      * @example ipzz-105
      */
@@ -251,4 +252,31 @@ namespace AdultConfigType {
     fileTagExtractionRegex: RegExp
 
   }
+
+  // # 页面视频匹配结果项接口
+
+  /**
+   * 页面视频匹配结果项
+   */
+  export type PageVideoMatchItem = {
+
+    /** 视频文件处理后的名称（去除扩展名、去除所有标签、转换为小写）） */
+    cleanName: string
+
+    /** 是否显示中文字幕更新按钮 */
+    isShowUpdateChinese: boolean
+
+    /** 文件夹中匹配到的视频列表 */
+    folderMatchedVideoList: AdultConfigType.VideoFile[]
+  }
+
+  /**
+   * 列表页匹配结果列表类型
+   */
+  export type ListPageMatchResultList = PageVideoMatchItem[]
+
+  /**
+   * 详情页匹配结果类型
+   */
+  export type DetailsPageMatchResult = PageVideoMatchItem
 }
