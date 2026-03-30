@@ -8,6 +8,8 @@ const isListPage = !!$('.movie-list')
 
 const bodyClass = isListPage ? 'javdb-list-page' : 'javdb-details-page'
 
+alert(1)
+
 document.body.classList.add('javdb', bodyClass)
 </script>
 

@@ -90,7 +90,7 @@ onMounted(() => delayRun(processVideoList))
         @pointerup="handleWrapperClick"
       >
         <div
-          class="grid grid-cols-2 grid-rows-2 w-full gap-2 text-white font-bold"
+          class="w-full gap-2 text-white font-bold"
         >
           <AdultInventory
             v-for="file in matchResult.localMatchedFileList"

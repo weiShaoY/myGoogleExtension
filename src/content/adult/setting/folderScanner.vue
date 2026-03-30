@@ -260,7 +260,7 @@ async function mainBtnHandler() {
         </span>
 
         <span
-          class="m-x-2 text-6 color-primary font-bold"
+          class="m-x-2 text-6 color-emby font-bold"
         >
           {{ folderStore.embyFolder.folderName }}
         </span>
@@ -278,7 +278,7 @@ async function mainBtnHandler() {
         </span>
 
         <span
-          class="m-x-2 text-6 color-primary font-bold"
+          class="m-x-2 text-6 color-emby font-bold"
         >
           {{ folderStore.embyFolder.folderFileList.length }}
         </span>
@@ -300,7 +300,7 @@ async function mainBtnHandler() {
         </span>
 
         <span
-          class="m-x-2 text-6 color-primary font-bold"
+          class="m-x-2 text-6 color-emby font-bold"
         >
           {{ folderStore.embyFolder.folderDuplicateNameFileList.length }}
         </span>
@@ -320,7 +320,7 @@ async function mainBtnHandler() {
         </span>
 
         <span
-          class="m-x-2 text-6 color-primary font-bold"
+          class="m-x-2 text-6 color-emby font-bold"
         >
           {{ folderStore.embyFolder.folderUniqueFileNameFileList.length }}
         </span>
@@ -336,13 +336,13 @@ async function mainBtnHandler() {
         class="flex items-center"
       >
         <span>
-          距上次扫描
+          上次扫描耗时
         </span>
 
         <span
-          class="m-x-2 text-6 color-primary font-bold"
+          class="m-x-2 text-6 color-emby font-bold"
         >
-          {{ getElapsedTime(folderStore.embyFolder.folderScanTimestamp) }}
+          {{ folderStore.embyFolder.folderScanDuration }}
         </span>
       </div>
     </el-timeline-item>
@@ -352,13 +352,13 @@ async function mainBtnHandler() {
         class="flex items-center"
       >
         <span>
-          上次扫描耗时
+          距离上次扫描
         </span>
 
         <span
-          class="m-x-2 text-6 color-primary font-bold"
+          class="m-x-2 text-6 color-emby font-bold"
         >
-          {{ folderStore.embyFolder.folderScanDuration }}
+          {{ getElapsedTime(folderStore.embyFolder.folderScanTimestamp) }}
         </span>
       </div>
     </el-timeline-item>
@@ -372,7 +372,7 @@ async function mainBtnHandler() {
         </span>
 
         <span
-          class="m-x-2 text-6 color-primary font-bold"
+          class="m-x-2 text-6 color-emby font-bold"
         >
           {{ formatTimestampToChineseDate(folderStore.embyFolder.folderScanTimestamp) }}        </span>
 

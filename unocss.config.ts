@@ -10,7 +10,8 @@ import {
 export default defineConfig({
   theme: {
     colors: {
-      primary: '#52B44B', // 主要颜色
+      primary: '#007bff', // 主要颜色
+      emby: '#52b44b',
 
     },
   },

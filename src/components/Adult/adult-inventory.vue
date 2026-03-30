@@ -1,7 +1,6 @@
 <!------  2026-03-29---00:34---星期天  ------>
 <!------------------------------------    ------------------------------------------------->
 <script lang="ts" setup>
-import type { CSSProperties } from 'vue'
 
 type PropsType = {
 
@@ -10,37 +9,10 @@ type PropsType = {
    */
   file: FolderConfigType.File
 
-  /**
-   *   按钮宽度
-   */
-  width?: string | number
-
-  /**
-   *   按钮高度
-   */
-  height?: string | number
-
-  /**
-   *   圆角
-   */
-  radius?: string | number
-
-  /**
-   *   按钮类名
-   */
-  class?: string
-
-  /**
-   *   按钮样式
-   */
-  style?: CSSProperties
 }
 
 const props = withDefaults(defineProps<PropsType>(), {
-  width: '',
-  height: '',
-  radius: 0,
-  class: '',
+
 })
 
 /**
@@ -64,22 +36,21 @@ function copyFilePath() {
 </script>
 
 <template>
-  <!-- col-span-2 -->
   <div
-    class="col-span-2 box-border aspect-[2/1] w-full origin-left scale-100 cursor-pointer cursor-pointer select-text overflow-hidden rounded-lg bg-[#fff] p-3 transition-all duration-300 ease-in-out"
+    class="box-border w-full origin-left scale-100 cursor-pointer select-text overflow-hidden rounded-lg bg-[#fff] p-2 text-white transition-all duration-300 ease-in-out"
     :style="{
-      boxShadow: 'inset 20px 20px 8px #bebebe, inset -20px -20px 8px #ffffff',
+      boxShadow: 'inset 20px 20px 8px 20px #bebebe, inset -20px -20px 8px 20px #ffffff',
     }"
   >
     <div
-      class="box-border h-full w-full border border-[#52382f] rounded-3 border-solid bg-[#2a2b2f] p-3"
+      class="box-border h-full w-full border border-[#52382f] rounded-3 border-solid bg-[#2a2b2f] p-2"
     >
 
       <div
         class="flex items-center justify-between"
       >
         <div
-          class="text-5 hover:text-primary"
+          class="hover:text-emby text-5"
           @click="copyFileName"
         >
           {{ props.file.cleanName }}
@@ -93,7 +64,7 @@ function copyFilePath() {
       </div>
 
       <div
-        class="mt-2 break-all hover:text-primary"
+        class="hover:text-emby mt-2 break-all"
         @click="copyFilePath"
       >
         {{ props.file.directoryPath.join('\\') }}

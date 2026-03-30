@@ -11,7 +11,7 @@ const folderStore = useFolderStore()
  */
 const isLoading = ref(false)
 
-const isShowMainDialog = ref(false)
+const isShowMainDialog = ref(true)
 
 function onClick() {
   isShowMainDialog.value = true
@@ -34,7 +34,7 @@ function handleSelect(key: string, keyPath: string[]) {
 
 <template>
   <div
-    class="group fixed left-10 top-30 inline-flex overflow-visible border-2 rounded-full transition-all duration-300 !z-1000000000000"
+    class="group fixed bottom-10 left-10 inline-flex overflow-visible border-2 rounded-full transition-all duration-300 !z-1000000000000"
   >
     <!-- 主按钮 -->
     <button
@@ -170,13 +170,14 @@ function handleSelect(key: string, keyPath: string[]) {
           <el-scrollbar
             always
             class="w-full"
+            view-class="p-5 box-border"
           >
-            <EmbyPlayButton
+            <AdultEmby
               v-for="(item, index) in folderStore.embyFolder.folderDuplicateNameFileList"
               :key="index"
-              :video-name="item.nameWithTags"
-              :emby-search-name="item.cleanName"
-              class="!h-15"
+              :video-name="item.cleanName"
+              :is-from-setting-dialog="true"
+              class="mb-3 !h-15"
             />
           </el-scrollbar>
         </template>
@@ -188,15 +189,16 @@ function handleSelect(key: string, keyPath: string[]) {
           <el-scrollbar
             always
             class="w-full"
+            view-class="p-5 box-border"
           >
-            <EmbyPlayButton
+
+            <AdultEmby
               v-for="(item, index) in folderStore.embyFolder.folderUniqueFileNameFileList"
               :key="index"
               :video-name="item"
-              :emby-search-name="item"
-              class="!h-15"
+              :is-from-setting-dialog="true"
+              class="mb-3 !h-15"
             />
-
           </el-scrollbar>
         </template>
 

@@ -186,21 +186,30 @@ onMounted(() => {
     class="fixed left-2 top-60 !w-70"
   >
     <div
-      class="grid grid-cols-2 grid-rows-2 w-full gap-2 text-white font-bold"
+      class="h-auto w-full flex flex-col items-center border border-gray-200 rounded-lg bg-[rgb(255,255,255)] p-3 space-y-4"
     >
-      <AdultInventory
-        v-for="file in detailsPageMatchResult.localMatchedFileList"
-        :key="file.id"
-        :file="file"
-      />
+      <section
+        class="w-full space-y-2"
+      >
+        <AdultInventory
+          v-for="file in detailsPageMatchResult.localMatchedFileList"
+          :key="file.id"
+          :file="file"
+        />
+      </section>
 
-      <AdultChinese
-        v-if="detailsPageMatchResult.isShowUpdateChinese"
-      />
+      <section
+        class="grid grid-cols-2 h-15 w-full gap-2 [&>*:last-child:nth-child(1)]:col-span-2"
+      >
+        <AdultChinese
+          v-if="detailsPageMatchResult.isShowUpdateChinese"
+        />
 
-      <AdultEmby
-        v-model:clean-name="detailsPageMatchResult.cleanName"
-      />
+        <AdultEmby
+          :video-name="detailsPageMatchResult.cleanName"
+        />
+
+      </section>
     </div>
 
   </div>

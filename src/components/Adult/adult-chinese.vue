@@ -5,19 +5,17 @@
 
 <template>
   <div
-    class="relative aspect-square flex flex-col items-center justify-center gap-3 rounded-3 bg-white text-4 text-amber font-bold"
+    class="flex items-center justify-center gap-3 rounded-2 bg-[#ffe52a] text-4 text-amber font-bold"
   >
+    <SvgIcon
+      icon="adult-update"
+      :size="30"
+    />
 
     <SvgIcon
       icon="adult-chinese"
-      :size="70"
+      :size="30"
     />
-
-    <span
-      class="absolute bottom-2"
-    >
-      可更新
-    </span>
   </div>
 </template>
 
