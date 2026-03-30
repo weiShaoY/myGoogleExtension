@@ -1,6 +1,6 @@
 import { createPinia } from 'pinia'
 
-import { useAdultStore } from './modules/folder'
+import { useAdultStore } from './modules/adult'
 
 import { useTestStore } from './modules/test'
 
