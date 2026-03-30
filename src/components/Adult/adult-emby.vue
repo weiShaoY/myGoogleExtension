@@ -41,7 +41,7 @@ async function embySearch(videoName: string) {
           type: 'warning',
         })
         .then(() => {
-          openLink(getEmbyHomeUrl())
+          openEmbyTab(getEmbyHomeUrl())
         })
         .catch(() => {
           window.$notification.error('Emby中没有找到该视频!')
@@ -54,11 +54,11 @@ async function embySearch(videoName: string) {
 
       const url = getEmbyItemUrl(item)
 
-      openLink(url)
+      openEmbyTab(url)
     }
     else {
       window.$notification.error('Emby中找到多个结果!')
-      openLink(getEmbyHomeUrl())
+      openEmbyTab(getEmbyHomeUrl())
     }
   }
   catch (error) {
@@ -68,6 +68,30 @@ async function embySearch(videoName: string) {
       duration: 5000,
     })
   }
+}
+
+/**
+ * 使用 Chrome 扩展 API 打开 Emby 标签页
+ * @param url - 要打开的 URL
+ */
+function openEmbyTab(url: string): void {
+  chrome.runtime.sendMessage(
+    {
+      type: 'openEmbyTab',
+      data: {
+        url,
+      },
+    },
+    (response) => {
+      console.log('🚀 ~ file: adult-emby.vue:86 ~ response:', response)
+      if (chrome.runtime.lastError) {
+        console.error('打开标签页失败:', chrome.runtime.lastError)
+
+        // 如果扩展 API 失败，尝试使用普通方法
+        openLink(url)
+      }
+    },
+  )
 }
 
 function embyBtnHandler() {
@@ -86,12 +110,12 @@ function embyBtnHandler() {
 
 <template>
   <div
-    class="group border-emby relative box-border h-full w-full cursor-pointer overflow-hidden border-3 rounded-2 border-solid bg-white p-x-1"
+    class="group relative box-border h-full w-full cursor-pointer overflow-hidden border-3 border-emby rounded-2 border-solid bg-white p-x-1"
     @click="embyBtnHandler"
   >
     <!-- 滑动背景 -->
     <div
-      class="bg-emby absolute inset-0 z-0 transition-all duration-1000 -translate-x-full group-hover:translate-x-0"
+      class="absolute inset-0 z-0 bg-emby transition-all duration-1000 -translate-x-full group-hover:translate-x-0"
     />
 
     <div
@@ -100,7 +124,7 @@ function embyBtnHandler() {
       <!-- 文字 -->
       <div
         v-if="isFromSettingDialog"
-        class="text-emby relative flex items-center pl-[20%] text-6 font-bold transition-colors duration-1000 group-hover:text-white"
+        class="relative flex items-center pl-[20%] text-6 text-emby font-bold transition-colors duration-1000 group-hover:text-white"
       >
         {{ videoName }}
       </div>

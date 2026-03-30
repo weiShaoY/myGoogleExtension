@@ -27,8 +27,16 @@ export default defineManifest({
     'unlimitedStorage',
     'clipboardRead',
     'clipboardWrite',
+    'tabs',
+  ],
+  host_permissions: [
+    'http://192.168.0.3:8096/*',
+    'https://192.168.0.3:8096/*',
   ],
   side_panel: {
     default_path: 'src/sidepanel/index.html',
+  },
+  background: {
+    service_worker: 'src/background/index.ts',
   },
 })

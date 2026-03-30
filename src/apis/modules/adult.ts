@@ -1,7 +1,5 @@
 import { AdultConfig } from '@/configs'
 
-import { get } from '../http/fetch'
-
 /**
  * 生成 Emby 首页 URL
  * @returns Emby 首页 URL
@@ -48,18 +46,41 @@ export async function searchEmby(videoName: string): Promise<AdultConfigType.Emb
     'X-Emby-Language': AdultConfig.emby.request.language,
   }
 
+  const headers = {
+    'Accept': 'application/json',
+    'Accept-Language': 'zh,zh-CN;q=0.9,ja;q=0.8',
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36',
+  }
+
   try {
-    const response = await get<AdultConfigType.EmbyResponse>(url, {
-      params: requestParams,
-      headers: {
-        'Accept': 'application/json',
-        'Accept-Language': 'zh,zh-CN;q=0.9,ja;q=0.8',
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36',
-      },
-      timeout: 10000,
+    // 通过 background script 发送请求，解决混合内容问题
+    const response = await new Promise<AdultConfigType.EmbyResponse>((resolve, reject) => {
+      chrome.runtime.sendMessage(
+        {
+          type: 'embySearch',
+          data: {
+            url,
+            params: requestParams,
+            headers,
+          },
+        },
+        (response) => {
+          if (chrome.runtime.lastError) {
+            reject(new Error(chrome.runtime.lastError.message))
+            return
+          }
+
+          if (response.success) {
+            resolve(response.data)
+          }
+          else {
+            reject(new Error(response.error))
+          }
+        },
+      )
     })
 
-    return response.data
+    return response
   }
   catch (error) {
     console.error('Emby 搜索请求失败:', error)

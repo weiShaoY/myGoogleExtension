@@ -1,7 +1,5 @@
 export * from './adult'
 
-export * from './emby'
-
 export * from './folder'
 
 export * from './onlinePlay'
