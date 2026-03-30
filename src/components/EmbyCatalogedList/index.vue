@@ -150,7 +150,7 @@ function openFolder(event: any) {
           <span
             class="flex-1 truncate text-start text-4"
           >
-            {{ video.nameWithTags }}
+            {{ video.baseName }}
           </span>
         </div>
       </div>

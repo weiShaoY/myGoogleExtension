@@ -143,7 +143,7 @@ function main() {
 
   isShowEmbyButton.value = true
 
-  const embyHasChinese = matchedList.some(item => item.hasChineseSubtitles)
+  const embyHasChinese = matchedList.some(item => item.hasChineseSubtitle)
 
   // 页面上有中文磁链但你Emby库里没有中文
   if (

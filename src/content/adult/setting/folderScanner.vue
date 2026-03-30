@@ -144,7 +144,7 @@ async function mainBtnHandler() {
       const item: FolderConfigType.File = {
         size: `${(file.size / 1024 ** 3).toFixed(2)} GB`,
 
-        nameWithTags: file.name.substring(0, file.name.lastIndexOf('.')),
+        baseName: file.name.substring(0, file.name.lastIndexOf('.')),
 
         originalName: file.name,
 
@@ -163,7 +163,7 @@ async function mainBtnHandler() {
 
         resolution: nfoContent.resolution || '',
 
-        hasChineseSubtitles:
+        hasChineseSubtitle:
           file.name.includes('-c')
           || file.name.includes('-C')
           || file.name.includes('_ch'),

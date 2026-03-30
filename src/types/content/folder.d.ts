@@ -46,34 +46,39 @@ namespace FolderConfigType {
   type File = {
 
     /**
-     * 视频文件原始完整名称（包含扩展名和所有标签信息）
-     * 例如：'Movie.Title.2024.4K.1080p.BluRay.x264.mkv'
+     * 唯一标识
+     */
+    id: string
+
+    /**
+     * 视频文件原始完整名称（包含扩展名和所有标签）
+     * @example IPZZ-105-C-破解.mp4
      */
     originalName: string
 
     /**
      * 视频文件基础名称（去除扩展名，保留标签信息）
-     * 例如：'Movie.Title.2024.4K.1080p.BluRay.x264'
+     * @example IPZZ-105-C-破解
      */
-    nameWithTags: string
+    baseName: string
 
     /**
      * 视频文件处理后的名称（去除扩展名、去除所有标签、转换为小写）
      * 用于 Emby 媒体库匹配和搜索
-     * 例如：'movie.title.2024'
+     * @example ipzz-105
      */
     cleanName: string
 
     /**
      * 视频文件标签图标标识数组
      * 通过文件名解析得出的标签，用于在界面上显示对应的图标
-     * 例如：['tag-4k', 'tag-ziMu', 'tag-wuMa']
+     * @example ['tag-4k', 'tag-ziMu', 'tag-wuMa']
      */
     tags: string[]
 
     /**
      * 视频文件扩展名（不含点号）
-     * 例如：'mkv', 'mp4', 'avi'
+     * @example 'mp4','mkv','avi'
      */
     extension: string
 
@@ -86,28 +91,23 @@ namespace FolderConfigType {
 
     /**
      * 视频文件是否包含中文字幕
-     * 通过文件名中的特定标识判断（-c, -C, _ch）
+     * @example（-c, -C, _ch,中文）
      */
-    hasChineseSubtitles: boolean
+    hasChineseSubtitle: boolean
 
     /**
      * 视频文件大小（格式化后的字符串）
      * 以 GB 为单位，保留两位小数
-     * 例如：'2.45 GB'
+     * @example '2.45 GB'
      */
     size: string
 
     /**
      * 视频文件分辨率信息
      * 从 NFO 文件或文件名中提取的分辨率数据
-     * 例如：'1080p', '4K', '720p'
+     * @example '720p','1080p','4K'
      */
     resolution: string
-
-    /**
-     * 唯一值
-     */
-    id: string
 
   }
 

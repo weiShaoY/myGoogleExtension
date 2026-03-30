@@ -67,13 +67,13 @@ function main() {
         // 已入库按钮
         addClassAndPush(
           boxElement,
-          `added_to_emby_btn_${video.nameWithTags}`,
+          `added_to_emby_btn_${video.baseName}`,
           addedToInventoryBtnList.value,
           video,
         )
 
         // 需要更新中文
-        if (!video.hasChineseSubtitles && hasChineseTag) {
+        if (!video.hasChineseSubtitle && hasChineseTag) {
           addClassAndPush(
             boxElement,
             `update_chinese_btn_${itemVideoName}`,
@@ -126,7 +126,7 @@ onMounted(() => delayRun(main))
     :key="item.originalName"
   >
     <Teleport
-      :to="`.added_to_emby_btn_${item.nameWithTags}`"
+      :to="`.added_to_emby_btn_${item.baseName}`"
     >
       <EmbyCatalogedList
         :video="item"

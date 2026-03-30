@@ -29,7 +29,7 @@ export function useJavdbMatch() {
     hasChineseTag: boolean,
   ): FileMatchItemType {
     const needsChineseUpdate = localMatchedFileList.some(
-      file => !file.hasChineseSubtitles && hasChineseTag,
+      file => !file.hasChineseSubtitle && hasChineseTag,
     )
 
     return {

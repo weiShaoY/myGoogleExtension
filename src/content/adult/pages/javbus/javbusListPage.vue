@@ -35,12 +35,12 @@ function main() {
       matchedList.forEach((video) => {
         addClassAndPush(
           box,
-          `added_to_emby_btn_${video.nameWithTags}`,
+          `added_to_emby_btn_${video.baseName}`,
           addedToInventoryBtnList.value,
           video,
         )
 
-        if (!video.hasChineseSubtitles && hasChineseTag) {
+        if (!video.hasChineseSubtitle && hasChineseTag) {
           addClassAndPush(
             box,
             `update_chinese_btn_${cleanName}`,
@@ -92,7 +92,7 @@ onMounted(() => delayRun(main))
     :key="item.originalName"
   >
     <Teleport
-      :to="`.added_to_emby_btn_${item.nameWithTags}`"
+      :to="`.added_to_emby_btn_${item.baseName}`"
     >
       <EmbyCatalogedList
         :video="item"

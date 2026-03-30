@@ -181,7 +181,7 @@ function main() {
   isShowEmbyButton.value = true
 
   // 判断中文
-  const embyHasChinese = matchedVideoList.some(i => i.hasChineseSubtitles)
+  const embyHasChinese = matchedVideoList.some(i => i.hasChineseSubtitle)
 
   // 页面上有中文磁链但你Emby库里没有中文
   if (
