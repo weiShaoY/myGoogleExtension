@@ -180,9 +180,9 @@ async function mainBtnHandler() {
     adultStore.saveEmbyFolderData(directoryHandle.name, videoFileSet, startTime)
 
     console.log(
-      '%c Line:211 🥒 adultStore.folderFileList',
+      '%c Line:211 🥒 adultStore.folderVideoList',
       'color:#465975',
-      adultStore.embyFolder.folderFileList,
+      adultStore.embyFolder.folderVideoList,
     )
 
     window.$notification.success({
@@ -280,7 +280,7 @@ async function mainBtnHandler() {
         <span
           class="m-x-2 text-6 color-emby font-bold"
         >
-          {{ adultStore.embyFolder.folderFileList.length }}
+          {{ adultStore.embyFolder.folderVideoList.length }}
         </span>
 
         <span>

@@ -9,7 +9,7 @@ export const useAdultStore = defineStore(
       folderName: 'emby名称',
       folderScanTimestamp: 0,
       folderScanDuration: '',
-      folderFileList: [],
+      folderVideoList: [],
       folderDuplicateNameFileList: [],
       folderUniqueFileNameFileList: [],
     })
@@ -25,7 +25,7 @@ export const useAdultStore = defineStore(
         folderName: _folderName,
         folderScanTimestamp: Date.now(),
         folderScanDuration: getDuration(startTime, Date.now()),
-        folderFileList: Array.from(videoFileSet),
+        folderVideoList: Array.from(videoFileSet),
         folderDuplicateNameFileList: getFolderDuplicateNameFileList(Array.from(videoFileSet), 'cleanName'),
         folderUniqueFileNameFileList: getFolderUniqueFileNameFileList(Array.from(videoFileSet), 'cleanName'),
       }
@@ -75,7 +75,7 @@ export const useAdultStore = defineStore(
      * 根据清洗后的名称匹配视频
      */
     function matchVideos(cleanName: string) {
-      const list = embyFolder.value.folderFileList ?? []
+      const list = embyFolder.value.folderVideoList ?? []
 
       if (!list.length || !cleanName) {
         return []

@@ -24,9 +24,9 @@ namespace FolderConfigType {
     folderScanDuration: string
 
     /**
-     *  文件列表
+     *  文件夹视频列表
      */
-    folderFileList: File[]
+    folderVideoList: File[]
 
     /**
      *  文件夹内文件名重复的文件列表。

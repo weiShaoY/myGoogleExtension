@@ -145,7 +145,7 @@ function getTorrentList() {
  * 主逻辑
  */
 function main() {
-  const fileList = adultStore.embyFolder?.folderFileList ?? []
+  const fileList = adultStore.embyFolder?.folderVideoList ?? []
 
   if (!fileList.length) {
     return
