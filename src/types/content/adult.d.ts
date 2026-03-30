@@ -106,7 +106,7 @@ namespace AdultConfigType {
 
   }
 
-  type videoFile = {
+  type VideoFile = {
 
     /**
      * 唯一标识
@@ -197,7 +197,7 @@ namespace AdultConfigType {
     /**
      *  文件夹视频列表
      */
-    folderVideoList: File[]
+    folderVideoFileList: VideoFile[]
 
     /**
      * @description 文件夹内全量重复视频文件列表
@@ -208,7 +208,7 @@ namespace AdultConfigType {
      * @example 重复判定依据：cleanName 小写一致视为重复
      * @example 结果：[File(aaa-bbb.mp4), File(aaa-bbb.mp4), File(aaa-BBB.mp4), File(eee-fff.mp4), File(eee-fff.mp4)]
      */
-    folderDuplicateVideoFileList: File[]
+    folderDuplicateVideoFileList: VideoFile[]
 
     /**
      * @description 文件夹内重复视频唯一名称列表

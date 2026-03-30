@@ -5,11 +5,11 @@ import { ref } from 'vue'
 export const useAdultStore = defineStore(
   'adult',
   () => {
-    const embyFolder = ref<FolderConfigType.EmbyFolder>({
+    const embyFolder = ref<AdultConfigType.Folder>({
       folderName: 'emby名称',
       folderScanTimestamp: 0,
       folderScanDuration: '',
-      folderVideoList: [],
+      folderVideoFileList: [],
       folderDuplicateVideoFileList: [],
       folderUniqueVideoNameList: [],
     })
@@ -20,12 +20,12 @@ export const useAdultStore = defineStore(
      *  @param videoFileSet - 视频文件集合
      *  @description 保存 Emby 文件夹数据，并将其存储到 GM_setValue 和 Pinia store 中
      */
-    function saveEmbyFolderData(_folderName: string, videoFileSet: Set<FolderConfigType.File>, startTime: number) {
+    function saveEmbyFolderData(_folderName: string, videoFileSet: Set<AdultConfigType.VideoFile>, startTime: number) {
       embyFolder.value = {
         folderName: _folderName,
         folderScanTimestamp: Date.now(),
         folderScanDuration: getDuration(startTime, Date.now()),
-        folderVideoList: Array.from(videoFileSet),
+        folderVideoFileList: Array.from(videoFileSet),
         folderDuplicateVideoFileList: getFolderDuplicateNameFileList(Array.from(videoFileSet), 'cleanName'),
         folderUniqueVideoNameList: getFolderUniqueFileNameFileList(Array.from(videoFileSet), 'cleanName'),
       }
@@ -75,7 +75,7 @@ export const useAdultStore = defineStore(
      * 根据清洗后的名称匹配视频
      */
     function matchVideos(cleanName: string) {
-      const list = embyFolder.value.folderVideoList ?? []
+      const list = embyFolder.value.folderVideoFileList ?? []
 
       if (!list.length || !cleanName) {
         return []

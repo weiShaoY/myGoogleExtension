@@ -6,7 +6,7 @@ const embyBtnList = ref<string[]>([])
 
 const updateChineseBtnList = ref<string[]>([])
 
-const addedToInventoryBtnList = ref<FolderConfigType.File[]>([])
+const addedToInventoryBtnList = ref<AdultConfigType.VideoFile[]>([])
 
 function main() {
   $$('#waterfall .movie-box').forEach((item) => {

@@ -39,7 +39,7 @@ type FileData = {
 /**
  * 视频文件集
  */
-const videoFileSet: Set<FolderConfigType.File> = new Set([])
+const videoFileSet: Set<AdultConfigType.VideoFile> = new Set([])
 
 /**
  *  主按钮点击事件
@@ -141,7 +141,7 @@ async function mainBtnHandler() {
       const nfoContent = parseNfoContent(fileData.nfoContent)
 
       // 创建一个包含视频信息的对象
-      const item: FolderConfigType.File = {
+      const item: AdultConfigType.VideoFile = {
         id: getRandomNumber(),
 
         size: `${(file.size / 1024 ** 3).toFixed(2)} GB`,
@@ -182,7 +182,7 @@ async function mainBtnHandler() {
     console.log(
       '%c Line:211 🥒 adultStore.folderVideoList',
       'color:#465975',
-      adultStore.embyFolder.folderVideoList,
+      adultStore.embyFolder.folderVideoFileList,
     )
 
     window.$notification.success({
@@ -280,7 +280,7 @@ async function mainBtnHandler() {
         <span
           class="m-x-2 text-6 color-emby font-bold"
         >
-          {{ adultStore.embyFolder.folderVideoList.length }}
+          {{ adultStore.embyFolder.folderVideoFileList.length }}
         </span>
 
         <span>

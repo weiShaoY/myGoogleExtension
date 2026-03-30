@@ -25,7 +25,7 @@ const isShowEmbyButton = ref<boolean>(false)
 /**
  * emby已入库列表
  */
-const embyCatalogedList = ref<FolderConfigType.File[]>([])
+const embyCatalogedList = ref<AdultConfigType.VideoFile[]>([])
 
 /**
  * 是否显示在线播放组件

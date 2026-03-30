@@ -35,7 +35,7 @@ Content 脚本相关的类型定义，主要用于浏览器扩展的内容脚本
 | 文件               | 说明                          | 命名空间               |
 | ------------------ | ----------------------------- | ---------------------- |
 | `emby.d.ts`        | Emby 服务器连接和请求配置类型 | `EmbyConfigType`       |
-| `folder.d.ts`      | 文件夹扫描和监控配置类型      | `FolderConfigType`     |
+| `folder.d.ts`      | 文件夹扫描和监控配置类型      | `AdultConfigType`      |
 | `online-play.d.ts` | 在线播放站点配置类型          | `OnlinePlayConfigType` |
 | `torrent.d.ts`     | 种子/磁链列表和排序规则类型   | -                      |
 

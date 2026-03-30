@@ -11,7 +11,7 @@ export type FileMatchItemType = {
   cleanName: string
 
   /** 本地匹配到的视频文件数组 */
-  localMatchedFileList: FolderConfigType.File[]
+  localMatchedFileList: AdultConfigType.VideoFile[]
 
   /** 是否显示更新中文字幕按钮 */
   isShowUpdateChinese: boolean

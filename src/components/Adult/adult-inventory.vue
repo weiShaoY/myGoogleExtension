@@ -7,7 +7,7 @@ type PropsType = {
   /**
    *   视频
    */
-  file: FolderConfigType.File
+  file: AdultConfigType.VideoFile
 
 }
 

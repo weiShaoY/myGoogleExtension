@@ -4,12 +4,12 @@ const embyBtnList = ref<string[]>([])
 
 const updateChineseBtnList = ref<string[]>([])
 
-const addedToInventoryBtnList = ref<FolderConfigType.File[]>([])
+const addedToInventoryBtnList = ref<AdultConfigType.VideoFile[]>([])
 
 const adultStore = useAdultStore()
 
 function main() {
-  const fileList = adultStore.embyFolder.folderVideoList ?? []
+  const fileList = adultStore.embyFolder.folderVideoFileList ?? []
 
   console.log('🚀 ~ file: index.vue:24 ~ fileList:', fileList)
 

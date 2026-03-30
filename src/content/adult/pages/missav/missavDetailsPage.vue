@@ -25,7 +25,7 @@ const isShowEmbyButton = ref<boolean>(false)
 /**
  * emby 已入库列表
  */
-const embyCatalogedList = ref<FolderConfigType.File[]>([])
+const embyCatalogedList = ref<AdultConfigType.VideoFile[]>([])
 
 /**
  * 是否显示在线播放组件
@@ -145,7 +145,7 @@ function getTorrentList() {
  * 主逻辑
  */
 function main() {
-  const fileList = adultStore.embyFolder?.folderVideoList ?? []
+  const fileList = adultStore.embyFolder?.folderVideoFileList ?? []
 
   if (!fileList.length) {
     return
