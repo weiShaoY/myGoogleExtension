@@ -40,46 +40,6 @@ namespace FolderConfigType {
   }
 
   /**
-   *  Emby 文件夹扫描配置
-   *  @description 用于配置 Emby 媒体库文件夹的扫描参数和定时提醒设置
-   */
-  export type EmbyScanConfig = {
-
-    /**
-     * 目标扫描磁盘驱动器盘符
-     * 指定要扫描的磁盘驱动器，用于 Emby 媒体库文件夹扫描
-     * 例如：'C', 'D', 'E', 'F', 'Z'
-     * 默认值：'Z'
-     */
-    targetDrive: string
-
-    /**
-     * 是否启用文件夹扫描定时提醒功能
-     * 当启用时，系统会按照设定的时间间隔提醒用户扫描文件夹
-     * 用于确保 Emby 媒体库与本地文件保持同步
-     * 默认值：true
-     */
-    enableScanReminder: boolean
-
-    /**
-     * 文件夹扫描提醒间隔时间（小时）
-     * 系统每隔多长时间提醒用户扫描一次文件夹
-     * 建议值：168（一周）或 24（一天）
-     * 默认值：168（一周）
-     */
-    scanReminderInterval: number
-
-    /**
-     * 系统监控检查间隔时间（小时）
-     * 系统内部检查扫描提醒状态的时间间隔
-     * 用于确保提醒功能正常运行
-     * 建议值：1（每小时检查一次）
-     * 默认值：1
-     */
-    monitoringCheckInterval: number
-  }
-
-  /**
    * 文件元数据信息
    * 用于存储视频文件的完整信息，包括文件名、标签、路径等
    */

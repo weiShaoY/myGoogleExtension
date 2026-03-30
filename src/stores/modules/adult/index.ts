@@ -14,30 +14,6 @@ export const useAdultStore = defineStore(
       folderUniqueFileNameFileList: [],
     })
 
-    const embyScanConfig = ref<FolderConfigType.EmbyScanConfig>({
-
-      /**
-       * 目标扫描磁盘驱动器盘符
-       */
-      targetDrive: 'Z',
-
-      /**
-       * 是否启用文件夹扫描定时提醒功能
-       */
-      enableScanReminder: false,
-
-      /**
-       * 文件夹扫描提醒间隔时间（小时）
-       */
-      scanReminderInterval: 168,
-
-      /**
-       * 系统监控检查间隔时间（小时）
-       */
-      monitoringCheckInterval: 1,
-
-    })
-
     /**
      *  保存文件夹文件列表
      *  @param _folderName - 文件夹名
@@ -114,11 +90,6 @@ export const useAdultStore = defineStore(
        * Emby 文件夹数据。
        */
       embyFolder,
-
-      /**
-       * Emby 文件夹扫描配置。
-       */
-      embyScanConfig,
 
       /**
        * 保存文件夹文件列表的函数。
