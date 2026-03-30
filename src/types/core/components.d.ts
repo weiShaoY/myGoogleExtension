@@ -29,8 +29,10 @@ declare module 'vue' {
     EmbyPlayButton: typeof import('./../../components/EmbyPlayButton/index.vue')['default']
     HelloWorld: typeof import('./../../components/HelloWorld.vue')['default']
     Main: typeof import('./../../components/Search/main.vue')['default']
+    OnlinePlay: typeof import('../../content/OnlinePlay/index.vue')['default']
     PendingUpdateChineseButton: typeof import('./../../components/PendingUpdateChineseButton/index.vue')['default']
     Search: typeof import('./../../components/Search/index.vue')['default']
+    Site_btn: typeof import('../../content/OnlinePlay/site_btn.vue')['default']
     SvgIcon: typeof import('./../../components/SvgIcon/index.vue')['default']
     TorrentList: typeof import('./../../components/TorrentList/index.vue')['default']
   }

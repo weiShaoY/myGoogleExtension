@@ -50,13 +50,13 @@ function handleSelect(key: string, keyPath: string[]) {
       >
         <SvgIcon
           v-if="!isLoading"
-          icon="emby"
+          icon="adult-setting-emby"
           :size="30"
         />
 
         <SvgIcon
           v-else
-          icon="emby"
+          icon="adult-setting-emby"
           :size="30"
           class="!animate-spin"
           style="--animate-duration: 3s"
@@ -127,7 +127,7 @@ function handleSelect(key: string, keyPath: string[]) {
             class="m-x-auto mb-2 w-[calc(100%-16px)] rounded-3"
           >
             <SvgIcon
-              icon="allDuplicate"
+              icon="adult-setting-allDuplicate"
               class="mr-3"
             />
             所有重复
@@ -138,7 +138,7 @@ function handleSelect(key: string, keyPath: string[]) {
             class="m-x-auto mb-2 w-[calc(100%-16px)] rounded-3"
           >
             <SvgIcon
-              icon="uniqueDuplicate"
+              icon="adult-setting-uniqueDuplicate"
               class="mr-3"
             />
             去重重复
