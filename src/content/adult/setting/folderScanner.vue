@@ -87,7 +87,7 @@ async function mainBtnHandler() {
           //   判断当前条目是否为文件，并且文件扩展名是否在 config.video.supportedExtensions 中
           if (
             handle.kind === 'file'
-            && folderConfig.fileExtensions.some(ext => name.endsWith(`.${ext}`))
+            && folderConfig.videoFileExtensions.some(ext => name.endsWith(`.${ext}`))
           ) {
             let nfoContent = ''
 
@@ -142,6 +142,8 @@ async function mainBtnHandler() {
 
       // 创建一个包含视频信息的对象
       const item: FolderConfigType.File = {
+        id: getRandomNumber(),
+
         size: `${(file.size / 1024 ** 3).toFixed(2)} GB`,
 
         baseName: file.name.substring(0, file.name.lastIndexOf('.')),
@@ -151,11 +153,11 @@ async function mainBtnHandler() {
         cleanName: file.name
           .substring(0, file.name.lastIndexOf('.'))
           .toLowerCase()
-          .replace(folderConfig.fileTagExtractionRegex, ''),
+          .replace(folderConfig.videoFileTagExtractionRegex, ''),
 
         extension: file.name.replace(/^.*\./, ''),
 
-        directoryPath: [...fileData.directoryPath, file.name],
+        filePath: [...fileData.directoryPath, file.name],
 
         tags: getFileTagIconArray(
           file.name.substring(0, file.name.lastIndexOf('.')),
@@ -167,8 +169,6 @@ async function mainBtnHandler() {
           file.name.includes('-c')
           || file.name.includes('-C')
           || file.name.includes('_ch'),
-
-        id: getRandomNumber(),
 
       }
 
@@ -302,7 +302,7 @@ async function mainBtnHandler() {
         <span
           class="m-x-2 text-6 color-emby font-bold"
         >
-          {{ adultStore.embyFolder.folderDuplicateNameFileList.length }}
+          {{ adultStore.embyFolder.folderDuplicateVideoFileList.length }}
         </span>
 
         <span>
@@ -322,7 +322,7 @@ async function mainBtnHandler() {
         <span
           class="m-x-2 text-6 color-emby font-bold"
         >
-          {{ adultStore.embyFolder.folderUniqueFileNameFileList.length }}
+          {{ adultStore.embyFolder.folderUniqueVideoNameList.length }}
         </span>
 
         <span>

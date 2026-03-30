@@ -29,14 +29,26 @@ namespace FolderConfigType {
     folderVideoList: File[]
 
     /**
-     *  文件夹内文件名重复的文件列表。
+     * 文件夹内全量重复视频文件列表
+     * 基于视频文件的 cleanName 不区分大小写进行重复匹配，
+     * 包含所有判定为重复的视频文件完整 File 对象（保留全部重复项，不去重），
+     * 仅排除无重复的独立文件，所有重复文件都会完整保留在数组中
+     * @example 原始视频列表：[aaa-bbb.mp4, aaa-bbb.mp4, aaa-BBB.mp4, ccc-ddd.mp4,eee-fff.mp4, eee-fff.mp4]
+     * @example 重复判定依据：cleanName 小写一致视为重复
+     * @example 结果：[File(aaa-bbb.mp4), File(aaa-bbb.mp4), File(aaa-BBB.mp4), File(eee-fff.mp4), File(eee-fff.mp4)]
      */
-    folderDuplicateNameFileList: File[]
+    folderDuplicateVideoFileList: File[]
 
     /**
-     *  文件夹内文件名已去重的文件列表 (每个文件名仅出现一次)。
+     * 文件夹内重复视频唯一名称列表
+     * 基于视频文件的 cleanName 不区分大小写进行重复匹配，
+     * 每组重复文件仅保留一条原始文件名（字符串格式，用于展示重复组标识），
+     * 不包含重复项，也不包含无重复的独立文件
+     * @example 原始视频列表：[aaa-bbb.mp4, aaa-bbb.mp4, aaa-BBB.mp4, ccc-ddd.mp4,eee-fff.mp4, eee-fff.mp4]
+     * @example 重复判定依据：cleanName 小写一致视为重复
+     * @example 结果：['aaa-bbb.mp4', 'eee-fff.mp4']
      */
-    folderUniqueFileNameFileList: string[]
+    folderUniqueVideoNameList: string[]
   }
 
   /**
@@ -87,7 +99,7 @@ namespace FolderConfigType {
      * 数组形式，从根目录到文件所在目录的层级结构
      * 例如：['Movies', 'Action', '2024']
      */
-    directoryPath: string[]
+    filePath: string[]
 
     /**
      * 视频文件是否包含中文字幕
@@ -112,9 +124,9 @@ namespace FolderConfigType {
   }
 
   /**
-   * 文件识别和标签处理配置
+   * 视频文件识别和标签处理配置
    */
-  type FileProcessing = {
+  type VideoFileProcessing = {
 
     /**
      *  文件夹地址
@@ -124,20 +136,20 @@ namespace FolderConfigType {
     /**
      * 支持的视频文件扩展名列表
      */
-    fileExtensions: string[]
+    videoFileExtensions: string[]
 
     /**
-     * 视频标签配置列表
+     * 视频文件标签配置列表
      */
-    fileTagConfigs: {
+    videoFileTagConfigs: {
       names: string[]
       icon: string
     }[]
 
     /**
-     * 用于从文件名中提取标签的正则表达式
+     * 用于从视频文件名中提取标签的正则表达式
      */
-    fileTagExtractionRegex: RegExp
+    videoFileTagExtractionRegex: RegExp
 
   }
 }

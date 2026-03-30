@@ -26,7 +26,7 @@ function copyFileName() {
 }
 
 function copyFilePath() {
-  const path = props.file.directoryPath.join('\\')
+  const path = props.file.filePath.join('\\')
 
   copyToClipboard((path), {
     title: '文件位置 复制到剪切板',
@@ -50,7 +50,7 @@ function copyFilePath() {
         class="flex items-center justify-between"
       >
         <div
-          class="hover:text-emby text-5"
+          class="text-5 hover:text-emby"
           @click="copyFileName"
         >
           {{ props.file.cleanName }}
@@ -64,10 +64,10 @@ function copyFilePath() {
       </div>
 
       <div
-        class="hover:text-emby mt-2 break-all"
+        class="mt-2 break-all hover:text-emby"
         @click="copyFilePath"
       >
-        {{ props.file.directoryPath.join('\\') }}
+        {{ props.file.filePath.join('\\') }}
       </div>
     </div>
   </div>

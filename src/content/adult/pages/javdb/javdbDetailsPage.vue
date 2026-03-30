@@ -156,6 +156,8 @@ function main() {
     localMatchedFileList,
     isVideoHaveChineseTorrent.value,
   )
+
+  console.log('🚀 ~ file: javdbDetailsPage.vue:161 ~ detailsPageMatchResult.localMatchedFileList:', detailsPageMatchResult.value.localMatchedFileList)
 }
 
 onMounted(() => {

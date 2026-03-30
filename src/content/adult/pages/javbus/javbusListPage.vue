@@ -92,7 +92,7 @@ onMounted(() => delayRun(main))
     :key="item.originalName"
   >
     <Teleport
-      :to="`.added_to_emby_btn_${item.baseName}`"
+      :to="`.added_to_emby_btn_${item.cleanName}`"
     >
       <EmbyCatalogedList
         :video="item"

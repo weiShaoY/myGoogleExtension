@@ -27,14 +27,14 @@ const fileTagConfigs = [
 /**
  *  文件夹配置
  */
-export const folderConfig: FolderConfigType.FileProcessing = {
+export const folderConfig: FolderConfigType.VideoFileProcessing = {
   folderPath: 'Z:\\',
 
-  fileExtensions: ['mp4', 'mkv', 'avi', 'flv', 'wmv', 'mov', 'rmvb'],
+  videoFileExtensions: ['mp4', 'mkv', 'avi', 'flv', 'wmv', 'mov', 'rmvb'],
 
-  fileTagConfigs,
+  videoFileTagConfigs: fileTagConfigs,
 
-  fileTagExtractionRegex: new RegExp(
+  videoFileTagExtractionRegex: new RegExp(
     fileTagConfigs
       .flatMap(tag => tag.names)
       .map(name => name.includes('-')

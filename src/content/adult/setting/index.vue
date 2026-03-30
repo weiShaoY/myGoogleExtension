@@ -25,11 +25,34 @@ function handleSelect(key: string, keyPath: string[]) {
   activeIndex.value = key
 }
 
+onMounted(() => {
+  console.log('🚀 ~ file: index.vue:28 ~ adultStore.embyFolder.folderDuplicateVideoFileList:', adultStore.embyFolder.folderDuplicateVideoFileList)
+})
+
+// // const [
+// //   'aaa-bbb.mp4',
+// //   'aaa-bbb.mp4',
+// //   'aaa-BBB.mp4'
+// // ]
+
+// // folderDuplicateNameFileList: videoFile[]
+// //     folderUniqueFileNameFileList: string[]
+// 视频列表为
 // const [
 //   'aaa-bbb.mp4',
 //   'aaa-bbb.mp4',
-//   'aaa-BBB.mp4'
+//   'aaa-BBB.mp4',
+//   'abc-dfg.mp4',
+//   'cnb-dad.mp4',
+//   'cnb-dad.mp4',
+//   'bde-fgd.mp4',
 // ]
+// 视频数组是这样的, folderDuplicateNameFileList  代表的是所有重复的 比如结果为 ['aaa-bbb.mp4', 'aaa-bbb.mp4','aaa-BBB.mp4','cnb-dad.mp4','cnb-dad.mp4'] 会转换成小写进行比较 然后所有重复都 进这个数组
+
+// folderUniqueFileNameFileList  这个则是 所有重复的只记录一次, 所以结果为 ['aaa-bbb.mp4', 'cnb-dad.mp4']
+
+// 帮我写下这两个 数组变量的 jsdoc 和中文描述, 怎么描述好
+//
 </script>
 
 <template>
@@ -105,7 +128,7 @@ function handleSelect(key: string, keyPath: string[]) {
 
         <!-- Find Duplicate -->
         <el-sub-menu
-          v-if="adultStore.embyFolder.folderDuplicateNameFileList.length > 0 || adultStore.embyFolder.folderUniqueFileNameFileList.length > 0"
+          v-if="adultStore.embyFolder.folderDuplicateVideoFileList.length > 0 || adultStore.embyFolder.folderUniqueVideoNameList.length > 0"
           index="1"
           class="m-x-auto mb-2 w-[calc(100%-16px)] rounded-3"
         >
@@ -173,7 +196,7 @@ function handleSelect(key: string, keyPath: string[]) {
             view-class="p-5 box-border"
           >
             <AdultEmby
-              v-for="(item, index) in adultStore.embyFolder.folderDuplicateNameFileList"
+              v-for="(item, index) in adultStore.embyFolder.folderDuplicateVideoFileList"
               :key="index"
               :video-name="item.cleanName"
               :is-from-setting-dialog="true"
@@ -193,7 +216,7 @@ function handleSelect(key: string, keyPath: string[]) {
           >
 
             <AdultEmby
-              v-for="(item, index) in adultStore.embyFolder.folderUniqueFileNameFileList"
+              v-for="(item, index) in adultStore.embyFolder.folderUniqueVideoNameList"
               :key="index"
               :video-name="item"
               :is-from-setting-dialog="true"

@@ -15,7 +15,7 @@ export function getEmbyHomeUrl(): string {
  * @param item Emby 项目对象
  * @returns Emby 详情页 URL
  */
-export function getEmbyItemUrl(item: EmbyItem): string {
+export function getEmbyItemUrl(item: any): string {
   const { url, port } = AdultConfig.emby.request
 
   return `${url}:${port}/web/index.html#!/item?id=${item.Id}&serverId=${item.ServerId}`

@@ -50,7 +50,7 @@ const isHovered = ref(false) // 添加悬浮状态
 /**
  *   视频目录结构
  */
-const directoryPath = props.video.directoryPath.join('\\')
+const directoryPath = props.video.filePath.join('\\')
 
 /**
  *   视频名称复制到 剪切板

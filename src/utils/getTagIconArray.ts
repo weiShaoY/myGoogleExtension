@@ -8,11 +8,11 @@ import { folderConfig } from '@/configs'
 export function getFileTagIconArray(fullName: string): string[] {
   // 使用正则表达式 config.video.tagExtractionRegex 在 fullName 中查找所有匹配项
 
-  const foundTags = [...fullName.matchAll(folderConfig.fileTagExtractionRegex)]
+  const foundTags = [...fullName.matchAll(folderConfig.videoFileTagExtractionRegex)]
 
   if (foundTags.length > 0) {
     // 从 tagConfigs 中找到匹配的标签对象，并提取 icon 值
-    const matchingIcons = folderConfig.fileTagConfigs
+    const matchingIcons = folderConfig.videoFileTagConfigs
       .filter(tag =>
 
         // 检查 tag.names 数组中的任何一个项是否存在于 foundTags 中
