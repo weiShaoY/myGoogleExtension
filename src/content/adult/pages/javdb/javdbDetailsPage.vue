@@ -136,9 +136,9 @@ function main() {
     return
   }
 
-  const highlightElement = $('.video-meta-panel')
+  const targetElement = $('.video-meta-panel')
 
-  highlightElement?.classList.add('is-highlight')
+  targetElement?.classList.add('is-highlight')
 
   // 使用共享函数创建匹配结果
   detailsPageMatchResult.value = createMatchResult(
@@ -146,8 +146,6 @@ function main() {
     folderMatchedVideos,
     hasChineseTag.value,
   )
-
-  console.log('🚀 ~ file: javdbDetailsPage.vue:161 ~ detailsPageMatchResult.localMatchedFileList:', detailsPageMatchResult.value.folderMatchedVideos)
 }
 
 onMounted(() => {

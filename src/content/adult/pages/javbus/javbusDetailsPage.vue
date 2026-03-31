@@ -131,9 +131,9 @@ function main() {
     return
   }
 
-  const highlightElement = $('.movie')
+  const targetElement = $('.movie')
 
-  highlightElement?.classList.add('is-highlight')
+  targetElement?.classList.add('is-highlight')
 
   // 使用共享函数创建匹配结果
   detailsPageMatchResult.value = createMatchResult(

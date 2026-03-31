@@ -24,10 +24,8 @@ const { cleanVideoName, createMatchResult } = useJavdbMatch()
  * 处理页面主要逻辑
  * 遍历电影列表，匹配本地视频文件
  */
-function processVideoList() {
-  const movieItems = $$('.movie-list .item')
-
-  movieItems.forEach((movieItem) => {
+function main() {
+  $$('.movie-list .item').forEach((movieItem) => {
     const videoName = movieItem.querySelector('strong')?.textContent
 
     const cleanName = cleanVideoName(videoName)
@@ -36,7 +34,7 @@ function processVideoList() {
       return
     }
 
-    const boxElement = asHTMLElement(movieItem.querySelector('.box'))
+    const targetElement = asHTMLElement(movieItem.querySelector('.box'))
 
     const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
 
@@ -45,9 +43,9 @@ function processVideoList() {
     }
 
     // 添加样式类
-    if (isElementExists(boxElement)) {
-      boxElement.classList.add(cleanName)
-      boxElement.classList.add('is-highlight')
+    if (isElementExists(targetElement)) {
+      targetElement.classList.add(cleanName)
+      targetElement.classList.add('is-highlight')
     }
 
     // 检查是否有中文字幕标签
@@ -62,11 +60,9 @@ function processVideoList() {
 
     listPageMatchResults.value.push(matchResultItem)
   })
-
-  console.log('🚀 ~ 匹配视频结果列表:', listPageMatchResults.value)
 }
 
-onMounted(() => delayRun(processVideoList))
+onMounted(() => delayRun(main))
 </script>
 
 <template>

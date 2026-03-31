@@ -1,12 +1,17 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 
+const { cleanVideoName, createMatchResult } = useJavdbMatch()
+
+/**
+ * 文件夹存储
+ */
 const adultStore = useAdultStore()
 
-const embyBtnList = ref<string[]>([])
-
-const updateChineseBtnList = ref<string[]>([])
-
-const addedToInventoryBtnList = ref<AdultType.VideoFile[]>([])
+/**
+ * 页面上匹配到的视频结果列表
+ */
+const listPageMatchResults = ref<AdultType.ListPageMatchResultList>([])
 
 function main() {
   $$('#waterfall .movie-box').forEach((item) => {
@@ -21,35 +26,31 @@ function main() {
       return
     }
 
-    const box = item
+    const targetElement = item
 
-    const matchedList = adultStore.getFolderMatchedVideoList(cleanName)
+    const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
 
-    if (matchedList.length) {
-      box?.classList.add('is-highlight')
-
-      addClassAndPush(box, `emby_btn_${cleanName}`, embyBtnList.value, cleanName)
-
-      const hasChineseTag = !!item.querySelector('.btn-warning')
-
-      matchedList.forEach((video) => {
-        addClassAndPush(
-          box,
-          `added_to_emby_btn_${video.baseName}`,
-          addedToInventoryBtnList.value,
-          video,
-        )
-
-        if (!video.hasChineseSubtitle && hasChineseTag) {
-          addClassAndPush(
-            box,
-            `update_chinese_btn_${cleanName}`,
-            updateChineseBtnList.value,
-            cleanName,
-          )
-        }
-      })
+    if (folderMatchedVideos.length === 0) {
+      return
     }
+
+    // 添加样式类
+    if (isElementExists(targetElement)) {
+      targetElement.classList.add(cleanName)
+      targetElement.classList.add('is-highlight')
+    }
+
+    // 检查是否有中文字幕标签
+    const hasChineseTag = !!item.querySelector('.is-warning')
+
+    // 创建匹配结果项
+    const matchResultItem = createMatchResult(
+      cleanName,
+      folderMatchedVideos,
+      hasChineseTag,
+    )
+
+    listPageMatchResults.value.push(matchResultItem)
   })
 }
 
@@ -57,46 +58,52 @@ onMounted(() => delayRun(main))
 </script>
 
 <template>
-  <!-- 在Emby打开按钮 -->
   <template
-    v-for="videoName in embyBtnList"
-    :key="videoName"
+    v-for="matchResult in listPageMatchResults"
+    :key="matchResult.cleanName"
   >
     <Teleport
-      :to="`.emby_btn_${videoName}`"
+      v-if="matchResult.folderMatchedVideos.length"
+      :to="`.${matchResult.cleanName}`"
     >
-      <EmbyPlayButton
-        :emby-search-name="videoName"
-        :video-name="videoName"
-      />
-    </Teleport>
-  </template>
+      <!-- 事件处理包装器 -->
+      <div
+        class="teleport-wrapper"
+        style="pointer-events: auto;"
+        @click="preventEvent"
+        @mousedown="preventEvent"
+        @mouseup="preventEvent"
+        @pointerdown="preventEvent"
+        @pointerup="preventEvent"
+      >
+        <div
+          class="h-auto w-full flex flex-col items-center border border-gray-200 rounded-lg bg-[rgb(255,255,255)] p-3 space-y-4"
+        >
+          <section
+            class="w-full space-y-2"
+          >
+            <AdultInventory
+              v-for="file in matchResult.folderMatchedVideos"
+              :key="file.id"
+              :file="file"
+            />
+          </section>
 
-  <!-- 可更新中文磁链按钮 -->
-  <template
-    v-for="videoName in updateChineseBtnList"
-    :key="videoName"
-  >
-    <Teleport
-      :to="`.update_chinese_btn_${videoName}`"
-    >
-      <PendingUpdateChineseButton
-        :radius="0"
-      />
-    </Teleport>
-  </template>
+          <section
+            class="grid grid-cols-2 h-15 w-full gap-2 [&>*:last-child:nth-child(1)]:col-span-2"
+          >
+            <AdultChinese
+              v-if="matchResult.isShowUpdateChinese"
+            />
 
-  <!-- 已入库的视频 -->
-  <template
-    v-for="item in addedToInventoryBtnList"
-    :key="item.originalName"
-  >
-    <Teleport
-      :to="`.added_to_emby_btn_${item.cleanName}`"
-    >
-      <EmbyCatalogedList
-        :video="item"
-      />
+            <AdultEmby
+              :video-name="matchResult.cleanName"
+            />
+
+          </section>
+        </div>
+
+      </div>
     </Teleport>
   </template>
 </template>
