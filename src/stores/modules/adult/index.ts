@@ -17,17 +17,17 @@ export const useAdultStore = defineStore(
     /**
      *  保存文件夹文件列表
      *  @param _folderName - 文件夹名
-     *  @param videoFileSet - 视频文件集合
+     *  @param folderVideoFiles - 视频文件集列表
      *  @description 保存 Emby 文件夹数据，并将其存储到 GM_setValue 和 Pinia store 中
      */
-    function saveEmbyFolderData(_folderName: string, videoFileSet: Set<AdultType.VideoFile>, startTime: number) {
+    function saveEmbyFolderData(_folderName: string, folderVideoFiles: AdultType.VideoFile[], startTime: number) {
       embyFolder.value = {
         folderName: _folderName,
+        folderVideoFiles,
         folderScanTimestamp: Date.now(),
         folderScanDuration: getDuration(startTime, Date.now()),
-        folderVideoFiles: Array.from(videoFileSet),
-        folderDuplicateVideoFiles: getDuplicateItems(Array.from(videoFileSet), 'cleanName'),
-        folderUniqueVideoNames: getDuplicateItemKeys(Array.from(videoFileSet), 'cleanName'),
+        folderDuplicateVideoFiles: getDuplicateItems(folderVideoFiles, 'cleanName'),
+        folderUniqueVideoNames: getDuplicateItemKeys(folderVideoFiles, 'cleanName'),
       }
     }
 

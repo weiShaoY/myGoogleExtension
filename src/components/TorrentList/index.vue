@@ -50,9 +50,10 @@ function copyTorrentUrl(torrent: TorrentType) {
     return
   }
 
-  // GM_setClipboard(torrent.url, 'text')
-  copyToClipboard(torrent.url)
-  window.$notification.success(`${torrent.name} 已复制到剪切板`)
+  copyToClipboard(torrent.url, {
+    title: `${torrent.name} 已复制到剪切板`,
+    message: `${torrent.url} `,
+  })
 }
 
 /**

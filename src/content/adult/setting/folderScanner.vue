@@ -177,7 +177,7 @@ async function mainBtnHandler() {
     }
 
     // 将 Set 中的视频文件信息存储到本地
-    adultStore.saveEmbyFolderData(directoryHandle.name, videoFileSet, startTime)
+    adultStore.saveEmbyFolderData(directoryHandle.name, Array.from(videoFileSet), startTime)
 
     console.log(
       '%c Line:211 🥒 adultStore.folderVideoList',
