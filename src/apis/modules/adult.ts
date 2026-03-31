@@ -26,7 +26,7 @@ export function getEmbyItemUrl(item: any): string {
  * @param videoName 视频名称
  * @returns Promise<EmbySearchResponse>
  */
-export async function searchEmby(videoName: string): Promise<AdultConfigType.EmbyResponse> {
+export async function searchEmby(videoName: string): Promise<AdultType.EmbyResponse> {
   const url = `${AdultConfig.emby.request.url}:${AdultConfig.emby.request.port}/emby/Users/${AdultConfig.emby.request.userId}/Items`
 
   const requestParams = {
@@ -54,7 +54,7 @@ export async function searchEmby(videoName: string): Promise<AdultConfigType.Emb
 
   try {
     // 通过 background script 发送请求，解决混合内容问题
-    const response = await new Promise<AdultConfigType.EmbyResponse>((resolve, reject) => {
+    const response = await new Promise<AdultType.EmbyResponse>((resolve, reject) => {
       chrome.runtime.sendMessage(
         {
           type: 'embySearch',

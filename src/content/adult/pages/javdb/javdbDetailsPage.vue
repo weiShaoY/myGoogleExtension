@@ -42,7 +42,7 @@ const { createMatchResult } = useJavdbMatch()
 /**
  * 详情页匹配结果
  */
-const detailsPageMatchResult = ref<AdultConfigType.DetailsPageMatchResult>({
+const detailsPageMatchResult = ref<AdultType.DetailsPageMatchResult>({
   cleanName: '',
   isShowUpdateChinese: false,
   folderMatchedVideoList: [],

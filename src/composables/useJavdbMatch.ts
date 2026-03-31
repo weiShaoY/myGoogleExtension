@@ -23,9 +23,9 @@ export function useJavdbMatch() {
    */
   function createMatchResult(
     cleanName: string,
-    folderMatchedVideoList: AdultConfigType.VideoFile[],
+    folderMatchedVideoList: AdultType.VideoFile[],
     hasChineseTag: boolean,
-  ): AdultConfigType.PageVideoMatchItem {
+  ): AdultType.PageVideoMatchItem {
     const needsChineseUpdate = folderMatchedVideoList.some(
       file => !file.hasChineseSubtitle && hasChineseTag,
     )

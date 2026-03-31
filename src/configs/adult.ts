@@ -1,4 +1,11 @@
-export const AdultConfig = {
+type AdultConfigType = {
+  emby: {
+    request: AdultType.EmbyRequest
+  }
+  videoFileMatch: AdultType.VideoFileMatch
+}
+
+export const AdultConfig: AdultConfigType = {
   emby: {
     request: {
       url: 'http://192.168.0.3',
@@ -18,6 +25,46 @@ export const AdultConfig = {
         Limit: 30,
       },
     },
+  },
+
+  videoFileMatch: {
+    videoFileExtensions: ['mp4', 'mkv', 'avi', 'flv', 'wmv', 'mov', 'rmvb'],
+
+    videoFileTags: [
+      {
+        names: ['4K'],
+        icon: 'tag-4k',
+      },
+      {
+        names: ['-c', '-C', '_ch', '-UC'],
+        icon: 'tag-ziMu',
+      },
+      {
+        names: ['无码'],
+        icon: 'tag-wuMa',
+      },
+      {
+        names: ['破解'],
+        icon: 'tag-poJie',
+      },
+      {
+        names: ['流出'],
+        icon: 'tag-liuChu',
+      },
+    ],
+
+    // 一次性生成的正则表达式，避免重复计算
+    videoFileTagExtractionRegex: (() => {
+      const tagsPattern = ['4K', '-c', '-C', '_ch', '-UC', '无码', '破解', '流出']
+        .map((name) => {
+          const escaped = name.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')
+
+          return name.startsWith('-') ? escaped : `-?${escaped}`
+        })
+        .join('|')
+
+      return new RegExp(tagsPattern, 'gi')
+    })(),
 
   },
 }

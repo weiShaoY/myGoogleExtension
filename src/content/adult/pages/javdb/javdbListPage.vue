@@ -13,7 +13,7 @@ const adultStore = useAdultStore()
 /**
  * 页面上匹配到的视频结果列表
  */
-const listPageMatchResultList = ref<AdultConfigType.ListPageMatchResultList>([])
+const listPageMatchResultList = ref<AdultType.ListPageMatchResultList>([])
 
 /**
  * 导入共享逻辑

@@ -39,7 +39,7 @@ type FileData = {
 /**
  * 视频文件集
  */
-const videoFileSet: Set<AdultConfigType.VideoFile> = new Set([])
+const videoFileSet: Set<AdultType.VideoFile> = new Set([])
 
 /**
  *  主按钮点击事件
@@ -141,7 +141,7 @@ async function mainBtnHandler() {
       const nfoContent = parseNfoContent(fileData.nfoContent)
 
       // 创建一个包含视频信息的对象
-      const item: AdultConfigType.VideoFile = {
+      const item: AdultType.VideoFile = {
         id: getRandomNumber(),
 
         size: `${(file.size / 1024 ** 3).toFixed(2)} GB`,

@@ -1,111 +1,220 @@
 /**
- * 成人内容配置类型
+ * 成人内容相关类型定义
+ * @description 包含 Emby 接口、视频文件处理、页面数据结构等全量类型
  */
-namespace AdultConfigType {
+namespace AdultType {
+
+  /**
+   * Emby 请求配置类型
+   * @description 连接 Emby 服务器所需的全部请求参数
+   */
   type EmbyRequest = {
 
     /**
-     * Emby 服务器的 URL。
-     * @example "http://192.168.0.5"
+     * 服务器的 URL
+     * @example "http://192.168.0.3"
      */
     url: string
 
     /**
-     * Emby 服务器的端口号。
+     * 服务器的端口号
      * @example "8096"
      */
     port: string
 
     /**
-     * Emby 服务器用户 ID。
-     * @example "2409e0a7f21047ba9c74b41be14c6729"
-     */
-    userId: string
-
-    /**
-     * 发起请求的设备名称。
-     * @example "Chrome macOS"
-     */
-    deviceName: string
-
-    /**
-     * 发起请求设备的 ID。
-     * @example "a6f53c21-ff50-4ccd-a6ba-94f5f4830e87"
-     */
-    deviceId: string
-
-    /**
-     * Emby 客户端的版本号。
-     * @example "4.8.11.0"
-     */
-    clientVersion: string
-
-    /**
-     * 用户的认证令牌。
-     * @example "8713e19e82f64fd3a50207b0321f3538"
-     */
-    token: string
-
-    /**
-     * Emby 服务器使用的语言代码。
+     * 服务器使用的语言代码
      * @example "zh-cn"
      */
     language: string
 
     /**
-     * 发送到 Emby 服务器的查询字符串参数。
+     * 服务器用户 ID
+     * @example "705ae9fe2a814cb9bfb4133f2def52e6"
      */
-    queryParams: RequestQueryParams
-  }
-  type EmbyResponse = {
-    TotalRecordCount: number
+    userId: string
 
-    StartIndex: number
+    /**
+     * 用户的认证令牌
+     * @example "1d454f71e9e14cb0acebf66834d77044"
+     */
+    token: string
 
-    Items: {
-      Id: string
-      ServerId: string
-      Name: string
-      PremiereDate?: string
-      ProductionYear?: number
-      PrimaryImageAspectRatio?: number
+    /**
+     * 客户端设备名称（自定义）
+     * @description 用于向 Emby 服务器标识当前网页客户端
+     * @example "Chrome macOS"
+     */
+    deviceName: string
 
-      // 其他可能的字段
-      [key: string]: any
+    /**
+     * 客户端设备唯一ID（自定义）
+     * @description 用于区分不同访问者，自行生成 UUID 即可
+     * @example "e8b45a84-0a7e-4481-906a-3b0555555e0a"
+     */
+    deviceId: string
+
+    /**
+     * 客户端版本号（自定义）
+     * @description 标识当前网页工具的版本，非 Emby 服务端版本
+     * @example "4.9.3.0"
+     */
+    clientVersion: string
+
+    /**
+     * 查询参数
+     * @description 请求媒体库时的默认查询参数
+     */
+    queryParams: {
+
+      /**
+       * 搜索关键词
+       */
+      SearchTerm: string
+
+      /**
+       * 需要额外返回的媒体信息字段（逗号分隔）
+       */
+      Fields: string
+
+      /**
+       * 是否递归查询子目录
+       */
+      Recursive: boolean
+
+      /**
+       * 是否返回用户数据（收藏/观看记录等）
+       */
+      EnableUserData: boolean
+
+      /**
+       * 是否按剧集系列分组
+       */
+      GroupProgramsBySeries: boolean
+
+      /**
+       * 单次请求最大返回数量
+       */
+      Limit: number
     }
   }
 
   /**
-   * 视频文件识别和标签处理配置
+   * Emby 媒体库 API 响应标准格式
+   * @description 符合 Emby /Items 端点返回的分页列表结构
    */
-  type VideoFileProcessing = {
+  type EmbyResponse = {
 
     /**
-     *  文件夹地址
+     * 符合条件的总记录数
      */
-    folderPath: string
+    TotalRecordCount: number
 
     /**
-     * 支持的视频文件扩展名列表
-     * @example ['mp4', 'mkv', 'avi']
+     * 当前页起始索引
+     */
+    StartIndex: number
+
+    /**
+     * 当前返回条目数量
+     */
+    ItemsLength: number
+
+    /**
+     * 媒体项数组
+     */
+    Items: {
+
+      /**
+       * 媒体唯一ID
+       */
+      Id: string
+
+      /**
+       * 所属服务器ID
+       */
+      ServerId: string
+
+      /**
+       * 媒体名称/标题
+       */
+      Name: string
+
+      /**
+       * 首映日期
+       */
+      PremiereDate?: string
+
+      /**
+       * 制作年份
+       */
+      ProductionYear?: number
+
+      /**
+       * 封面图宽高比
+       */
+      PrimaryImageAspectRatio?: number
+
+      /**
+       * 媒体类型（Movie / Episode / Series 等）
+       */
+      Type?: string
+
+      /**
+       * 海报图片ID
+       */
+      PrimaryImageItemId?: string
+
+      /**
+       * 其他扩展字段
+       */
+      [key: string]: any
+    }[]
+  }
+
+  /**
+   * 视频文件识别与标签处理配置
+   * @description 用于解析文件名、提取标签、过滤格式
+   */
+  type VideoFileMatch = {
+
+    /**
+     * 支持的视频扩展名列表（不含点）
+     * @example ['mp4', 'mkv', 'avi', 'flv']
      */
     videoFileExtensions: string[]
 
     /**
-     * 视频文件标签配置列表
+     * 标签规则配置
+     * @description 从文件名匹配标签并映射图标
      */
-    videoFileTagConfigs: {
-      names: string[]
+    videoFileTags: {
+
+      /**
+       * 标签图标标识
+       * @example 'tag-4k'
+       */
       icon: string
+
+      /**
+       * 标签匹配关键词
+       * @example ['2160P','4K']
+       */
+      names: string[]
+
     }[]
 
     /**
-     * 用于从视频文件名中提取标签的正则表达式
+     * 标签提取正则表达式
+     * @description 根据标签自动生成，全局不区分大小写匹配
      */
     videoFileTagExtractionRegex: RegExp
-
   }
 
+  /**
+   * 单个视频文件完整信息结构
+   * @description 包含原始名称、解析后名称、标签、路径、大小、字幕等全量信息
+   */
   type VideoFile = {
 
     /**
@@ -120,22 +229,22 @@ namespace AdultConfigType {
     originalName: string
 
     /**
-     * 视频文件基础名称（去除扩展名，保留标签信息）
+     * 视频文件基础名称（去除扩展名，保留标签）
      * @example IPZZ-105-C-破解
      */
     baseName: string
 
     /**
-     * 视频文件处理后的名称（去除扩展名、去除所有标签、转换为小写）
-     * 标准化文件名（唯一标识)
-     * 用于 Emby 媒体库匹配和搜索
+     * 标准化纯净名称 （唯一标识)
+     * @description 视频文件处理后的名称（去除扩展名、去除所有标签、转换为小写）
+     * @description 用于 Emby 媒体库匹配和搜索
      * @example ipzz-105
      */
     cleanName: string
 
     /**
      * 视频文件标签图标标识数组
-     * 通过文件名解析得出的标签，用于在界面上显示对应的图标
+     * @description 通过文件名解析得出的标签标识，用于在界面上显示对应的图标
      * @example ['tag-4k', 'tag-ziMu', 'tag-wuMa']
      */
     tags: string[]
@@ -148,7 +257,7 @@ namespace AdultConfigType {
 
     /**
      * 视频文件在文件系统中的完整目录路径
-     * 数组形式，从根目录到文件所在目录的层级结构
+     * @description 数组形式，从根目录到文件所在目录的层级结构
      * @example ["日本-有码", "优梨舞奈","328HMDN-412-C 优梨舞奈","328HMDN-412-C.mp4"]
      */
     filePath: string[]
@@ -161,7 +270,7 @@ namespace AdultConfigType {
 
     /**
      * 视频文件大小（格式化后的字符串）
-     * 以 GB 为单位，保留两位小数
+     * @description 以 GB 为单位，保留两位小数
      * @example '2.45 GB'
      */
     size: string
@@ -224,59 +333,34 @@ namespace AdultConfigType {
   }
 
   /**
-   * 文件识别和标签处理配置
-   */
-  type FileProcessing = {
-
-    /**
-     *  文件夹地址
-     */
-    folderPath: string
-
-    /**
-     * 支持的视频文件扩展名列表
-     */
-    fileExtensions: string[]
-
-    /**
-     * 视频标签配置列表
-     */
-    fileTagConfigs: {
-      names: string[]
-      icon: string
-    }[]
-
-    /**
-     * 用于从文件名中提取标签的正则表达式
-     */
-    fileTagExtractionRegex: RegExp
-
-  }
-
-  // # 页面视频匹配结果项接口
-
-  /**
-   * 页面视频匹配结果项
+   * 页面视频匹配项
+   * @description 列表页 / 详情页用于展示匹配结果的结构
    */
   export type PageVideoMatchItem = {
 
-    /** 视频文件处理后的名称（去除扩展名、去除所有标签、转换为小写）） */
+    /**
+     * 视频文件标准化纯净名称（去除扩展名、去除所有标签、转换为小写））
+     */
     cleanName: string
 
-    /** 是否显示中文字幕更新按钮 */
+    /**
+     * 是否显示中文字幕更新按钮
+     */
     isShowUpdateChinese: boolean
 
-    /** 文件夹中匹配到的视频列表 */
-    folderMatchedVideoList: AdultConfigType.VideoFile[]
+    /**
+     * 文件夹中匹配到的视频列表
+     */
+    folderMatchedVideoList: AdultType.VideoFile[]
   }
 
   /**
-   * 列表页匹配结果列表类型
+   * 列表页匹配结果数组
    */
   export type ListPageMatchResultList = PageVideoMatchItem[]
 
   /**
-   * 详情页匹配结果类型
+   * 详情页匹配结果
    */
   export type DetailsPageMatchResult = PageVideoMatchItem
 }

@@ -5,7 +5,7 @@ import { ref } from 'vue'
 export const useAdultStore = defineStore(
   'adult',
   () => {
-    const embyFolder = ref<AdultConfigType.Folder>({
+    const embyFolder = ref<AdultType.Folder>({
       folderName: 'emby名称',
       folderScanTimestamp: 0,
       folderScanDuration: '',
@@ -20,7 +20,7 @@ export const useAdultStore = defineStore(
      *  @param videoFileSet - 视频文件集合
      *  @description 保存 Emby 文件夹数据，并将其存储到 GM_setValue 和 Pinia store 中
      */
-    function saveEmbyFolderData(_folderName: string, videoFileSet: Set<AdultConfigType.VideoFile>, startTime: number) {
+    function saveEmbyFolderData(_folderName: string, videoFileSet: Set<AdultType.VideoFile>, startTime: number) {
       embyFolder.value = {
         folderName: _folderName,
         folderScanTimestamp: Date.now(),
