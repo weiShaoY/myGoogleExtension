@@ -59,3 +59,22 @@ export function addClassAndPush<T>(
 export function delayRun(fn: () => void, ms = 500): void {
   setTimeout(fn, ms)
 }
+
+/**
+ * 阻止事件冒泡、默认行为、穿透
+ * @param event 事件对象
+ */
+export function preventEvent(event: Event): boolean {
+  event.stopPropagation()
+  event.stopImmediatePropagation()
+  event.preventDefault()
+  return false
+}
+
+/**
+ * 判断元素是否存在且是 HTMLElement
+ * @param element 任意值
+ */
+export function isElementExists(element: any): element is HTMLElement {
+  return !!element && element instanceof HTMLElement
+}

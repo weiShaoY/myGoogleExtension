@@ -51,8 +51,8 @@ export function getDuration(startTime: number, endTime: number): string {
 
 /**
  * 根据传入的时间戳生成格式化的中文日期字符串
- * @param {number | string | Date} timestamp - 传入的时间戳（毫秒），可以是数字、字符串或 Date 对象
- * @returns {string} - 返回类似 "2024年01月01日 22点33分44秒" 的日期字符串
+ * @param  timestamp - 传入的时间戳（毫秒），可以是数字、字符串或 Date 对象
+ * @returns  - 返回类似 "2024年01月01日 22点33分44秒" 的日期字符串
  * @throws {TypeError} - 如果传入的 timestamp 不是有效的时间戳或 Date 对象，则抛出 TypeError
  */
 export function formatTimestampToChineseDate(timestamp: number | string | Date): string {

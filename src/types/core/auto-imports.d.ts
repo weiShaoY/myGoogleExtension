@@ -66,6 +66,7 @@ declare global {
   const injectLocal: typeof import('@vueuse/core').injectLocal
   const isClipboardSupported: typeof import('../../utils/clipboard').isClipboardSupported
   const isDefined: typeof import('@vueuse/core').isDefined
+  const isElementExists: typeof import('../../utils/helper').isElementExists
   const isHostnameMatch: typeof import('../../utils/isHostnameMatch').isHostnameMatch
   const isProxy: typeof import('vue').isProxy
   const isReactive: typeof import('vue').isReactive
@@ -106,6 +107,7 @@ declare global {
   const parseNfoContent: typeof import('../../utils/parseNfoContent').parseNfoContent
   const pausableWatch: typeof import('@vueuse/core').pausableWatch
   const piniaChromeStoragePlugin: typeof import('../../stores/piniaChromeStoragePlugin').piniaChromeStoragePlugin
+  const preventEvent: typeof import('../../utils/helper').preventEvent
   const provide: typeof import('vue').provide
   const provideLocal: typeof import('@vueuse/core').provideLocal
   const queryDom: typeof import('../../utils/helper').queryDom
@@ -411,6 +413,7 @@ declare module 'vue' {
     readonly injectLocal: UnwrapRef<typeof import('@vueuse/core')['injectLocal']>
     readonly isClipboardSupported: UnwrapRef<typeof import('../../utils/clipboard')['isClipboardSupported']>
     readonly isDefined: UnwrapRef<typeof import('@vueuse/core')['isDefined']>
+    readonly isElementExists: UnwrapRef<typeof import('../../utils/helper')['isElementExists']>
     readonly isProxy: UnwrapRef<typeof import('vue')['isProxy']>
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
@@ -449,6 +452,7 @@ declare module 'vue' {
     readonly openLink: UnwrapRef<typeof import('../../utils/openLink')['openLink']>
     readonly parseNfoContent: UnwrapRef<typeof import('../../utils/parseNfoContent')['parseNfoContent']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
+    readonly preventEvent: UnwrapRef<typeof import('../../utils/helper')['preventEvent']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
     readonly provideLocal: UnwrapRef<typeof import('@vueuse/core')['provideLocal']>
     readonly reactify: UnwrapRef<typeof import('@vueuse/core')['reactify']>

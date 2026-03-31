@@ -38,6 +38,9 @@ export async function getClipboardText(): Promise<string> {
  * 复制文本到剪贴板（带提示）
  * @param text 要复制的文本
  * @param options 提示选项
+ * @param options.showToast 是否显示提示，默认为 true
+ * @param options.title 提示标题，默认为 '已复制到剪贴板'
+ * @param options.message 提示消息，默认为空
  * @returns 是否复制成功
  */
 export async function copyToClipboard(
