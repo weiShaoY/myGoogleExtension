@@ -17,17 +17,21 @@ function onClick() {
   isShowMainDialog.value = true
 }
 
+/**
+ *  菜单栏激活项
+ */
 const activeIndex = ref('0')
 
-function handleSelect(key: string, keyPath: string[]) {
-  console.log('🚀 ~ file: menu.vue:7 ~ keyPath:', keyPath)
-  console.log('🚀 ~ file: menu.vue:7 ~ key:', key)
+function handleSelect(key: string) {
   activeIndex.value = key
 }
 
-onMounted(() => {
-  console.log('🚀 ~ file: index.vue:28 ~ adultStore.embyFolder.folderDuplicateVideoFileList:', adultStore.embyFolder.folderDuplicateVideoFileList)
-})
+// onMounted(() => {
+//   console.log(
+//     '🚀 ~ file: index.vue:28 ~ adultStore.embyFolder.folderDuplicateVideoFileList:',
+//     adultStore.embyFolder.folderDuplicateVideoFileList,
+//   )
+// })
 
 // // const [
 // //   'aaa-bbb.mp4',
@@ -97,12 +101,10 @@ onMounted(() => {
     :lock-scroll="true"
     :append-to-body="true"
   >
-
     <div
       v-loading="isLoading"
       class="layout-sidebar h-[60vh] w-full flex justify-between"
     >
-
       <!-- 左侧菜单 -->
       <el-menu
         class="h-full w-[15vw]"
@@ -121,14 +123,15 @@ onMounted(() => {
 
           <span
             class="menu-name"
-          >
-            文件夹扫描
-          </span>
+          > 文件夹扫描 </span>
         </el-menu-item>
 
         <!-- Find Duplicate -->
         <el-sub-menu
-          v-if="adultStore.embyFolder.folderDuplicateVideoFileList.length > 0 || adultStore.embyFolder.folderUniqueVideoNameList.length > 0"
+          v-if="
+            adultStore.embyFolder.folderDuplicateVideoFileList.length > 0
+              || adultStore.embyFolder.folderUniqueVideoNameList.length > 0
+          "
           index="1"
           class="m-x-auto mb-2 w-[calc(100%-16px)] rounded-3"
         >
@@ -140,9 +143,7 @@ onMounted(() => {
               class="mr-3"
             />
 
-            <span>
-              查找重复
-            </span>
+            <span> 查找重复 </span>
           </template>
 
           <el-menu-item
@@ -196,7 +197,8 @@ onMounted(() => {
             view-class="p-5 box-border"
           >
             <AdultEmby
-              v-for="(item, index) in adultStore.embyFolder.folderDuplicateVideoFileList"
+              v-for="(item, index) in adultStore.embyFolder
+                .folderDuplicateVideoFileList"
               :key="index"
               :video-name="item.cleanName"
               :is-from-setting-dialog="true"
@@ -214,9 +216,9 @@ onMounted(() => {
             class="w-full"
             view-class="p-5 box-border"
           >
-
             <AdultEmby
-              v-for="(item, index) in adultStore.embyFolder.folderUniqueVideoNameList"
+              v-for="(item, index) in adultStore.embyFolder
+                .folderUniqueVideoNameList"
               :key="index"
               :video-name="item"
               :is-from-setting-dialog="true"
@@ -224,14 +226,12 @@ onMounted(() => {
             />
           </el-scrollbar>
         </template>
-
       </div>
     </div>
   </el-dialog>
 </template>
 
 <style lang="scss">
-
 .el-sub-menu__title {
   margin: 0 auto !important;
   margin-bottom: 8px !important;
