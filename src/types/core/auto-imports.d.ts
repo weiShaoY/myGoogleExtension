@@ -404,7 +404,6 @@ declare module 'vue' {
     readonly getCurrentWatcher: UnwrapRef<typeof import('vue')['getCurrentWatcher']>
     readonly getDuration: UnwrapRef<typeof import('../../utils/time')['getDuration']>
     readonly getElapsedTime: UnwrapRef<typeof import('../../utils/time')['getElapsedTime']>
-    readonly getFileTagIconArray: UnwrapRef<typeof import('../../utils/getTagIconArray')['getFileTagIconArray']>
     readonly getRandomNumber: UnwrapRef<typeof import('../../utils/number')['getRandomNumber']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>

@@ -83,7 +83,7 @@ function getTorrentList() {
 
     const time = tdList[2].children[0]?.textContent?.trim()
 
-    const tagArray = getFileTagIconArray(name)
+    const tagArray = AdultConfig.videoFileMatch.getVideoTagsFromName(name)
 
     if (
       (

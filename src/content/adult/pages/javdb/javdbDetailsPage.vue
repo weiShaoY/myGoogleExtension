@@ -4,6 +4,8 @@ import { onMounted, ref } from 'vue'
 
 import { useJavdbMatch } from '@/composables/useJavdbMatch'
 
+import { AdultConfig } from '@/configs'
+
 /**
  * 文件夹存储
  */
@@ -91,7 +93,7 @@ function getTorrentList() {
       size = Math.round(size * 100) / 100
     }
 
-    const tagArray = getFileTagIconArray(name)
+    const tagArray = AdultConfig.videoFileMatch.getVideoTagsFromName(name)
 
     if (
       (

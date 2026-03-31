@@ -159,7 +159,7 @@ async function mainBtnHandler() {
 
         filePath: [...fileData.directoryPath, file.name],
 
-        tags: getFileTagIconArray(
+        tags: AdultConfig.videoFileMatch.getVideoTagsFromName(
           file.name.substring(0, file.name.lastIndexOf('.')),
         ),
 
