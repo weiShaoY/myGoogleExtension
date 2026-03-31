@@ -18,7 +18,7 @@ const listPageMatchResultList = ref<AdultType.ListPageMatchResultList>([])
 /**
  * 导入共享逻辑
  */
-const { handleWrapperClick, createMatchResult, isElementExists } = useJavdbMatch()
+const { cleanVideoName, createMatchResult } = useJavdbMatch()
 
 /**
  * 处理页面主要逻辑
@@ -82,11 +82,11 @@ onMounted(() => delayRun(processVideoList))
       <div
         class="teleport-wrapper"
         style="pointer-events: auto;"
-        @click="handleWrapperClick"
-        @mousedown="handleWrapperClick"
-        @mouseup="handleWrapperClick"
-        @pointerdown="handleWrapperClick"
-        @pointerup="handleWrapperClick"
+        @click="preventEvent"
+        @mousedown="preventEvent"
+        @mouseup="preventEvent"
+        @pointerdown="preventEvent"
+        @pointerup="preventEvent"
       >
         <div
           class="h-auto w-full flex flex-col items-center border border-gray-200 rounded-lg bg-[rgb(255,255,255)] p-3 space-y-4"

@@ -6,19 +6,19 @@
 // biome-ignore lint: disable
 export {}
 declare global {
-  const $: typeof import('../../utils/helper').$
-  const $$: typeof import('../../utils/helper').$$
+  const $: typeof import('../../utils/dom').$
+  const $$: typeof import('../../utils/dom').$$
   const EffectScope: typeof import('vue').EffectScope
   const WHITESPACE_REGEX: typeof import('../../utils/folder').WHITESPACE_REGEX
   const acceptHMRUpdate: typeof import('pinia').acceptHMRUpdate
-  const addClassAndPush: typeof import('../../utils/helper').addClassAndPush
+  const addClassAndPush: typeof import('../../utils/dom').addClassAndPush
   const addClassAndUpdateList: typeof import('../../utils/classHelper').addClassAndUpdateList
   const addClassIfNotExists: typeof import('../../utils/helper').addClassIfNotExists
-  const asHTMLElement: typeof import('../../utils/helper').asHTMLElement
+  const asHTMLElement: typeof import('../../utils/dom').asHTMLElement
   const asyncComputed: typeof import('@vueuse/core').asyncComputed
   const autoResetRef: typeof import('@vueuse/core').autoResetRef
   const chromeStorage: typeof import('../../stores/pinia-sync-plugin').chromeStorage
-  const cleanVideoName: typeof import('../../utils/helper').cleanVideoName
+  const cleanVideoName: typeof import('../../composables/useJavdbMatch').cleanVideoName
   const computed: typeof import('vue').computed
   const computedAsync: typeof import('@vueuse/core').computedAsync
   const computedEager: typeof import('@vueuse/core').computedEager
@@ -45,7 +45,7 @@ declare global {
   const defineAsyncComponent: typeof import('vue').defineAsyncComponent
   const defineComponent: typeof import('vue').defineComponent
   const defineStore: typeof import('pinia').defineStore
-  const delayRun: typeof import('../../utils/helper').delayRun
+  const delayRun: typeof import('../../utils/async').delayRun
   const eagerComputed: typeof import('@vueuse/core').eagerComputed
   const effectScope: typeof import('vue').effectScope
   const extendRef: typeof import('@vueuse/core').extendRef
@@ -66,7 +66,7 @@ declare global {
   const injectLocal: typeof import('@vueuse/core').injectLocal
   const isClipboardSupported: typeof import('../../utils/clipboard').isClipboardSupported
   const isDefined: typeof import('@vueuse/core').isDefined
-  const isElementExists: typeof import('../../utils/helper').isElementExists
+  const isElementExists: typeof import('../../utils/dom').isElementExists
   const isHostnameMatch: typeof import('../../utils/isHostnameMatch').isHostnameMatch
   const isProxy: typeof import('vue').isProxy
   const isReactive: typeof import('vue').isReactive
@@ -107,7 +107,7 @@ declare global {
   const parseNfoContent: typeof import('../../utils/parseNfoContent').parseNfoContent
   const pausableWatch: typeof import('@vueuse/core').pausableWatch
   const piniaChromeStoragePlugin: typeof import('../../stores/piniaChromeStoragePlugin').piniaChromeStoragePlugin
-  const preventEvent: typeof import('../../utils/helper').preventEvent
+  const preventEvent: typeof import('../../utils/dom').preventEvent
   const provide: typeof import('vue').provide
   const provideLocal: typeof import('@vueuse/core').provideLocal
   const queryDom: typeof import('../../utils/helper').queryDom
@@ -358,16 +358,15 @@ import { UnwrapRef } from 'vue'
 declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
-    readonly $$: UnwrapRef<typeof import('../../utils/helper')['$$']>
-    readonly $: UnwrapRef<typeof import('../../utils/helper')['$']>
+    readonly $$: UnwrapRef<typeof import('../../utils/dom')['$$']>
+    readonly $: UnwrapRef<typeof import('../../utils/dom')['$']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
-    readonly addClassAndPush: UnwrapRef<typeof import('../../utils/helper')['addClassAndPush']>
-    readonly asHTMLElement: UnwrapRef<typeof import('../../utils/helper')['asHTMLElement']>
+    readonly addClassAndPush: UnwrapRef<typeof import('../../utils/dom')['addClassAndPush']>
+    readonly asHTMLElement: UnwrapRef<typeof import('../../utils/dom')['asHTMLElement']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
     readonly chromeStorage: UnwrapRef<typeof import('../../stores/pinia-sync-plugin')['chromeStorage']>
-    readonly cleanVideoName: UnwrapRef<typeof import('../../utils/helper')['cleanVideoName']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly computedAsync: UnwrapRef<typeof import('@vueuse/core')['computedAsync']>
     readonly computedEager: UnwrapRef<typeof import('@vueuse/core')['computedEager']>
@@ -393,7 +392,7 @@ declare module 'vue' {
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly defineStore: UnwrapRef<typeof import('pinia')['defineStore']>
-    readonly delayRun: UnwrapRef<typeof import('../../utils/helper')['delayRun']>
+    readonly delayRun: UnwrapRef<typeof import('../../utils/async')['delayRun']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
@@ -413,7 +412,7 @@ declare module 'vue' {
     readonly injectLocal: UnwrapRef<typeof import('@vueuse/core')['injectLocal']>
     readonly isClipboardSupported: UnwrapRef<typeof import('../../utils/clipboard')['isClipboardSupported']>
     readonly isDefined: UnwrapRef<typeof import('@vueuse/core')['isDefined']>
-    readonly isElementExists: UnwrapRef<typeof import('../../utils/helper')['isElementExists']>
+    readonly isElementExists: UnwrapRef<typeof import('../../utils/dom')['isElementExists']>
     readonly isProxy: UnwrapRef<typeof import('vue')['isProxy']>
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
@@ -452,7 +451,7 @@ declare module 'vue' {
     readonly openLink: UnwrapRef<typeof import('../../utils/openLink')['openLink']>
     readonly parseNfoContent: UnwrapRef<typeof import('../../utils/parseNfoContent')['parseNfoContent']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
-    readonly preventEvent: UnwrapRef<typeof import('../../utils/helper')['preventEvent']>
+    readonly preventEvent: UnwrapRef<typeof import('../../utils/dom')['preventEvent']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
     readonly provideLocal: UnwrapRef<typeof import('@vueuse/core')['provideLocal']>
     readonly reactify: UnwrapRef<typeof import('@vueuse/core')['reactify']>

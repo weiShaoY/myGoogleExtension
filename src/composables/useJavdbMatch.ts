@@ -5,21 +5,16 @@
  */
 export function useJavdbMatch() {
   /**
-   * 处理包装器点击事件，阻止事件透传
-   * @description 防止点击自定义组件时，事件冒泡到 JavDB 原始页面，避免触发页面默认行为
-   * @param event 事件对象
-   * @returns  返回 false，进一步阻止默认行为
+   * 清洗视频名称：小写 + 去空格
    */
-  function handleWrapperClick(event: Event) {
-    // 阻止事件冒泡到父元素（原始页面）
-    event.stopPropagation()
+  function cleanVideoName(name: string | null | undefined): string {
+    if (!name) {
+      return ''
+    }
 
-    // 阻止同元素上其他事件监听器执行
-    event.stopImmediatePropagation()
-
-    // 阻止事件默认行为（如链接跳转、表单提交）
-    event.preventDefault()
-    return false
+    return name.trim()
+      .toLowerCase()
+      .replace(/\s+/g, '')
   }
 
   /**
@@ -47,19 +42,8 @@ export function useJavdbMatch() {
     }
   }
 
-  /**
-   * 校验元素是否为有效的 HTMLElement
-   * @description 用于避免 DOM 操作时出现类型错误，过滤无效元素（null/undefined/非DOM元素）
-   * @param  element - 需要校验的元素（可能为 null、undefined 或非 DOM 元素）
-   * @returns  类型守卫，返回 true 则元素为有效的 HTMLElement
-   */
-  function isElementExists(element: any): element is HTMLElement {
-    return !!element
-  }
-
   return {
-    handleWrapperClick,
+    cleanVideoName,
     createMatchResult,
-    isElementExists,
   }
 }

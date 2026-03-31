@@ -26,7 +26,6 @@
     "asyncComputed": true,
     "autoResetRef": true,
     "chromeStorage": true,
-    "cleanVideoName": true,
     "computed": true,
     "computedAsync": true,
     "computedEager": true,

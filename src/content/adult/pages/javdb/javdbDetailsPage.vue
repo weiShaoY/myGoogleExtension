@@ -37,7 +37,7 @@ const torrentList = ref<TorrentType[]>([])
 /**
  * 导入共享逻辑
  */
-const { createMatchResult } = useJavdbMatch()
+const { cleanVideoName, createMatchResult } = useJavdbMatch()
 
 /**
  * 详情页匹配结果
