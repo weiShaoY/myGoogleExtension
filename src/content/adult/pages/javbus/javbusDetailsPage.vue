@@ -66,14 +66,6 @@ function getTorrentList() {
 
     const name = tdList[0].children[0]?.textContent?.trim() as string
 
-    console.log('🚀 ~ file: javbusDetailsPage.vue:68 ~ name:', name)
-
-    if (name === 'START-538-中文字幕') {
-      const aaa = AdultConfig.videoFileMatch.getVideoTagsFromName(name)
-
-      console.log('🚀 ~ file: javbusDetailsPage.vue:73 ~ aaa:', aaa)
-    }
-
     const size = Number.parseFloat(tdList[1].children[0]?.textContent?.trim().match(/(\d+(\.\d+)?)GB/)?.[1] || '0')
 
     const time = tdList[2].children[0]?.textContent?.trim()
