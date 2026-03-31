@@ -2,7 +2,7 @@
 <!------------------------------------    ------------------------------------------------->
 <script lang="ts" setup>
 
-import { folderConfig } from '@/configs'
+import { AdultConfig } from '@/configs'
 
 const isLoading = defineModel<boolean>('isLoading', { // 注意这里对应 v-model:is-loading
   default: false,
@@ -87,7 +87,7 @@ async function mainBtnHandler() {
           //   判断当前条目是否为文件，并且文件扩展名是否在 config.video.supportedExtensions 中
           if (
             handle.kind === 'file'
-            && folderConfig.videoFileExtensions.some(ext => name.endsWith(`.${ext}`))
+            && AdultConfig.videoFileMatch.videoFileExtensions.some(ext => name.endsWith(`.${ext}`))
           ) {
             let nfoContent = ''
 
@@ -153,7 +153,7 @@ async function mainBtnHandler() {
         cleanName: file.name
           .substring(0, file.name.lastIndexOf('.'))
           .toLowerCase()
-          .replace(folderConfig.videoFileTagExtractionRegex, ''),
+          .replace(AdultConfig.videoFileMatch.videoFileTagExtractionRegex, ''),
 
         extension: file.name.replace(/^.*\./, ''),
 

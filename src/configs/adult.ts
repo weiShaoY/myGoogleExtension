@@ -28,6 +28,7 @@ export const AdultConfig: AdultConfigType = {
   },
 
   videoFileMatch: {
+
     videoFileExtensions: ['mp4', 'mkv', 'avi', 'flv', 'wmv', 'mov', 'rmvb'],
 
     videoFileTags: [
