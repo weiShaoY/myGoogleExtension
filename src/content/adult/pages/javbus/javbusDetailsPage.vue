@@ -1,31 +1,15 @@
 <script lang="ts" setup>
-
-const adultStore = useAdultStore()
+import { AdultConfig } from '@/configs'
 
 /**
- * 页面视频名称
+ * 文件夹存储
  */
-const pageVideoName = ref<string>('')
+const adultStore = useAdultStore()
 
 /**
  * 是否视频存在中文磁链
  */
-const isVideoHaveChineseTorrent = ref<boolean>(false)
-
-/**
- * 是否显示 提示更新中文磁链按钮
- */
-const isShowPendingUpdateChineseButton = ref<boolean>(false)
-
-/**
- * 是否显示 emby按钮
- */
-const isShowEmbyButton = ref<boolean>(false)
-
-/**
- * emby已入库列表
- */
-const embyCatalogedList = ref<AdultType.VideoFile[]>([])
+const hasChineseTag = ref<boolean>(false)
 
 /**
  * 是否显示在线播放组件
@@ -43,15 +27,18 @@ const isShowTorrentList = ref<boolean>(false)
 const torrentList = ref<TorrentType[]>([])
 
 /**
- * 获取详情页视频名称
+ * 导入共享逻辑
  */
-function getPageVideoName(): string {
-  const url = window.location.href
+const { cleanVideoName, createMatchResult } = useJavdbMatch()
 
-  return url.substring(url.lastIndexOf('/') + 1)
-    .trim()
-    .toLowerCase() || ''
-}
+/**
+ * 详情页匹配结果
+ */
+const detailsPageMatchResult = ref<AdultType.DetailsPageMatchResult>({
+  cleanName: '',
+  isShowUpdateChinese: false,
+  folderMatchedVideos: [],
+})
 
 /**
  * 获取页面中的磁链列表
@@ -79,20 +66,28 @@ function getTorrentList() {
 
     const name = tdList[0].children[0]?.textContent?.trim() as string
 
+    console.log('🚀 ~ file: javbusDetailsPage.vue:68 ~ name:', name)
+
+    if (name === 'START-538-中文字幕') {
+      const aaa = AdultConfig.videoFileMatch.getVideoTagsFromName(name)
+
+      console.log('🚀 ~ file: javbusDetailsPage.vue:73 ~ aaa:', aaa)
+    }
+
     const size = Number.parseFloat(tdList[1].children[0]?.textContent?.trim().match(/(\d+(\.\d+)?)GB/)?.[1] || '0')
 
     const time = tdList[2].children[0]?.textContent?.trim()
 
-    const tagArray = AdultConfig.videoFileMatch.getVideoTagsFromName(name)
+    const tags = AdultConfig.videoFileMatch.getVideoTagsFromName(name)
 
     if (
       (
         name.toLowerCase().includes('-c')
         || name.toLowerCase().includes('中文')
       )
-      && !isVideoHaveChineseTorrent.value
+      && !hasChineseTag.value
     ) {
-      isVideoHaveChineseTorrent.value = true
+      hasChineseTag.value = true
     }
 
     const torrentListItem: TorrentType = {
@@ -100,11 +95,12 @@ function getTorrentList() {
       name,
       size,
       time,
-      tags: tagArray,
+      tags,
     }
 
     torrentList.value.push(torrentListItem)
   })
+  console.log('🚀 ~ file: javbusDetailsPage.vue:94 ~ torrentList.value:', torrentList.value)
 
   const targetElement = $('.container #magneturlpost')
 
@@ -121,17 +117,17 @@ function getTorrentList() {
  * 主逻辑
  */
 function main() {
-  const name = getPageVideoName()
+  const name = location.pathname.split('/').pop()
 
-  if (!name) {
+  const cleanName = cleanVideoName(name)
+
+  if (!cleanName) {
     return
   }
 
-  pageVideoName.value = name
+  const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
 
-  const matchedList = adultStore.getFolderMatchedVideoList(name)
-
-  if (!matchedList.length) {
+  if (folderMatchedVideos.length === 0) {
     return
   }
 
@@ -139,89 +135,47 @@ function main() {
 
   highlightElement?.classList.add('is-highlight')
 
-  embyCatalogedList.value = matchedList
-
-  isShowEmbyButton.value = true
-
-  const embyHasChinese = matchedList.some(item => item.hasChineseSubtitle)
-
-  // 页面上有中文磁链但你Emby库里没有中文
-  if (
-    isVideoHaveChineseTorrent.value && !embyHasChinese
-  ) {
-    isShowPendingUpdateChineseButton.value = true
-  }
+  // 使用共享函数创建匹配结果
+  detailsPageMatchResult.value = createMatchResult(
+    cleanName,
+    folderMatchedVideos,
+    hasChineseTag.value,
+  )
 }
 
 /**
- * Javbus 详情页 元素顺序修改
+ * 调整 Javbus 详情页页面元素结构
+ * @description 修改预览图位置、移除无用模块、优化页面布局
  */
-function javbusDetailElementsModifier() {
-  // 调整 预览图的顺序
-
+function adjustJavbusDetailLayout() {
+  // 获取目标元素
   const sampleWaterfall = $('#sample-waterfall')
 
   const torrentList = $('#TorrentList')
 
-  // 将 sampleWaterfall 元素剪切并插入到 TorrentList 之前
-  if (sampleWaterfall && torrentList) {
+  // 调整预览图位置：放到种子列表上方
+  if (isElementExists(sampleWaterfall) && isElementExists(torrentList)) {
     sampleWaterfall.style.margin = '24px auto'
-
     torrentList.parentNode?.insertBefore(sampleWaterfall, torrentList)
   }
 
-  // 移除  磁力連結投稿
+  // 移除无用模块：磁力链接投稿
   $('#mag-submit-show')?.remove()
 }
 
 onMounted(() => {
   delayRun(() => {
     getTorrentList()
+
     main()
 
-    // Javbus 详情页元素顺序修改
-    javbusDetailElementsModifier()
+    // 调整 Javbus 详情页页面元素结构
+    adjustJavbusDetailLayout()
   })
 })
 </script>
 
 <template>
-  <!-- 挂载到右侧 -->
-  <div
-    class="sm-50 fixed left-2 top-60 w-30 lg:w-70 md:w-50"
-  >
-    <!-- 提示更新中文磁链按钮 -->
-    <PendingUpdateChineseButton
-      v-if="isShowPendingUpdateChineseButton"
-      class="w-full"
-    />
-
-    <!-- emby播放按钮 -->
-    <EmbyPlayButton
-      v-if="isShowEmbyButton"
-      :video-name="pageVideoName"
-      :emby-search-name="pageVideoName"
-    />
-
-    <!-- emby已入库列表 -->
-    <div
-      v-if="embyCatalogedList.length"
-      class="w-full rounded-2 bg-[#FF8400] p-2"
-    >
-      <EmbyCatalogedList
-        v-for="(item, index) in embyCatalogedList"
-        :key="index"
-        :video="item"
-      />
-    </div>
-  </div>
-
-  <!-- 在线播放 -->
-  <OnlinePlay
-    v-if="isShowOnlinePlay"
-    to="#OnlinePlay"
-    :video-name="pageVideoName"
-  />
   <!-- 自定义磁链列表 -->
   <TorrentList
     v-if="isShowTorrentList"
@@ -229,6 +183,38 @@ onMounted(() => {
     scroll-target=".video-panel"
     :torrent-list="torrentList"
   />
+
+  <div
+    v-if="detailsPageMatchResult.folderMatchedVideos.length > 0 "
+    class="fixed left-2 top-60 !w-70"
+  >
+    <div
+      class="h-auto w-full flex flex-col items-center border border-gray-200 rounded-lg bg-[rgb(255,255,255)] p-3 space-y-4"
+    >
+      <section
+        class="w-full space-y-2"
+      >
+        <AdultInventory
+          v-for="file in detailsPageMatchResult.folderMatchedVideos"
+          :key="file.id"
+          :file="file"
+        />
+      </section>
+
+      <section
+        class="grid grid-cols-2 h-15 w-full gap-2 [&>*:last-child:nth-child(1)]:col-span-2"
+      >
+        <AdultChinese
+          v-if="detailsPageMatchResult.isShowUpdateChinese"
+        />
+
+        <AdultEmby
+          :video-name="detailsPageMatchResult.cleanName"
+        />
+
+      </section>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>

@@ -2,19 +2,12 @@
 
 import { onMounted, ref } from 'vue'
 
-import { useJavdbMatch } from '@/composables/useJavdbMatch'
-
 import { AdultConfig } from '@/configs'
 
 /**
  * 文件夹存储
  */
 const adultStore = useAdultStore()
-
-/**
- * 页面视频名称
- */
-const pageVideoName = ref<string>('')
 
 /**
  * 是否视频存在中文磁链
@@ -91,7 +84,7 @@ function getTorrentList() {
       size = Math.round(size * 100) / 100
     }
 
-    const tagArray = AdultConfig.videoFileMatch.getVideoTagsFromName(name)
+    const tags = AdultConfig.videoFileMatch.getVideoTagsFromName(name)
 
     if (
       (
@@ -108,7 +101,7 @@ function getTorrentList() {
       name,
       size,
       time,
-      tags: tagArray,
+      tags,
     }
 
     torrentList.value.push(torrentListItem)
@@ -137,8 +130,6 @@ function main() {
     return
   }
 
-  pageVideoName.value = cleanName
-
   const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
 
   if (folderMatchedVideos.length === 0) {
@@ -160,19 +151,16 @@ function main() {
 }
 
 onMounted(() => {
-  getTorrentList()
-  delayRun(main)
+  delayRun(() => {
+    getTorrentList()
+
+    main()
+  })
 })
 </script>
 
 <template>
 
-  <!-- 在线播放 -->
-  <!-- <OnlinePlay
-    v-if="isShowOnlinePlay"
-    to="#OnlinePlay"
-    :video-name="detailsPageMatchResult.cleanName"
-  /> -->
   <!-- 自定义磁链列表 -->
   <TorrentList
     v-if="isShowTorrentList"
@@ -181,7 +169,6 @@ onMounted(() => {
     :torrent-list="torrentList"
   />
 
-  <!-- 到右侧 -->
   <div
     v-if="detailsPageMatchResult.folderMatchedVideos.length > 0 "
     class="fixed left-2 top-60 !w-70"
@@ -212,7 +199,6 @@ onMounted(() => {
 
       </section>
     </div>
-
   </div>
 </template>
 

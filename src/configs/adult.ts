@@ -63,7 +63,7 @@ export const AdultConfig: AdultConfigType = {
         icon: 'tag-4k',
       },
       {
-        names: ['-c', '-C', '_ch', '-UC'],
+        names: ['-c', '-C', '_ch', '-UC', '中文'],
         icon: 'tag-ziMu',
       },
       {
