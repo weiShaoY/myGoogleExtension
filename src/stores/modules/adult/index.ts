@@ -9,9 +9,9 @@ export const useAdultStore = defineStore(
       folderName: 'emby名称',
       folderScanTimestamp: 0,
       folderScanDuration: '',
-      folderVideoFileList: [],
-      folderDuplicateVideoFileList: [],
-      folderUniqueVideoNameList: [],
+      folderVideoFiles: [],
+      folderDuplicateVideoFiles: [],
+      folderUniqueVideoNames: [],
     })
 
     /**
@@ -25,9 +25,9 @@ export const useAdultStore = defineStore(
         folderName: _folderName,
         folderScanTimestamp: Date.now(),
         folderScanDuration: getDuration(startTime, Date.now()),
-        folderVideoFileList: Array.from(videoFileSet),
-        folderDuplicateVideoFileList: getDuplicateItems(Array.from(videoFileSet), 'cleanName'),
-        folderUniqueVideoNameList: getDuplicateItemKeys(Array.from(videoFileSet), 'cleanName'),
+        folderVideoFiles: Array.from(videoFileSet),
+        folderDuplicateVideoFiles: getDuplicateItems(Array.from(videoFileSet), 'cleanName'),
+        folderUniqueVideoNames: getDuplicateItemKeys(Array.from(videoFileSet), 'cleanName'),
       }
     }
 
@@ -37,8 +37,8 @@ export const useAdultStore = defineStore(
      * @param cleanName 标准化纯净名称
      * @returns 匹配到的视频文件列表
      */
-    function getFolderVideosByCleanName(cleanName: string) {
-      const list = embyFolder.value.folderVideoFileList ?? []
+    function getFolderMatchedVideoList(cleanName: string) {
+      const list = embyFolder.value.folderVideoFiles ?? []
 
       if (!list.length || !cleanName) {
         return []
@@ -63,11 +63,12 @@ export const useAdultStore = defineStore(
       saveEmbyFolderData,
 
       /**
-       * 根据清洗后的名称匹配视频
-       * @param cleanName - 清洗后的名称
-       * @return 匹配到的视频列表
+       * 根据标准化名称获取文件夹中的视频列表
+       * @description 通过 cleanName 模糊匹配当前文件夹内的视频文件
+       * @param cleanName 标准化纯净名称
+       * @returns 匹配到的视频文件列表
        */
-      matchVideos: getFolderVideosByCleanName,
+      getFolderMatchedVideoList,
     }
   },
 

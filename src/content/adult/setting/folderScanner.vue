@@ -182,7 +182,7 @@ async function mainBtnHandler() {
     console.log(
       '%c Line:211 🥒 adultStore.folderVideoList',
       'color:#465975',
-      adultStore.embyFolder.folderVideoFileList,
+      adultStore.embyFolder.folderVideoFiles,
     )
 
     window.$notification.success({
@@ -280,7 +280,7 @@ async function mainBtnHandler() {
         <span
           class="m-x-2 text-6 color-emby font-bold"
         >
-          {{ adultStore.embyFolder.folderVideoFileList.length }}
+          {{ adultStore.embyFolder.folderVideoFiles.length }}
         </span>
 
         <span>
@@ -302,7 +302,7 @@ async function mainBtnHandler() {
         <span
           class="m-x-2 text-6 color-emby font-bold"
         >
-          {{ adultStore.embyFolder.folderDuplicateVideoFileList.length }}
+          {{ adultStore.embyFolder.folderDuplicateVideoFiles.length }}
         </span>
 
         <span>
@@ -322,7 +322,7 @@ async function mainBtnHandler() {
         <span
           class="m-x-2 text-6 color-emby font-bold"
         >
-          {{ adultStore.embyFolder.folderUniqueVideoNameList.length }}
+          {{ adultStore.embyFolder.folderUniqueVideoNames.length }}
         </span>
 
         <span>

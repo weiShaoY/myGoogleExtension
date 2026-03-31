@@ -47,7 +47,7 @@ const { cleanVideoName, createMatchResult } = useJavdbMatch()
 const detailsPageMatchResult = ref<AdultType.DetailsPageMatchResult>({
   cleanName: '',
   isShowUpdateChinese: false,
-  folderMatchedVideoList: [],
+  folderMatchedVideos: [],
 })
 
 /**
@@ -139,9 +139,9 @@ function main() {
 
   pageVideoName.value = cleanName
 
-  const folderMatchedVideoList = adultStore.matchVideos(cleanName)
+  const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
 
-  if (folderMatchedVideoList.length === 0) {
+  if (folderMatchedVideos.length === 0) {
     return
   }
 
@@ -152,11 +152,11 @@ function main() {
   // 使用共享函数创建匹配结果
   detailsPageMatchResult.value = createMatchResult(
     cleanName,
-    folderMatchedVideoList,
+    folderMatchedVideos,
     hasChineseTag.value,
   )
 
-  console.log('🚀 ~ file: javdbDetailsPage.vue:161 ~ detailsPageMatchResult.localMatchedFileList:', detailsPageMatchResult.value.folderMatchedVideoList)
+  console.log('🚀 ~ file: javdbDetailsPage.vue:161 ~ detailsPageMatchResult.localMatchedFileList:', detailsPageMatchResult.value.folderMatchedVideos)
 }
 
 onMounted(() => {
@@ -183,7 +183,7 @@ onMounted(() => {
 
   <!-- 到右侧 -->
   <div
-    v-if="detailsPageMatchResult.folderMatchedVideoList.length > 0 "
+    v-if="detailsPageMatchResult.folderMatchedVideos.length > 0 "
     class="fixed left-2 top-60 !w-70"
   >
     <div
@@ -193,7 +193,7 @@ onMounted(() => {
         class="w-full space-y-2"
       >
         <AdultInventory
-          v-for="file in detailsPageMatchResult.folderMatchedVideoList"
+          v-for="file in detailsPageMatchResult.folderMatchedVideos"
           :key="file.id"
           :file="file"
         />

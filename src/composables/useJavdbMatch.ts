@@ -21,23 +21,23 @@ export function useJavdbMatch() {
    * 创建视频匹配结果项
    * @description 根据清理后的文件名、匹配到的视频列表、字幕标签，生成页面所需的匹配结果结构
    * @param  cleanName - 视频标准化纯净名称（去标签、去扩展名、小写）
-   * @param  folderMatchedVideoList - 文件夹中与当前名称匹配的所有视频文件列表
+   * @param  folderMatchedVideos - 文件夹中与当前名称匹配的所有视频文件列表
    * @param  hasChineseTag - 当前匹配项是否包含中文字幕标签
    * @returns 符合页面展示规范的匹配结果项
    */
   function createMatchResult(
     cleanName: string,
-    folderMatchedVideoList: AdultType.VideoFile[],
+    folderMatchedVideos: AdultType.VideoFile[],
     hasChineseTag: boolean,
   ): AdultType.PageVideoMatchItem {
     // 判断是否需要显示中文字幕更新按钮：存在无中文字幕但有字幕标签的视频
-    const needsChineseUpdate = folderMatchedVideoList.some(
+    const needsChineseUpdate = folderMatchedVideos.some(
       file => !file.hasChineseSubtitle && hasChineseTag,
     )
 
     return {
       cleanName,
-      folderMatchedVideoList,
+      folderMatchedVideos,
       isShowUpdateChinese: needsChineseUpdate,
     }
   }

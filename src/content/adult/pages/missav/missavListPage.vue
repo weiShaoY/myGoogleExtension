@@ -9,7 +9,7 @@ const addedToInventoryBtnList = ref<AdultType.VideoFile[]>([])
 const adultStore = useAdultStore()
 
 function main() {
-  const fileList = adultStore.embyFolder.folderVideoFileList ?? []
+  const fileList = adultStore.embyFolder.folderVideoFiles ?? []
 
   console.log('🚀 ~ file: index.vue:24 ~ fileList:', fileList)
 

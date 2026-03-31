@@ -307,7 +307,7 @@ namespace AdultType {
     /**
      *  文件夹视频列表
      */
-    folderVideoFileList: VideoFile[]
+    folderVideoFiles: VideoFile[]
 
     /**
      * @description 文件夹内全量重复视频文件列表
@@ -318,7 +318,7 @@ namespace AdultType {
      * @example 重复判定依据：cleanName 小写一致视为重复
      * @example 结果：[File(aaa-bbb.mp4), File(aaa-bbb.mp4), File(aaa-BBB.mp4), File(eee-fff.mp4), File(eee-fff.mp4)]
      */
-    folderDuplicateVideoFileList: VideoFile[]
+    folderDuplicateVideoFiles: VideoFile[]
 
     /**
      * @description 文件夹内重复视频唯一名称列表
@@ -329,7 +329,7 @@ namespace AdultType {
      * @example 重复判定依据：cleanName 小写一致视为重复
      * @example 结果：['aaa-bbb.mp4', 'eee-fff.mp4']
      */
-    folderUniqueVideoNameList: string[]
+    folderUniqueVideoNames: string[]
   }
 
   /**
@@ -351,7 +351,7 @@ namespace AdultType {
     /**
      * 文件夹中匹配到的视频列表
      */
-    folderMatchedVideoList: AdultType.VideoFile[]
+    folderMatchedVideos: AdultType.VideoFile[]
   }
 
   /**

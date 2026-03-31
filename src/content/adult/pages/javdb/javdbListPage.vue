@@ -13,7 +13,7 @@ const adultStore = useAdultStore()
 /**
  * 页面上匹配到的视频结果列表
  */
-const listPageMatchResultList = ref<AdultType.ListPageMatchResultList>([])
+const listPageMatchResults = ref<AdultType.ListPageMatchResultList>([])
 
 /**
  * 导入共享逻辑
@@ -38,9 +38,9 @@ function processVideoList() {
 
     const boxElement = asHTMLElement(movieItem.querySelector('.box'))
 
-    const folderMatchedVideoList = adultStore.matchVideos(cleanName)
+    const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
 
-    if (folderMatchedVideoList.length === 0) {
+    if (folderMatchedVideos.length === 0) {
       return
     }
 
@@ -56,14 +56,14 @@ function processVideoList() {
     // 创建匹配结果项
     const matchResultItem = createMatchResult(
       cleanName,
-      folderMatchedVideoList,
+      folderMatchedVideos,
       hasChineseTag,
     )
 
-    listPageMatchResultList.value.push(matchResultItem)
+    listPageMatchResults.value.push(matchResultItem)
   })
 
-  console.log('🚀 ~ 匹配视频结果列表:', listPageMatchResultList.value)
+  console.log('🚀 ~ 匹配视频结果列表:', listPageMatchResults.value)
 }
 
 onMounted(() => delayRun(processVideoList))
@@ -71,11 +71,11 @@ onMounted(() => delayRun(processVideoList))
 
 <template>
   <template
-    v-for="matchResult in listPageMatchResultList"
+    v-for="matchResult in listPageMatchResults"
     :key="matchResult.cleanName"
   >
     <Teleport
-      v-if="matchResult.folderMatchedVideoList.length"
+      v-if="matchResult.folderMatchedVideos.length"
       :to="`.${matchResult.cleanName}`"
     >
       <!-- 事件处理包装器 -->
@@ -95,7 +95,7 @@ onMounted(() => delayRun(processVideoList))
             class="w-full space-y-2"
           >
             <AdultInventory
-              v-for="file in matchResult.folderMatchedVideoList"
+              v-for="file in matchResult.folderMatchedVideos"
               :key="file.id"
               :file="file"
             />

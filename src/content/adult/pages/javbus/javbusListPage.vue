@@ -23,7 +23,7 @@ function main() {
 
     const box = item
 
-    const matchedList = adultStore.matchVideos(cleanName)
+    const matchedList = adultStore.getFolderMatchedVideoList(cleanName)
 
     if (matchedList.length) {
       box?.classList.add('is-highlight')

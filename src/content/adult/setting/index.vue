@@ -26,37 +26,6 @@ function handleSelect(key: string) {
   activeIndex.value = key
 }
 
-// onMounted(() => {
-//   console.log(
-//     '🚀 ~ file: index.vue:28 ~ adultStore.embyFolder.folderDuplicateVideoFileList:',
-//     adultStore.embyFolder.folderDuplicateVideoFileList,
-//   )
-// })
-
-// // const [
-// //   'aaa-bbb.mp4',
-// //   'aaa-bbb.mp4',
-// //   'aaa-BBB.mp4'
-// // ]
-
-// // folderDuplicateNameFileList: videoFile[]
-// //     folderUniqueFileNameFileList: string[]
-// 视频列表为
-// const [
-//   'aaa-bbb.mp4',
-//   'aaa-bbb.mp4',
-//   'aaa-BBB.mp4',
-//   'abc-dfg.mp4',
-//   'cnb-dad.mp4',
-//   'cnb-dad.mp4',
-//   'bde-fgd.mp4',
-// ]
-// 视频数组是这样的, folderDuplicateNameFileList  代表的是所有重复的 比如结果为 ['aaa-bbb.mp4', 'aaa-bbb.mp4','aaa-BBB.mp4','cnb-dad.mp4','cnb-dad.mp4'] 会转换成小写进行比较 然后所有重复都 进这个数组
-
-// folderUniqueFileNameFileList  这个则是 所有重复的只记录一次, 所以结果为 ['aaa-bbb.mp4', 'cnb-dad.mp4']
-
-// 帮我写下这两个 数组变量的 jsdoc 和中文描述, 怎么描述好
-//
 </script>
 
 <template>
@@ -129,8 +98,8 @@ function handleSelect(key: string) {
         <!-- Find Duplicate -->
         <el-sub-menu
           v-if="
-            adultStore.embyFolder.folderDuplicateVideoFileList.length > 0
-              || adultStore.embyFolder.folderUniqueVideoNameList.length > 0
+            adultStore.embyFolder.folderDuplicateVideoFiles.length > 0
+              || adultStore.embyFolder.folderUniqueVideoNames.length > 0
           "
           index="1"
           class="m-x-auto mb-2 w-[calc(100%-16px)] rounded-3"
@@ -198,7 +167,7 @@ function handleSelect(key: string) {
           >
             <AdultEmby
               v-for="(item, index) in adultStore.embyFolder
-                .folderDuplicateVideoFileList"
+                .folderDuplicateVideoFiles"
               :key="index"
               :video-name="item.cleanName"
               :is-from-setting-dialog="true"
@@ -218,7 +187,7 @@ function handleSelect(key: string) {
           >
             <AdultEmby
               v-for="(item, index) in adultStore.embyFolder
-                .folderUniqueVideoNameList"
+                .folderUniqueVideoNames"
               :key="index"
               :video-name="item"
               :is-from-setting-dialog="true"

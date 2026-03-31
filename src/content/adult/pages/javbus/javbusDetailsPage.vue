@@ -129,7 +129,7 @@ function main() {
 
   pageVideoName.value = name
 
-  const matchedList = adultStore.matchVideos(name)
+  const matchedList = adultStore.getFolderMatchedVideoList(name)
 
   if (!matchedList.length) {
     return
