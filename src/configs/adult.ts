@@ -157,8 +157,6 @@ export const AdultConfig: AdultConfigType = {
             // 将标签关键词转换为小写，用于大小写不敏感比较
             const tagNameLower = n.toLowerCase()
 
-            console.log('🚀 ~ file: adult.ts:156 ~ tagNameLower:', tagNameLower)
-
             // 检查是否有匹配项等于或以后缀形式包含该关键词
             return lowerMatches.some(match =>
 

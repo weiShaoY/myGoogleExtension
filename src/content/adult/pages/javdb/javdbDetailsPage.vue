@@ -90,11 +90,7 @@ function getTorrentList() {
       name.toLowerCase().includes(tag.toLowerCase()),
     )
 
-    // 如果匹配就执行后续逻辑
     if (isMatched && !hasChineseTag.value) {
-    // 这里放你的后续逻辑代码
-      console.log('名称包含中文或字幕标签')
-
       hasChineseTag.value = true
     }
 
