@@ -59,13 +59,14 @@ export const AdultConfig: AdultConfigType = {
      */
     const videoFileTags = [
       {
-        names: ['4K'],
-        icon: 'tag-4k',
-      },
-      {
         names: ['-c', '-C', '_ch', '-UC', '中文'],
         icon: 'tag-ziMu',
       },
+      {
+        names: ['4K'],
+        icon: 'tag-4k',
+      },
+
       {
         names: ['无码'],
         icon: 'tag-wuMa',
