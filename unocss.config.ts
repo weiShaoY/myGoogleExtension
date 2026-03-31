@@ -12,7 +12,7 @@ export default defineConfig({
     colors: {
       primary: '#007bff', // 主要颜色
       emby: '#52b44b',
-
+      red: '#ea1179',
     },
   },
 

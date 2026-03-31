@@ -18,7 +18,7 @@ declare global {
   const asyncComputed: typeof import('@vueuse/core').asyncComputed
   const autoResetRef: typeof import('@vueuse/core').autoResetRef
   const chromeStorage: typeof import('../../stores/pinia-sync-plugin').chromeStorage
-  const cleanVideoName: typeof import('../../composables/useJavdbMatch').cleanVideoName
+  const cleanVideoName: typeof import('../../utils/videoMatch').cleanVideoName
   const computed: typeof import('vue').computed
   const computedAsync: typeof import('@vueuse/core').computedAsync
   const computedEager: typeof import('@vueuse/core').computedEager
@@ -32,6 +32,7 @@ declare global {
   const createEventHook: typeof import('@vueuse/core').createEventHook
   const createGlobalState: typeof import('@vueuse/core').createGlobalState
   const createInjectionState: typeof import('@vueuse/core').createInjectionState
+  const createMatchResult: typeof import('../../utils/videoMatch').createMatchResult
   const createPinia: typeof import('pinia').createPinia
   const createReactiveFn: typeof import('@vueuse/core').createReactiveFn
   const createRef: typeof import('@vueuse/core').createRef
@@ -42,12 +43,15 @@ declare global {
   const customRef: typeof import('vue').customRef
   const debouncedRef: typeof import('@vueuse/core').debouncedRef
   const debouncedWatch: typeof import('@vueuse/core').debouncedWatch
+  const decorateTorrent: typeof import('../../utils/torrent').decorateTorrent
+  const decorateTorrentList: typeof import('../../utils/torrent').decorateTorrentList
   const defineAsyncComponent: typeof import('vue').defineAsyncComponent
   const defineComponent: typeof import('vue').defineComponent
   const defineStore: typeof import('pinia').defineStore
   const delayRun: typeof import('../../utils/async').delayRun
   const eagerComputed: typeof import('@vueuse/core').eagerComputed
   const effectScope: typeof import('vue').effectScope
+  const ensureMountPointAfter: typeof import('../../composables/useDetailsPageTorrentList').ensureMountPointAfter
   const extendRef: typeof import('@vueuse/core').extendRef
   const formatTimestampToChineseDate: typeof import('../../utils/time').formatTimestampToChineseDate
   const getActivePinia: typeof import('pinia').getActivePinia
@@ -71,6 +75,7 @@ declare global {
   const isElementExists: typeof import('../../utils/dom').isElementExists
   const isHostnameMatch: typeof import('../../utils/isHostnameMatch').isHostnameMatch
   const isProxy: typeof import('vue').isProxy
+  const isPureLowercaseTorrentName: typeof import('../../utils/torrent').isPureLowercaseTorrentName
   const isReactive: typeof import('vue').isReactive
   const isReadonly: typeof import('vue').isReadonly
   const isRef: typeof import('vue').isRef
@@ -107,6 +112,7 @@ declare global {
   const onWatcherCleanup: typeof import('vue').onWatcherCleanup
   const openLink: typeof import('../../utils/openLink').openLink
   const parseNfoContent: typeof import('../../utils/parseNfoContent').parseNfoContent
+  const parseSizeTextToGB: typeof import('../../composables/useDetailsPageTorrentList').parseSizeTextToGB
   const pausableWatch: typeof import('@vueuse/core').pausableWatch
   const piniaChromeStoragePlugin: typeof import('../../stores/piniaChromeStoragePlugin').piniaChromeStoragePlugin
   const preventEvent: typeof import('../../utils/dom').preventEvent
@@ -136,6 +142,8 @@ declare global {
   const shallowReactive: typeof import('vue').shallowReactive
   const shallowReadonly: typeof import('vue').shallowReadonly
   const shallowRef: typeof import('vue').shallowRef
+  const sortAndDecorateTorrentList: typeof import('../../utils/torrent').sortAndDecorateTorrentList
+  const sortTorrentList: typeof import('../../utils/torrent').sortTorrentList
   const storeToRefs: typeof import('pinia').storeToRefs
   const stores: typeof import('../../stores/index').default
   const syncRef: typeof import('@vueuse/core').syncRef
@@ -200,6 +208,8 @@ declare global {
   const useDebounce: typeof import('@vueuse/core').useDebounce
   const useDebounceFn: typeof import('@vueuse/core').useDebounceFn
   const useDebouncedRefHistory: typeof import('@vueuse/core').useDebouncedRefHistory
+  const useDetailsPageTorrentList: typeof import('../../composables/useDetailsPageTorrentList').useDetailsPageTorrentList
+  const useDetailsPageVideoMatch: typeof import('../../composables/useDetailsPageVideoMatch').useDetailsPageVideoMatch
   const useDeviceMotion: typeof import('@vueuse/core').useDeviceMotion
   const useDeviceOrientation: typeof import('@vueuse/core').useDeviceOrientation
   const useDevicePixelRatio: typeof import('@vueuse/core').useDevicePixelRatio
@@ -240,6 +250,7 @@ declare global {
   const useKeyModifier: typeof import('@vueuse/core').useKeyModifier
   const useLastChanged: typeof import('@vueuse/core').useLastChanged
   const useLink: typeof import('vue-router').useLink
+  const useListPageVideoMatch: typeof import('../../composables/useListPageVideoMatch').useListPageVideoMatch
   const useLocalStorage: typeof import('@vueuse/core').useLocalStorage
   const useMagicKeys: typeof import('@vueuse/core').useMagicKeys
   const useManualRefHistory: typeof import('@vueuse/core').useManualRefHistory

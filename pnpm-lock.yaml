@@ -85,8 +85,8 @@ importers:
         specifier: ^8.0.3
         version: 8.0.3(@types/node@25.5.0)(jiti@2.6.1)(sass@1.98.0)(yaml@2.8.3)
       vite-plugin-svg-icons-ng:
-        specifier: ^1.6.3
-        version: 1.6.3(vite@8.0.3(@types/node@25.5.0)(jiti@2.6.1)(sass@1.98.0)(yaml@2.8.3))
+        specifier: ^1.7.0
+        version: 1.7.0(vite@8.0.3(@types/node@25.5.0)(jiti@2.6.1)(sass@1.98.0)(yaml@2.8.3))
       vite-plugin-vue-devtools:
         specifier: ^8.1.1
         version: 8.1.1(vite@8.0.3(@types/node@25.5.0)(jiti@2.6.1)(sass@1.98.0)(yaml@2.8.3))(vue@3.5.31(typescript@6.0.2))
@@ -2887,8 +2887,8 @@ packages:
       '@nuxt/kit':
         optional: true
 
-  vite-plugin-svg-icons-ng@1.6.3:
-    resolution: {integrity: sha512-Lv/kR2szTw5te+0XNraPO57hWbYpg1AbYVVtuvk8+0FDdBYjODUotIBMEMYPSYgTvCan+UOYLdFyjV6NG3m/gg==}
+  vite-plugin-svg-icons-ng@1.7.0:
+    resolution: {integrity: sha512-TKpnyXdDoSfh7UEW0bU5Iu7e83oM0/ng1rv571dJOtJLRpN1H0ZtVoYdms0ot0d1FJFbgBoIovHUIoZJbTmSog==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     peerDependencies:
       vite: '>=5.0.0'
@@ -6058,7 +6058,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vite-plugin-svg-icons-ng@1.6.3(vite@8.0.3(@types/node@25.5.0)(jiti@2.6.1)(sass@1.98.0)(yaml@2.8.3)):
+  vite-plugin-svg-icons-ng@1.7.0(vite@8.0.3(@types/node@25.5.0)(jiti@2.6.1)(sass@1.98.0)(yaml@2.8.3)):
     dependencies:
       fast-glob: 3.3.3
       fs-extra: 11.3.4
