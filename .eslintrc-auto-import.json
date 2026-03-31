@@ -61,6 +61,8 @@
     "getCurrentInstance": true,
     "getCurrentScope": true,
     "getCurrentWatcher": true,
+    "getDuplicateItemKeys": true,
+    "getDuplicateItems": true,
     "getDuration": true,
     "getElapsedTime": true,
     "getRandomNumber": true,

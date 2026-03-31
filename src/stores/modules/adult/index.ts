@@ -26,55 +26,18 @@ export const useAdultStore = defineStore(
         folderScanTimestamp: Date.now(),
         folderScanDuration: getDuration(startTime, Date.now()),
         folderVideoFileList: Array.from(videoFileSet),
-        folderDuplicateVideoFileList: getFolderDuplicateNameFileList(Array.from(videoFileSet), 'cleanName'),
-        folderUniqueVideoNameList: getFolderUniqueFileNameFileList(Array.from(videoFileSet), 'cleanName'),
+        folderDuplicateVideoFileList: getDuplicateItems(Array.from(videoFileSet), 'cleanName'),
+        folderUniqueVideoNameList: getDuplicateItemKeys(Array.from(videoFileSet), 'cleanName'),
       }
     }
 
     /**
-     * 获取 文件夹内文件名重复的文件列表。
-     * @param  list - 要检查的列表
-     * @param  property - 用于比较的属性名
-     * @return 返回文件夹文件名重复的文件列表
+     * 根据标准化名称获取文件夹中的视频列表
+     * @description 通过 cleanName 模糊匹配当前文件夹内的视频文件
+     * @param cleanName 标准化纯净名称
+     * @returns 匹配到的视频文件列表
      */
-    function getFolderDuplicateNameFileList<T>(list: T[], property: keyof T): T[] {
-      const propertyMap = list.reduce((acc, item) => {
-        const key = item[property] as unknown as string
-
-        acc[key] = acc[key] || []
-        acc[key].push(item)
-        return acc
-      }, {
-      } as { [key: string]: T[] })
-
-      return Object.values(propertyMap)
-        .filter(items => items.length > 1) // 过滤掉那些只有一个项的属性值
-        .flat() // 展平数组，返回所有重复项
-    }
-
-    /**
-     * 获取 文件夹内文件名已去重的文件列表 (每个文件名仅出现一次)。
-     * @param  items - 要处理的数组
-     * @param  property - 用于比较的属性名
-     * @returns 返回文件夹内文件名已去重的文件列表 (每个文件名仅出现一次)。
-     */
-    function getFolderUniqueFileNameFileList<T>(items: T[], property: keyof T): string[] {
-      const propertyMap = items.reduce((acc, item) => {
-        const key = item[property] as unknown as string
-
-        acc[key] = acc[key] || []
-        acc[key].push(item)
-        return acc
-      }, {
-      } as { [key: string]: T[] })
-
-      return Object.keys(propertyMap).filter(key => propertyMap[key].length > 1)
-    }
-
-    /**
-     * 根据清洗后的名称匹配视频
-     */
-    function matchVideos(cleanName: string) {
+    function getFolderVideosByCleanName(cleanName: string) {
       const list = embyFolder.value.folderVideoFileList ?? []
 
       if (!list.length || !cleanName) {
@@ -104,7 +67,7 @@ export const useAdultStore = defineStore(
        * @param cleanName - 清洗后的名称
        * @return 匹配到的视频列表
        */
-      matchVideos,
+      matchVideos: getFolderVideosByCleanName,
     }
   },
 

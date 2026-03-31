@@ -19,7 +19,7 @@ const pageVideoName = ref<string>('')
 /**
  * 是否视频存在中文磁链
  */
-const isVideoHaveChineseTorrent = ref<boolean>(false)
+const hasChineseTag = ref<boolean>(false)
 
 /**
  * 是否显示在线播放组件
@@ -70,9 +70,7 @@ function getTorrentList() {
       return
     }
 
-    const copyBtn = item.querySelector('.copy-to-clipboard') as HTMLElement
-
-    const url = copyBtn?.dataset?.clipboardText || ''
+    const url = (item.querySelector('.copy-to-clipboard') as HTMLElement)?.dataset?.clipboardText || ''
 
     const name = item.querySelector('.name')?.textContent?.trim() || ''
 
@@ -100,9 +98,9 @@ function getTorrentList() {
         name.toLowerCase().includes('-c')
         || name.toLowerCase().includes('中文')
       )
-      && !isVideoHaveChineseTorrent.value
+      && !hasChineseTag.value
     ) {
-      isVideoHaveChineseTorrent.value = true
+      hasChineseTag.value = true
     }
 
     const torrentListItem: TorrentType = {
@@ -141,9 +139,9 @@ function main() {
 
   pageVideoName.value = cleanName
 
-  const localMatchedFileList = adultStore.matchVideos(cleanName)
+  const folderMatchedVideoList = adultStore.matchVideos(cleanName)
 
-  if (localMatchedFileList.length === 0) {
+  if (folderMatchedVideoList.length === 0) {
     return
   }
 
@@ -154,8 +152,8 @@ function main() {
   // 使用共享函数创建匹配结果
   detailsPageMatchResult.value = createMatchResult(
     cleanName,
-    localMatchedFileList,
-    isVideoHaveChineseTorrent.value,
+    folderMatchedVideoList,
+    hasChineseTag.value,
   )
 
   console.log('🚀 ~ file: javdbDetailsPage.vue:161 ~ detailsPageMatchResult.localMatchedFileList:', detailsPageMatchResult.value.folderMatchedVideoList)
