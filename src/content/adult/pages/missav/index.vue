@@ -26,15 +26,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <template>
-    <ListPage
-      v-if="isListPage"
-    />
+  <ListPage
+    v-if="isListPage"
+  />
 
-    <DetailsPage
-      v-else
-    />
-  </template>
+  <DetailsPage
+    v-else
+  />
 </template>
 
 <style lang="scss">
