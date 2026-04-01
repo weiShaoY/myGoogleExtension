@@ -302,7 +302,7 @@ async function mainBtnHandler() {
         <span
           class="m-x-2 text-6 color-emby font-bold"
         >
-          {{ adultStore.embyFolder.folderDuplicateVideoFiles.length }}
+          {{ adultStore.embyFolder.folderAllDuplicateVideoFiles.length }}
         </span>
 
         <span>
@@ -322,7 +322,7 @@ async function mainBtnHandler() {
         <span
           class="m-x-2 text-6 color-emby font-bold"
         >
-          {{ adultStore.embyFolder.folderUniqueVideoNames.length }}
+          {{ adultStore.embyFolder.folderUniqueDuplicateVideoNames.length }}
         </span>
 
         <span>

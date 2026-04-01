@@ -98,8 +98,8 @@ function handleSelect(key: string) {
         <!-- Find Duplicate -->
         <el-sub-menu
           v-if="
-            adultStore.embyFolder.folderDuplicateVideoFiles.length > 0
-              || adultStore.embyFolder.folderUniqueVideoNames.length > 0
+            adultStore.embyFolder.folderAllDuplicateVideoFiles.length > 0
+              || adultStore.embyFolder.folderUniqueDuplicateVideoNames.length > 0
           "
           index="1"
           class="m-x-auto mb-2 w-[calc(100%-16px)] rounded-3"
@@ -148,15 +148,6 @@ function handleSelect(key: string) {
           v-model:is-loading="isLoading"
         />
 
-        <!-- <AllDuplicate
-          v-else-if="activeIndex === '1-1'"
-        /> -->
-
-        <!-- <UniqueDuplicate
-          v-else-if="activeIndex === '1-2'"
-        /> -->
-
-        <!-- 所有重复 AllDuplicate -->
         <template
           v-else-if="activeIndex === '1-1'"
         >
@@ -165,9 +156,10 @@ function handleSelect(key: string) {
             class="w-full"
             view-class="p-5 box-border"
           >
+            <!-- 所有重复 AllDuplicate -->
             <AdultEmby
               v-for="(item, index) in adultStore.embyFolder
-                .folderDuplicateVideoFiles"
+                .folderAllDuplicateVideoFiles"
               :key="index"
               :video-name="item.cleanName"
               :is-from-setting-dialog="true"
@@ -176,7 +168,6 @@ function handleSelect(key: string) {
           </el-scrollbar>
         </template>
 
-        <!-- 去重重复 UniqueDuplicate -->
         <template
           v-else-if="activeIndex === '1-2'"
         >
@@ -185,9 +176,10 @@ function handleSelect(key: string) {
             class="w-full"
             view-class="p-5 box-border"
           >
+            <!-- 去重重复 UniqueDuplicate -->
             <AdultEmby
               v-for="(item, index) in adultStore.embyFolder
-                .folderUniqueVideoNames"
+                .folderUniqueDuplicateVideoNames"
               :key="index"
               :video-name="item"
               :is-from-setting-dialog="true"

@@ -10,8 +10,8 @@ export const useAdultStore = defineStore(
       folderScanTimestamp: 0,
       folderScanDuration: '',
       folderVideoFiles: [],
-      folderDuplicateVideoFiles: [],
-      folderUniqueVideoNames: [],
+      folderAllDuplicateVideoFiles: [],
+      folderUniqueDuplicateVideoNames: [],
     })
 
     /**
@@ -26,8 +26,8 @@ export const useAdultStore = defineStore(
         folderVideoFiles,
         folderScanTimestamp: Date.now(),
         folderScanDuration: getDuration(startTime, Date.now()),
-        folderDuplicateVideoFiles: getDuplicateItems(folderVideoFiles, 'cleanName'),
-        folderUniqueVideoNames: getDuplicateItemKeys(folderVideoFiles, 'cleanName'),
+        folderAllDuplicateVideoFiles: getDuplicateItems(folderVideoFiles, 'cleanName'),
+        folderUniqueDuplicateVideoNames: getDuplicateItemKeys(folderVideoFiles, 'cleanName'),
       }
     }
 

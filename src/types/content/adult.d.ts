@@ -279,7 +279,7 @@ namespace AdultType {
      * @example 重复判定依据：cleanName 小写一致视为重复
      * @example 结果：[File(aaa-bbb.mp4), File(aaa-bbb.mp4), File(aaa-BBB.mp4), File(eee-fff.mp4), File(eee-fff.mp4)]
      */
-    folderDuplicateVideoFiles: VideoFile[]
+    folderAllDuplicateVideoFiles: VideoFile[]
 
     /**
      * @description 文件夹内重复视频唯一名称列表
@@ -290,7 +290,7 @@ namespace AdultType {
      * @example 重复判定依据：cleanName 小写一致视为重复
      * @example 结果：['aaa-bbb.mp4', 'eee-fff.mp4']
      */
-    folderUniqueVideoNames: string[]
+    folderUniqueDuplicateVideoNames: string[]
   }
 
   /**
