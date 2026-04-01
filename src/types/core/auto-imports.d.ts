@@ -8,7 +8,10 @@ export {}
 declare global {
   const $: typeof import('../../utils/dom').$
   const $$: typeof import('../../utils/dom').$$
+  const AdultConfig: typeof import('../../configs/adult').AdultConfig
+  const AppConfig: typeof import('../../configs/app').AppConfig
   const EffectScope: typeof import('vue').EffectScope
+  const SearchConfig: typeof import('../../configs/search').SearchConfig
   const WHITESPACE_REGEX: typeof import('../../utils/folder').WHITESPACE_REGEX
   const acceptHMRUpdate: typeof import('pinia').acceptHMRUpdate
   const addClassAndPush: typeof import('../../utils/dom').addClassAndPush
@@ -113,6 +116,7 @@ declare global {
   const onUnmounted: typeof import('vue').onUnmounted
   const onUpdated: typeof import('vue').onUpdated
   const onWatcherCleanup: typeof import('vue').onWatcherCleanup
+  const onlinePlayConfig: typeof import('../../configs/onlinePlay').onlinePlayConfig
   const openLink: typeof import('../../utils/openLink').openLink
   const parseFileSizeToGB: typeof import('../../utils/file').parseFileSizeToGB
   const parseNfoContent: typeof import('../../utils/parseNfoContent').parseNfoContent
@@ -378,7 +382,10 @@ declare module 'vue' {
   interface ComponentCustomProperties {
     readonly $$: UnwrapRef<typeof import('../../utils/dom')['$$']>
     readonly $: UnwrapRef<typeof import('../../utils/dom')['$']>
+    readonly AdultConfig: UnwrapRef<typeof import('../../configs/adult')['AdultConfig']>
+    readonly AppConfig: UnwrapRef<typeof import('../../configs/app')['AppConfig']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly SearchConfig: UnwrapRef<typeof import('../../configs/search')['SearchConfig']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly addClassAndPush: UnwrapRef<typeof import('../../utils/dom')['addClassAndPush']>
     readonly asHTMLElement: UnwrapRef<typeof import('../../utils/dom')['asHTMLElement']>
@@ -469,6 +476,7 @@ declare module 'vue' {
     readonly onUnmounted: UnwrapRef<typeof import('vue')['onUnmounted']>
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
     readonly onWatcherCleanup: UnwrapRef<typeof import('vue')['onWatcherCleanup']>
+    readonly onlinePlayConfig: UnwrapRef<typeof import('../../configs/onlinePlay')['onlinePlayConfig']>
     readonly openLink: UnwrapRef<typeof import('../../utils/openLink')['openLink']>
     readonly parseFileSizeToGB: UnwrapRef<typeof import('../../utils/file')['parseFileSizeToGB']>
     readonly parseNfoContent: UnwrapRef<typeof import('../../utils/parseNfoContent')['parseNfoContent']>

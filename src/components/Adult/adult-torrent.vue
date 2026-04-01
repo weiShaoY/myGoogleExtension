@@ -71,8 +71,8 @@ function getTorrentStyle(torrent: AdultType.TorrentItem) {
  */
 const sortedTorrentList = computed(() => {
   return [...props.torrentList].sort((videoA, videoB) => {
-    console.log('🚀 ~ file: adult-torrent.vue:74 ~ videoA:', videoA.name)
-    console.log('🚀 ~ file: adult-torrent.vue:74 ~ videoB:', videoB.name)
+    // console.log('🚀 ~ file: adult-torrent.vue:74 ~ videoA:', videoA.name)
+    // console.log('🚀 ~ file: adult-torrent.vue:74 ~ videoB:', videoB.name)
 
     /**
      *   视频A在排序规则数组中的位置   （-1 代表不在数组中）
@@ -88,8 +88,8 @@ const sortedTorrentList = computed(() => {
       videoB.name.includes(rule.name),
     )
 
-    console.log('🚀 ~ file: adult-torrent.vue:83 ~ indexA:', indexA)
-    console.log('🚀 ~ file: adult-torrent.vue:83 ~ indexB:', indexB)
+    // console.log('🚀 ~ file: adult-torrent.vue:83 ~ indexA:', indexA)
+    // console.log('🚀 ~ file: adult-torrent.vue:83 ~ indexB:', indexB)
 
     // # ////////////////////////////////////////  1.在规则数组中，按数组里关键词的顺序排序,如果关键词的顺序一样了,按文件大小排序  ////////////////////////////////////////
     // videoA在规则数组中 videoB不在规则数组中 则videoA应该排在videoB前面  应该返回 -1

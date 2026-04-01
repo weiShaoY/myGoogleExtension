@@ -46,25 +46,37 @@ export default defineConfig({
 
     // ===== 自动导入插件 =====
     autoImport({
+      // 👇 配置需要自动导入的库
       imports: [
         'vue',
         'vue-router',
         'pinia',
         '@vueuse/core',
       ],
+
+      // 👇 自动扫描指定目录下的文件导出
       dirs: [
         'src/composables',
         'src/stores',
         'src/utils',
         'src/directives',
+        'src/configs',
       ],
+
+      // 👇 解析器（此处配置 Element Plus 按需导入）
       resolvers: [
         ElementPlusResolver({
           importStyle: 'sass',
         }),
       ],
+
+      // 👇 生成自动导入的类型声明文件
       dts: 'src/types/core/auto-imports.d.ts',
+
+      // 👇 启用 Vue 模板中的自动导入
       vueTemplate: true,
+
+      // 👇 生成 ESLint 配置（解决未导入报错问题）
       eslintrc: {
         enabled: true,
       },

@@ -26,13 +26,13 @@ function main() {
       return
     }
 
-    const targetElement = item
-
     const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
 
     if (folderMatchedVideos.length === 0) {
       return
     }
+
+    const targetElement = item
 
     // 添加样式类
     if (isElementExists(targetElement)) {
@@ -41,11 +41,7 @@ function main() {
     }
 
     // 检查是否有中文字幕标签
-    const hasChineseTag = !!item.querySelector('.btn-warning')
-
-    console.log('🚀 ~ file: javbusListPage.vue:45 ~ item:', item)
-
-    console.log('🚀 ~ file: javbusListPage.vue:45 ~ hasChineseTag:', hasChineseTag)
+    const hasChineseTag = isElementExists($(item, '.btn-warning'))
 
     // 创建匹配结果项
     const matchResultItem = createMatchResult(

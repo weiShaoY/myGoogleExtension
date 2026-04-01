@@ -11,7 +11,7 @@ const adultStore = useAdultStore()
  */
 const isLoading = ref(false)
 
-const isShowMainDialog = ref(true)
+const isShowMainDialog = ref(false)
 
 function onClick() {
   isShowMainDialog.value = true

@@ -25,8 +25,8 @@ const { cleanVideoName, createMatchResult } = useJavdbMatch()
  * 遍历电影列表，匹配本地视频文件
  */
 function main() {
-  $$('.movie-list .item').forEach((movieItem) => {
-    const videoName = movieItem.querySelector('strong')?.textContent
+  $$('.movie-list .item').forEach((item) => {
+    const videoName = $(item, 'strong')?.textContent
 
     const cleanName = cleanVideoName(videoName)
 
@@ -34,13 +34,13 @@ function main() {
       return
     }
 
-    const targetElement = asHTMLElement(movieItem.querySelector('.box'))
-
     const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
 
     if (folderMatchedVideos.length === 0) {
       return
     }
+
+    const targetElement = $(item, '.box')
 
     // 添加样式类
     if (isElementExists(targetElement)) {
@@ -49,7 +49,7 @@ function main() {
     }
 
     // 检查是否有中文字幕标签
-    const hasChineseTag = !!movieItem.querySelector('.is-warning')
+    const hasChineseTag = isElementExists($(item, '.is-warning'))
 
     // 创建匹配结果项
     const matchResultItem = createMatchResult(

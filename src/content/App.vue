@@ -2,6 +2,8 @@
 <!------------------------------------    ------------------------------------------------->
 <script lang="ts" setup>
 
+// import { AppConfig } from '@/configs'
+
 import Adult from './adult/index.vue'
 
 import Search from './search/index.vue'
@@ -26,7 +28,9 @@ onMounted(() => {
 
     <Search />
 
-    <Test />
+    <Test
+      v-if="AppConfig.isShowTest"
+    />
 
   </AppProvider>
 

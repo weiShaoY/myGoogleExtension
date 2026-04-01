@@ -1,88 +1,63 @@
 <script lang="ts" setup>
 
-const embyBtnList = ref<string[]>([])
+import { onMounted, ref } from 'vue'
 
-const updateChineseBtnList = ref<string[]>([])
+import { useJavdbMatch } from '@/composables/useJavdbMatch'
 
-const addedToInventoryBtnList = ref<AdultType.VideoFile[]>([])
-
+/**
+ * 文件夹存储
+ */
 const adultStore = useAdultStore()
 
+/**
+ * 页面上匹配到的视频结果列表
+ */
+const listPageMatchResults = ref<AdultType.ListPageMatchResultList>([])
+
+/**
+ * 导入共享逻辑
+ */
+const { cleanVideoName, createMatchResult } = useJavdbMatch()
+
 function main() {
-  const fileList = adultStore.embyFolder.folderVideoFiles ?? []
-
-  console.log('🚀 ~ file: index.vue:24 ~ fileList:', fileList)
-
-  if (!fileList.length) {
-    return
-  }
-
   // 获取所有视频项
   $$('div.thumbnail.group').forEach((item) => {
-    const linkEl = item.querySelector('a.text-secondary') as HTMLElement | null
+    // const link = $<HTMLAnchorElement>(item, 'a.text-secondary')
 
-    // 去除行首空格
-    if (linkEl) {
-      linkEl.textContent = (linkEl.textContent || '').trimStart()
-    }
+    // const videoName = link?.getAttribute('alt').replace(/-chinese-subtitle$/i, '') ?? ''
 
-    // 获取视频名称（清洗）
-    const rawName = linkEl?.textContent || ''
+    const videoName = $(item, '.text-secondary.group-hover\\:text-primary')?.textContent.trim().split(' ')[0] ?? ''
 
-    console.log('🚀 ~ file: index.vue:40 ~ rawName:', rawName)
+    const cleanName = cleanVideoName(videoName)
 
-    const itemVideoName = rawName.trim().split(' ')[0]?.toLowerCase() || ''
+    console.log('🚀 ~ file: missavListPage.vue:31 ~ cleanName:', cleanName)
 
-    if (!itemVideoName) {
+    const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
+
+    if (folderMatchedVideos.length === 0) {
       return
     }
 
-    // 类型安全转换
-    const boxElement = asHTMLElement(item)
+    const targetElement = item
 
-    // 匹配已入库视频
-    const matchedVideoList = fileList.filter(sub =>
-      sub.cleanName.includes(itemVideoName),
+    // 添加样式类
+    if (isElementExists(targetElement)) {
+      targetElement.classList.add(cleanName)
+      targetElement.classList.add('is-highlight')
+    }
+
+    // 检查是否有中文字幕标签
+    const hasChineseTag = !!$<HTMLAnchorElement>(item, 'a.text-secondary')?.href?.includes('chinese-subtitle')
+
+    // 创建匹配结果项
+    const matchResultItem = createMatchResult(
+      cleanName,
+      folderMatchedVideos,
+      hasChineseTag,
     )
 
-    if (matchedVideoList.length) {
-      boxElement?.classList.add('is-highlight')
-
-      // 添加 Emby 打开按钮
-      addClassAndPush(
-        boxElement,
-        `emby_btn_${itemVideoName}`,
-        embyBtnList.value,
-        itemVideoName,
-      )
-
-      // 判断页面是否有中文标记
-      const hasChineseTag = Boolean(
-        item.querySelector('span')?.textContent?.includes('中文字幕'),
-      )
-
-      console.log('🚀 ~ file: index.vue:61 ~ item:', item)
-
-      matchedVideoList.forEach((video) => {
-        // 已入库按钮
-        addClassAndPush(
-          boxElement,
-          `added_to_emby_btn_${video.baseName}`,
-          addedToInventoryBtnList.value,
-          video,
-        )
-
-        // 需要更新中文
-        if (!video.hasChineseSubtitle && hasChineseTag) {
-          addClassAndPush(
-            boxElement,
-            `update_chinese_btn_${itemVideoName}`,
-            updateChineseBtnList.value,
-            itemVideoName,
-          )
-        }
-      })
-    }
+    listPageMatchResults.value.push(matchResultItem)
+    console.log('🚀 ~ file: missavListPage.vue:60 ~ listPageMatchResults.value:', listPageMatchResults.value)
   })
 }
 
@@ -91,46 +66,52 @@ onMounted(() => delayRun(main))
 </script>
 
 <template>
-  <!-- 在Emby打开按钮 -->
   <template
-    v-for="videoName in embyBtnList"
-    :key="videoName"
+    v-for="matchResult in listPageMatchResults"
+    :key="matchResult.cleanName"
   >
     <Teleport
-      :to="`.emby_btn_${videoName}`"
+      v-if="matchResult.folderMatchedVideos.length"
+      :to="`.${matchResult.cleanName}`"
     >
-      <EmbyPlayButton
-        :video-name="videoName"
-        :emby-search-name="videoName"
-      />
-    </Teleport>
-  </template>
+      <!-- 事件处理包装器 -->
+      <div
+        class="teleport-wrapper"
+        style="pointer-events: auto;"
+        @click="preventEvent"
+        @mousedown="preventEvent"
+        @mouseup="preventEvent"
+        @pointerdown="preventEvent"
+        @pointerup="preventEvent"
+      >
+        <div
+          class="h-auto w-full flex flex-col items-center border border-gray-200 rounded-lg bg-[rgb(255,255,255)] p-3 space-y-4"
+        >
+          <section
+            class="w-full space-y-2"
+          >
+            <AdultInventory
+              v-for="file in matchResult.folderMatchedVideos"
+              :key="file.id"
+              :file="file"
+            />
+          </section>
 
-  <!-- 可更新中文磁链按钮 -->
-  <template
-    v-for="videoName in updateChineseBtnList"
-    :key="videoName"
-  >
-    <Teleport
-      :to="`.update_chinese_btn_${videoName}`"
-    >
-      <PendingUpdateChineseButton
-        :radius="0"
-      />
-    </Teleport>
-  </template>
+          <section
+            class="grid grid-cols-2 h-15 w-full gap-2 [&>*:last-child:nth-child(1)]:col-span-2"
+          >
+            <AdultChinese
+              v-if="matchResult.isShowUpdateChinese"
+            />
 
-  <!-- 已入库的视频 -->
-  <template
-    v-for="item in addedToInventoryBtnList"
-    :key="item.originalName"
-  >
-    <Teleport
-      :to="`.added_to_emby_btn_${item.baseName}`"
-    >
-      <EmbyCatalogedList
-        :video="item"
-      />
+            <AdultEmby
+              :video-name="matchResult.cleanName"
+            />
+
+          </section>
+        </div>
+
+      </div>
     </Teleport>
   </template>
 </template>

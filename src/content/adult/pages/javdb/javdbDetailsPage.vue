@@ -124,9 +124,9 @@ function getTorrentList() {
  * 主逻辑
  */
 function main() {
-  const el = $('.video-detail strong')
+  const videoName = $('.video-detail strong')?.textContent
 
-  const cleanName = cleanVideoName(el?.textContent)
+  const cleanName = cleanVideoName(videoName)
 
   if (!cleanName) {
     return
