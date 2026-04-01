@@ -151,7 +151,7 @@ const sortedTorrentList = computed(() => {
     :to="props.to"
   >
     <div
-      class="mx-auto my-10 w-full border rounded-md bg-white p-6 pb-1"
+      class="mx-auto my-10 w-full border rounded-2 bg-white p-6 pb-1"
     >
       <!-- 标题部分 -->
       <div
@@ -194,7 +194,7 @@ const sortedTorrentList = computed(() => {
           :key="torrent.name || index"
         >
           <div
-            class="group relative z-0 h-[6em] flex cursor-pointer items-center justify-between overflow-hidden rounded-[1em] p-2"
+            class="group relative z-0 h-[6em] flex cursor-pointer items-center justify-between overflow-hidden rounded-2 p-2"
             :style="{
               backgroundColor: getTorrentStyle(torrent).backgroundColor,
             }"

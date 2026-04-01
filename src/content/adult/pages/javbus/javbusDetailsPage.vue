@@ -64,47 +64,61 @@ function getTorrentList() {
 
     const tdList = item.children
 
-    const url = (tdList[0]?.querySelector('a') as HTMLAnchorElement)?.href ?? ''
+    if (tdList.length < 3) {
+      return
+    } // 防止结构异常报错
 
-    const name = tdList[0].children[0]?.textContent?.trim() as string
+    // 安全获取 URL
+    const url = $<HTMLAnchorElement>(tdList[0], 'a')?.href ?? ''
 
-    const size = Number.parseFloat(tdList[1].children[0]?.textContent?.trim().match(/(\d+(\.\d+)?)GB/)?.[1] || '0')
+    // 安全获取名称
+    const name = tdList[0]?.children[0]?.textContent?.trim() || ''
 
-    const time = tdList[2].children[0]?.textContent?.trim()
+    const sizeText = tdList[1]?.children[0]?.textContent?.trim() || ''
 
+    const size = parseFileSizeToGB(sizeText)
+
+    // 安全获取时间
+    const time = tdList[2]?.children[0]?.textContent?.trim() || ''
+
+    // 提取标签
     const tags = getVideoTagsFromName(name)
 
     if (!url) {
       return
     }
 
-    const isMatched = AdultConfig.rules.chineseSubtitleRules.some(tag =>
+    // 判断中文字幕
+
+    const isChineseSub = AdultConfig.rules.chineseSubtitleRules.some(tag =>
       name.toLowerCase().includes(tag.toLowerCase()),
     )
 
-    if (isMatched && !hasChineseTag.value) {
+    if (isChineseSub && !hasChineseTag.value) {
       hasChineseTag.value = true
     }
 
-    const torrentListItem: AdultType.TorrentItem = {
+    // 推入列表
+    torrentList.value.push({
       url,
       name,
       size,
       time,
       tags,
-    }
-
-    torrentList.value.push(torrentListItem)
+    })
   })
 
-  const targetElement = $('.container #magneturlpost')
+  // 👇 使用封装的 insertHtml 安全插入 DOM
+  const target = '.container #magneturlpost'
 
-  if (targetElement) {
-    targetElement.insertAdjacentHTML('afterend', '<div id="TorrentList"></div>')
-    targetElement.insertAdjacentHTML('afterend', '<div id="OnlinePlay"></div>')
+  const success1 = insertHtml(target, '<div id="TorrentList"></div>')
 
-    isShowOnlinePlay.value = true
+  const success2 = insertHtml(target, '<div id="OnlinePlay"></div>')
+
+  // 插入成功后再显示
+  if (success1 && success2) {
     isShowTorrentList.value = true
+    isShowOnlinePlay.value = true
   }
 }
 

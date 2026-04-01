@@ -47,78 +47,76 @@ const detailsPageMatchResult = ref<AdultType.DetailsPageMatchResult>({
  * 获取页面中的磁链列表
  */
 function getTorrentList() {
+  // 1. 清空数据（防止重复追加）
+  torrentList.value = []
+  hasChineseTag.value = false
+
+  // 2. 获取容器并校验
   const magnetsContent = $('#magnets-content')
 
-  if (!magnetsContent || magnetsContent.children.length === 0) {
-    console.warn('未找到 magnetsContent 元素或其子元素为空')
+  if (!magnetsContent || !magnetsContent.children.length) {
+    console.warn('未找到磁链区域或内容为空')
     return
   }
 
-  const items = Array.from(magnetsContent.querySelectorAll('.columns'))
+  // 3. 转数组遍历
+
+  const items = Array.from($$(magnetsContent, '.columns'))
 
   items.forEach((itemElement) => {
+    // 1. 安全转为 HTMLElement
     const item = asHTMLElement(itemElement)
 
     if (!item) {
       return
     }
 
-    const url = (item.querySelector('.copy-to-clipboard') as HTMLElement)?.dataset?.clipboardText || ''
+    // 提取字段
+    const url = $(item, '.copy-to-clipboard')?.dataset.clipboardText || ''
 
-    const name = item.querySelector('.name')?.textContent?.trim() || ''
+    const name = $(item, '.name')?.textContent?.trim() || ''
 
-    const sizeText = item.querySelector('.meta')?.textContent?.trim() || ''
+    const time = $(item, '.time')?.textContent?.trim() || ''
 
-    console.log('🚀 ~ file: javdbDetailsPage.vue:71 ~ sizeText:', sizeText)
+    const sizeText = $(item, '.meta')?.textContent?.trim() || ''
 
-    const time = item.querySelector('.time')?.textContent?.trim() || ''
-
-    let size = 0
-
-    const sizeMatch = sizeText.match(/(\d+(\.\d+)?)\s*(GB|MB)/i)
-
-    if (sizeMatch) {
-      const value = Number.parseFloat(sizeMatch[1])
-
-      const unit = sizeMatch[3]?.toUpperCase()
-
-      size = unit === 'MB' ? value / 1024 : value
-      size = Math.round(size * 100) / 100
-    }
+    const size = parseFileSizeToGB(sizeText)
 
     const tags = getVideoTagsFromName(name)
 
+    // 无 URL 直接跳过
     if (!url) {
       return
     }
 
-    const isMatched = AdultConfig.rules.chineseSubtitleRules.some(tag =>
+    // 判断中文字幕
+    const isChineseSub = AdultConfig.rules.chineseSubtitleRules.some(tag =>
       name.toLowerCase().includes(tag.toLowerCase()),
     )
 
-    if (isMatched && !hasChineseTag.value) {
+    if (isChineseSub) {
       hasChineseTag.value = true
     }
 
-    const torrentListItem: AdultType.TorrentItem = {
+    // 推入列表
+    torrentList.value.push({
       url,
       name,
       size,
       time,
       tags,
-    }
-
-    torrentList.value.push(torrentListItem)
+    })
   })
 
-  const targetElement = $('.no-bottom')
+  // 4. 插入容器（使用封装好的安全函数）
+  const success1 = insertHtml('.no-bottom', '<div id="TorrentList"></div>')
 
-  if (targetElement) {
-    targetElement.insertAdjacentHTML('afterend', '<div id="TorrentList"></div>')
-    targetElement.insertAdjacentHTML('afterend', '<div id="OnlinePlay"></div>')
+  const success2 = insertHtml('.no-bottom', '<div id="OnlinePlay"></div>')
 
-    isShowOnlinePlay.value = true
+  // 只有插入成功才显示
+  if (success1 && success2) {
     isShowTorrentList.value = true
+    isShowOnlinePlay.value = true
   }
 }
 

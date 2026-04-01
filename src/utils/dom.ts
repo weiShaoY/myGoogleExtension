@@ -1,25 +1,43 @@
 /**
  * 安全查询单个 DOM 元素
  * @description 封装 document.querySelector，支持泛型指定元素类型
- * @param selector CSS 选择器
+ * @param selectorOrParent CSS 选择器 或 父元素
+ * @param selector 可选，CSS 选择器（当第一个参数是父元素时使用）
  * @returns 匹配的 DOM 元素或 null
  */
 export function $<T extends HTMLElement = HTMLElement>(
-  selector: string,
+  selectorOrParent: string | Element | null,
+  selector?: string,
 ): T | null {
-  return document.querySelector<T>(selector)
+  // 如果传了两个参数：$(父元素, 选择器)
+  if (selector) {
+    const parent = selectorOrParent as Element | null
+
+    return parent?.querySelector<T>(selector) ?? null
+  }
+
+  // 如果只传一个参数：$(选择器)
+  return document.querySelector<T>(selectorOrParent as string)
 }
 
 /**
  * 安全查询多个 DOM 元素
  * @description 封装 document.querySelectorAll，支持泛型指定元素类型
- * @param selector CSS 选择器
+ * @param selectorOrParent CSS 选择器 或 父元素
+ * @param selector 可选，CSS 选择器（当第一个参数是父元素时使用）
  * @returns 匹配的元素列表
  */
 export function $$<T extends HTMLElement = HTMLElement>(
-  selector: string,
+  selectorOrParent: string | Element | null,
+  selector?: string,
 ): NodeListOf<T> {
-  return document.querySelectorAll<T>(selector)
+  if (selector) {
+    const parent = selectorOrParent as Element | null
+
+    return parent?.querySelectorAll<T>(selector) ?? document.querySelectorAll<T>(':not(*)')
+  }
+
+  return document.querySelectorAll<T>(selectorOrParent as string)
 }
 
 /**
@@ -75,4 +93,29 @@ export function preventEvent(event: Event): boolean {
  */
 export function isElementExists(element: any): element is HTMLElement {
   return !!element && element instanceof HTMLElement
+}
+
+/**
+ * 【通用封装】在指定 DOM 元素位置安全插入 HTML 字符串
+ * @description 自动校验元素是否存在，支持 4 种标准插入位置，默认在元素外部后面插入
+ * @param selector 目标元素选择器 / 已获取的 DOM 元素
+ * @param html 要插入的 HTML 内容
+ * @param position 插入位置，默认：afterend（元素后面）
+ * 可选值：beforebegin(前面) / afterbegin(内部前) / beforeend(内部后) / afterend(后面)
+ * @returns 是否插入成功
+ */
+export function insertHtml(
+  selector: string | HTMLElement | null,
+  html: string,
+  position: 'beforebegin' | 'afterbegin' | 'beforeend' | 'afterend' = 'afterend',
+): boolean {
+  // 自动处理：传入选择器则获取元素，传入DOM则直接使用
+  const el = typeof selector === 'string' ? $(selector) : selector
+
+  if (!el) {
+    return false
+  }
+
+  el.insertAdjacentHTML(position, html)
+  return true
 }

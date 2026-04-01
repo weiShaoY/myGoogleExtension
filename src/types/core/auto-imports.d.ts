@@ -71,6 +71,8 @@ declare global {
   const ignorableWatch: typeof import('@vueuse/core').ignorableWatch
   const inject: typeof import('vue').inject
   const injectLocal: typeof import('@vueuse/core').injectLocal
+  const insertAfterElement: typeof import('../../utils/dom').insertAfterElement
+  const insertHtml: typeof import('../../utils/dom').insertHtml
   const isClipboardSupported: typeof import('../../utils/clipboard').isClipboardSupported
   const isDefined: typeof import('@vueuse/core').isDefined
   const isElementExists: typeof import('../../utils/dom').isElementExists
@@ -112,6 +114,7 @@ declare global {
   const onUpdated: typeof import('vue').onUpdated
   const onWatcherCleanup: typeof import('vue').onWatcherCleanup
   const openLink: typeof import('../../utils/openLink').openLink
+  const parseFileSizeToGB: typeof import('../../utils/file').parseFileSizeToGB
   const parseNfoContent: typeof import('../../utils/parseNfoContent').parseNfoContent
   const parseSizeTextToGB: typeof import('../../composables/useDetailsPageTorrentList').parseSizeTextToGB
   const pausableWatch: typeof import('@vueuse/core').pausableWatch
@@ -427,6 +430,7 @@ declare module 'vue' {
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly injectLocal: UnwrapRef<typeof import('@vueuse/core')['injectLocal']>
+    readonly insertHtml: UnwrapRef<typeof import('../../utils/dom')['insertHtml']>
     readonly isClipboardSupported: UnwrapRef<typeof import('../../utils/clipboard')['isClipboardSupported']>
     readonly isDefined: UnwrapRef<typeof import('@vueuse/core')['isDefined']>
     readonly isElementExists: UnwrapRef<typeof import('../../utils/dom')['isElementExists']>
@@ -466,6 +470,7 @@ declare module 'vue' {
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
     readonly onWatcherCleanup: UnwrapRef<typeof import('vue')['onWatcherCleanup']>
     readonly openLink: UnwrapRef<typeof import('../../utils/openLink')['openLink']>
+    readonly parseFileSizeToGB: UnwrapRef<typeof import('../../utils/file')['parseFileSizeToGB']>
     readonly parseNfoContent: UnwrapRef<typeof import('../../utils/parseNfoContent')['parseNfoContent']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
     readonly preventEvent: UnwrapRef<typeof import('../../utils/dom')['preventEvent']>
