@@ -69,6 +69,8 @@ function getTorrentList() {
 
     const sizeText = item.querySelector('.meta')?.textContent?.trim() || ''
 
+    console.log('🚀 ~ file: javdbDetailsPage.vue:71 ~ sizeText:', sizeText)
+
     const time = item.querySelector('.time')?.textContent?.trim() || ''
 
     let size = 0
@@ -85,6 +87,10 @@ function getTorrentList() {
     }
 
     const tags = getVideoTagsFromName(name)
+
+    if (!url) {
+      return
+    }
 
     const isMatched = AdultConfig.rules.chineseSubtitleRules.some(tag =>
       name.toLowerCase().includes(tag.toLowerCase()),

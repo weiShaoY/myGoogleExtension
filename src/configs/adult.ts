@@ -78,14 +78,11 @@ export const AdultConfig: AdultConfigType = {
     ],
 
     chineseSubtitleRules: [
-      '中字',
+      '-c',
+      '-C',
+      '_ch',
+      '-UC',
       '中文',
-      '字幕',
-      'ch',
-      'CH',
-      '简中',
-      '繁中',
-      '汉语',
     ],
   },
 
@@ -147,6 +144,10 @@ export const AdultConfig: AdultConfigType = {
       {
         name: '-C',
         backgroundColor: '#2668B5',
+      },
+      {
+        name: '中文',
+        backgroundColor: '#fe5f60',
       },
       {
         name: 'ch',

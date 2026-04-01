@@ -41,7 +41,11 @@ function main() {
     }
 
     // 检查是否有中文字幕标签
-    const hasChineseTag = !!item.querySelector('.is-warning')
+    const hasChineseTag = !!item.querySelector('.btn-warning')
+
+    console.log('🚀 ~ file: javbusListPage.vue:45 ~ item:', item)
+
+    console.log('🚀 ~ file: javbusListPage.vue:45 ~ hasChineseTag:', hasChineseTag)
 
     // 创建匹配结果项
     const matchResultItem = createMatchResult(

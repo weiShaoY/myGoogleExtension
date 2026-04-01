@@ -74,6 +74,10 @@ function getTorrentList() {
 
     const tags = getVideoTagsFromName(name)
 
+    if (!url) {
+      return
+    }
+
     const isMatched = AdultConfig.rules.chineseSubtitleRules.some(tag =>
       name.toLowerCase().includes(tag.toLowerCase()),
     )
