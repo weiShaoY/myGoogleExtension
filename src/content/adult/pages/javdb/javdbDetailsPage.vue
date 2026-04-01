@@ -158,7 +158,7 @@ onMounted(() => {
 <template>
 
   <!-- 自定义磁链列表 -->
-  <TorrentList
+  <AdultTorrent
     v-if="isShowTorrentList"
     to="#TorrentList"
     :torrent-list="torrentList"

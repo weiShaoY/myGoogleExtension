@@ -11,9 +11,11 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Adult: typeof import('../../components/Adult/adult-torrent.vue')['default']
     AdultChinese: typeof import('./../../components/Adult/adult-chinese.vue')['default']
     AdultEmby: typeof import('./../../components/Adult/adult-emby.vue')['default']
     AdultInventory: typeof import('./../../components/Adult/adult-inventory.vue')['default']
+    AdultTorrent: typeof import('./../../components/Adult/adult-torrent.vue')['default']
     AppProvider: typeof import('./../../components/AppProvider/index.vue')['default']
     AvChinese: typeof import('../../components/Adult/adult-chinese.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
