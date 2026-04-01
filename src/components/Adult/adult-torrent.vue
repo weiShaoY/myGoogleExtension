@@ -1,7 +1,7 @@
 <!------------------------------------  磁链列表  ------------------------------------------------->
 <script lang="ts" setup>
 
-import { TorrentConfig } from '@/configs'
+import { AdultConfig } from '@/configs'
 
 type PropsType = {
 
@@ -13,19 +13,19 @@ type PropsType = {
   /**
    *  种子列表
    */
-  torrentList?: TorrentType[]
+  torrentList?: AdultType.TorrentItem[]
 
 }
 
 const props = withDefaults(defineProps<PropsType>(), {
   to: '',
-  torrentList: (): TorrentType[] => [],
+  torrentList: (): AdultType.TorrentItem[] => [],
 })
 
 /**
  *  种子列表
  */
-const torrentList = ref<TorrentType[]>(props.torrentList)
+const torrentList = ref<AdultType.TorrentItem[]>(props.torrentList)
 
 console.log('%c Line:39 🍢 torrentList', 'color:#fca650', props.torrentList)
 
@@ -39,7 +39,7 @@ const chineseCount = computed(() =>
 /**
  *  复制种子链接
  */
-function copyTorrentUrl(torrent: TorrentType) {
+function copyTorrentUrl(torrent: AdultType.TorrentItem) {
   if (!torrent.url) {
     window.$notification.error('传入磁链为空, 无法复制,请检查代码')
     return
@@ -53,11 +53,11 @@ function copyTorrentUrl(torrent: TorrentType) {
 
 /**
  * 根据种子项计算背景颜色和标签
- * @param {TorrentType} torrent - 种子项
- * @returns {{ backgroundColor: string; web: string }} 背景颜色和标签信息
+ * @param  torrent - 种子项
+ * @returns  背景颜色和标签信息
  */
-function getTorrentStyle(torrent: TorrentType) {
-  const matchingRule = TorrentConfig.SortingRuleArray.find(rule =>
+function getTorrentStyle(torrent: AdultType.TorrentItem) {
+  const matchingRule = AdultConfig.torrentSortRules.find(rule =>
     torrent.name.includes(rule.name),
   )
 
@@ -73,16 +73,16 @@ function getTorrentStyle(torrent: TorrentType) {
 }
 
 async function main() {
-  torrentList.value.sort((videoA: TorrentType, videoB: TorrentType) => {
+  torrentList.value.sort((videoA: AdultType.TorrentItem, videoB: AdultType.TorrentItem) => {
   /**
    *   视频A在排序规则数组中的位置   （-1 代表不在数组中）
    */
-    const indexA = TorrentConfig.SortingRuleArray.findIndex(rule => videoA.name.includes(rule.name))
+    const indexA = AdultConfig.torrentSortRules.findIndex(rule => videoA.name.includes(rule.name))
 
     /**
      *   视频B在排序规则数组中的位置   （-1 代表不在数组中）
      */
-    const indexB = TorrentConfig.SortingRuleArray.findIndex(rule => videoB.name.includes(rule.name))
+    const indexB = AdultConfig.torrentSortRules.findIndex(rule => videoB.name.includes(rule.name))
 
     // 1.在规则数组中，按数组里关键词的顺序排序,如果关键词的顺序一样了,按文件大小排序
 
@@ -142,7 +142,6 @@ main()
 
 <template>
   <Teleport
-    v-if="TorrentConfig.isShowTorrentList"
     :to="props.to"
   >
     <div
@@ -299,13 +298,7 @@ main()
             <div
               class="w-auto p-2"
             >
-              <!-- 复制按钮 -->
-              <!-- <button
-                class="shadow-rgba(6,_24,_44,_0.4)_0px_0px_0px_2px shadow-_rgba(6,_24,_44,_0.65)_0px_4px_6px_-1px shadow-_rgba(255,_255,_255,_0.08)_0px_1px_0px_inset"
-                @click="copyTorrentUrl(torrent)"
-              >
-                复制
-              </button> -->
+
               <el-button
                 @click="copyTorrentUrl(torrent)"
               >
@@ -317,14 +310,9 @@ main()
           <div
             v-if="torrentList.length === 1 || (torrentList.length > 1 && index !== torrentList.length - 1)"
             class="m-y-2 h-[1px] rounded bg-[#9CA3AF]"
-          >
-            <!-- 分割线 -->
-            <!-- torrentList.length === 1：当 torrentList 长度为 1 时显示分割线 -->
-            <!-- torrentList.length > 1 && index !== torrentList.length - 1：当 torrentList 长度大于 1 且不是最后一个元素时显示分割线 -->
-          </div>
+          />
 
         </div>
-        <!-- # -----------------------------------------------  列表循环  End  ------------------------------------------------->
 
       </div>
     </div>

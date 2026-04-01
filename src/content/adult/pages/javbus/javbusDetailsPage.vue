@@ -24,7 +24,7 @@ const isShowTorrentList = ref<boolean>(false)
 /**
  * 磁链列表
  */
-const torrentList = ref<TorrentType[]>([])
+const torrentList = ref<AdultType.TorrentItem[]>([])
 
 /**
  * 导入共享逻辑
@@ -53,6 +53,8 @@ function getTorrentList() {
 
   const items = Array.from(magnetsContent.querySelectorAll('tr'))
 
+  console.log('🚀 ~ file: javbusDetailsPage.vue:55 ~ items:', items)
+
   items.forEach((itemElement) => {
     const item = asHTMLElement(itemElement)
 
@@ -80,7 +82,7 @@ function getTorrentList() {
       hasChineseTag.value = true
     }
 
-    const torrentListItem: TorrentType = {
+    const torrentListItem: AdultType.TorrentItem = {
       url,
       name,
       size,
