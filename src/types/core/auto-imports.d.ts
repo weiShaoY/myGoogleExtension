@@ -66,6 +66,7 @@ declare global {
   const getElapsedTime: typeof import('../../utils/time').getElapsedTime
   const getFileTagIconArray: typeof import('../../utils/getTagIconArray').getFileTagIconArray
   const getRandomNumber: typeof import('../../utils/number').getRandomNumber
+  const getVideoTagsFromName: typeof import('../../utils/adult').getVideoTagsFromName
   const h: typeof import('vue').h
   const ignorableWatch: typeof import('@vueuse/core').ignorableWatch
   const inject: typeof import('vue').inject
@@ -342,6 +343,7 @@ declare global {
   const useWindowFocus: typeof import('@vueuse/core').useWindowFocus
   const useWindowScroll: typeof import('@vueuse/core').useWindowScroll
   const useWindowSize: typeof import('@vueuse/core').useWindowSize
+  const videoFileTagExtractionRegex: typeof import('../../utils/adult').videoFileTagExtractionRegex
   const watch: typeof import('vue').watch
   const watchArray: typeof import('@vueuse/core').watchArray
   const watchAtMost: typeof import('@vueuse/core').watchAtMost
@@ -420,6 +422,7 @@ declare module 'vue' {
     readonly getDuration: UnwrapRef<typeof import('../../utils/time')['getDuration']>
     readonly getElapsedTime: UnwrapRef<typeof import('../../utils/time')['getElapsedTime']>
     readonly getRandomNumber: UnwrapRef<typeof import('../../utils/number')['getRandomNumber']>
+    readonly getVideoTagsFromName: UnwrapRef<typeof import('../../utils/adult')['getVideoTagsFromName']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
@@ -683,6 +686,7 @@ declare module 'vue' {
     readonly useWindowFocus: UnwrapRef<typeof import('@vueuse/core')['useWindowFocus']>
     readonly useWindowScroll: UnwrapRef<typeof import('@vueuse/core')['useWindowScroll']>
     readonly useWindowSize: UnwrapRef<typeof import('@vueuse/core')['useWindowSize']>
+    readonly videoFileTagExtractionRegex: UnwrapRef<typeof import('../../utils/adult')['videoFileTagExtractionRegex']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchArray: UnwrapRef<typeof import('@vueuse/core')['watchArray']>
     readonly watchAtMost: UnwrapRef<typeof import('@vueuse/core')['watchAtMost']>

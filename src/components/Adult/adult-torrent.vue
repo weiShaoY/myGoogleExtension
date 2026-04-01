@@ -51,7 +51,7 @@ function copyTorrentUrl(torrent: AdultType.TorrentItem) {
  * @returns  背景颜色和标签信息
  */
 function getTorrentStyle(torrent: AdultType.TorrentItem) {
-  const matchingRule = AdultConfig.torrentSortRules.find(rule =>
+  const matchingRule = AdultConfig.torrent.sortRules.find(rule =>
     torrent.name.includes(rule.name),
   )
 
@@ -77,14 +77,14 @@ const sortedTorrentList = computed(() => {
     /**
      *   视频A在排序规则数组中的位置   （-1 代表不在数组中）
      */
-    const indexA = AdultConfig.torrentSortRules.findIndex(rule =>
+    const indexA = AdultConfig.torrent.sortRules.findIndex(rule =>
       videoA.name.includes(rule.name),
     )
 
     /**
      *   视频B在排序规则数组中的位置   （-1 代表不在数组中）
      */
-    const indexB = AdultConfig.torrentSortRules.findIndex(rule =>
+    const indexB = AdultConfig.torrent.sortRules.findIndex(rule =>
       videoB.name.includes(rule.name),
     )
 

@@ -72,9 +72,9 @@ function getTorrentList() {
 
     const time = tdList[2].children[0]?.textContent?.trim()
 
-    const tags = AdultConfig.videoFileMatch.getVideoTagsFromName(name)
+    const tags = getVideoTagsFromName(name)
 
-    const isMatched = AdultConfig.videoFileMatch.videoFileTags[0].names.some(tag =>
+    const isMatched = AdultConfig.rules.chineseSubtitleRules.some(tag =>
       name.toLowerCase().includes(tag.toLowerCase()),
     )
 

@@ -87,7 +87,7 @@ async function mainBtnHandler() {
           //   判断当前条目是否为文件，并且文件扩展名是否在 config.video.supportedExtensions 中
           if (
             handle.kind === 'file'
-            && AdultConfig.videoFileMatch.videoFileExtensions.some(ext => name.endsWith(`.${ext}`))
+            && AdultConfig.rules.videoExtRules.some(ext => name.endsWith(`.${ext}`))
           ) {
             let nfoContent = ''
 
@@ -153,13 +153,13 @@ async function mainBtnHandler() {
         cleanName: file.name
           .substring(0, file.name.lastIndexOf('.'))
           .toLowerCase()
-          .replace(AdultConfig.videoFileMatch.videoFileTagExtractionRegex, ''),
+          .replace(videoFileTagExtractionRegex, ''),
 
         extension: file.name.replace(/^.*\./, ''),
 
         filePath: [...fileData.directoryPath, file.name],
 
-        tags: AdultConfig.videoFileMatch.getVideoTagsFromName(
+        tags: getVideoTagsFromName(
           file.name.substring(0, file.name.lastIndexOf('.')),
         ),
 

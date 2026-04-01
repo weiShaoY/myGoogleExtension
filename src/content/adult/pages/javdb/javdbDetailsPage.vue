@@ -84,9 +84,9 @@ function getTorrentList() {
       size = Math.round(size * 100) / 100
     }
 
-    const tags = AdultConfig.videoFileMatch.getVideoTagsFromName(name)
+    const tags = getVideoTagsFromName(name)
 
-    const isMatched = AdultConfig.videoFileMatch.videoFileTags[0].names.some(tag =>
+    const isMatched = AdultConfig.rules.chineseSubtitleRules.some(tag =>
       name.toLowerCase().includes(tag.toLowerCase()),
     )
 

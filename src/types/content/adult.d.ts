@@ -173,45 +173,6 @@ namespace AdultType {
   }
 
   /**
-   * 视频文件识别与标签处理配置
-   * @description 用于解析文件名、提取标签、过滤格式
-   */
-  type VideoFileMatch = {
-
-    /**
-     * 支持的视频扩展名列表（不含点）
-     * @example ['mp4', 'mkv', 'avi', 'flv']
-     */
-    videoFileExtensions: string[]
-
-    /**
-     * 标签规则配置
-     * @description 从文件名匹配标签并映射图标
-     */
-    videoFileTags: {
-
-      /**
-       * 标签图标标识
-       * @example 'tag-4k'
-       */
-      icon: string
-
-      /**
-       * 标签匹配关键词
-       * @example ['2160P','4K']
-       */
-      names: string[]
-
-    }[]
-
-    /**
-     * 标签提取正则表达式
-     * @description 根据标签自动生成，全局不区分大小写匹配
-     */
-    videoFileTagExtractionRegex: RegExp
-  }
-
-  /**
    * 单个视频文件完整信息结构
    * @description 包含原始名称、解析后名称、标签、路径、大小、字幕等全量信息
    */
@@ -365,6 +326,7 @@ namespace AdultType {
   export type DetailsPageMatchResult = PageVideoMatchItem
 
   // ! //////////////////////////////  种子 ////////////////////////////////////////
+
   /**
    * 种子/磁链项的类型
    * 用于存储从种子网站抓取的磁链信息，包含文件名、大小、标签等元数据
@@ -450,5 +412,25 @@ namespace AdultType {
      * 当多个规则匹配时，此属性用于进一步区分优先级
      */
     web?: string
+  }
+
+  /**
+   * 标签规则配置
+   * @description 从文件名匹配标签并映射图标
+   */
+  type TorrentTagRule = {
+
+    /**
+     * 标签图标标识
+     * @example 'tag-4k'
+     */
+    icon: string
+
+    /**
+     * 标签匹配关键词
+     * @example ['2160P','4K']
+     */
+    names: string[]
+
   }
 }
