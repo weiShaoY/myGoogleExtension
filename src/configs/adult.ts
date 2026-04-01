@@ -16,15 +16,8 @@ type AdultConfigType = {
   rules: {
     chineseSubtitleRules: string[] // 中文字幕匹配关键词
     videoExtRules: string[] // 视频文件后缀
-  }
-
-  /**
-   * 种子模块专属配置
-   */
-  torrent: {
-    tagRules: AdultType.TorrentTagRule[]
-
-    sortRules: AdultType.TorrentSortRule[]
+    torrentTagRules: AdultType.TorrentTagRule[] // 种子标签规则
+    torrentSortRules: AdultType.TorrentSortRule[] // 种子排序规则
   }
 
 }
@@ -84,13 +77,11 @@ export const AdultConfig: AdultConfigType = {
       '-UC',
       '中文',
     ],
-  },
 
-  // ==========================================
-  // 3. 种子模块（含动态生成正则 + 方法）
-  // ==========================================
-  torrent: {
-    tagRules: [
+    /**
+     * 种子标签规则
+     */
+    torrentTagRules: [
       {
         names: ['-c', '-C', '_ch', '-UC', '中文'],
         icon: 'tag-ziMu',
@@ -113,7 +104,10 @@ export const AdultConfig: AdultConfigType = {
       },
     ],
 
-    sortRules: [
+    /**
+     * 种子排序规则
+     */
+    torrentSortRules: [
       {
         name: 'UC.torrent.无码破解',
         backgroundColor: '#00FFFF',
@@ -179,6 +173,6 @@ export const AdultConfig: AdultConfigType = {
         backgroundColor: '#95D2B3',
       },
     ],
-
   },
+
 }

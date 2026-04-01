@@ -7,7 +7,7 @@ import { AdultConfig } from '@/configs'
 export const videoFileTagExtractionRegex = new RegExp(
 
   // 处理所有标签配置，生成正则表达式模式
-  AdultConfig.torrent.tagRules
+  AdultConfig.rules.torrentTagRules
 
   // 扁平化处理：将所有标签的 names 数组合并为一个数组
     .flatMap(tag => tag.names)
@@ -58,7 +58,7 @@ export function getVideoTagsFromName(fullName: string): string[] {
   const icons: string[] = []
 
   // 遍历所有标签规则，检查是否有匹配的标签
-  for (const tag of AdultConfig.torrent.tagRules) {
+  for (const tag of AdultConfig.rules.torrentTagRules) {
     // 检查当前标签的任一关键词是否匹配
     // some 方法：只要有一个满足条件就返回 true
     const hit = tag.names.some((n) => {
