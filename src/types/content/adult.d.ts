@@ -313,6 +313,11 @@ namespace AdultType {
      * 文件夹中匹配到的视频列表
      */
     folderMatchedVideos: AdultType.VideoFile[]
+
+    /**
+     * 唯一标识
+     */
+    id?: string
   }
 
   /**

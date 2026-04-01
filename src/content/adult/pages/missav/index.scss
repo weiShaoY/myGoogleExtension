@@ -45,9 +45,14 @@
     display: none;
   }
 
+  // 感謝新北市政府解封 MissAV!
+  .bg-primary.-mx-4.-mt-6.mb-6.sm\:m-0.py-3.sm\:rounded-t-md.text-center.text-white.text-sm.md\:text-base {
+    display: none;
+  }
+
   // 盒子高亮
   .is-highlight {
-    padding: 50px !important;
+    padding: 20px !important;
     border-radius: 10px;
     background-color: #ea1179;
     overflow: hidden !important;

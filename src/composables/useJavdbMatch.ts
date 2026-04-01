@@ -29,6 +29,7 @@ export function useJavdbMatch() {
     cleanName: string,
     folderMatchedVideos: AdultType.VideoFile[],
     hasChineseTag: boolean,
+    id = '',
   ): AdultType.PageVideoMatchItem {
     // 判断是否需要显示中文字幕更新按钮：存在无中文字幕但有字幕标签的视频
     const needsChineseUpdate = folderMatchedVideos.some(
@@ -39,6 +40,7 @@ export function useJavdbMatch() {
       cleanName,
       folderMatchedVideos,
       isShowUpdateChinese: needsChineseUpdate,
+      id,
     }
   }
 

@@ -40,10 +40,15 @@ function main() {
 
     const targetElement = item
 
+    const id = `a${getRandomNumber(10)}`
+
+    console.log('🚀 ~ file: missavListPage.vue:46 ~ id:', id)
+
     // 添加样式类
     if (isElementExists(targetElement)) {
       targetElement.classList.add(cleanName)
       targetElement.classList.add('is-highlight')
+      targetElement.classList.add(id)
     }
 
     // 检查是否有中文字幕标签
@@ -54,6 +59,7 @@ function main() {
       cleanName,
       folderMatchedVideos,
       hasChineseTag,
+      id,
     )
 
     listPageMatchResults.value.push(matchResultItem)
@@ -61,18 +67,26 @@ function main() {
   })
 }
 
-onMounted(() => delayRun(main))
+// loadingCompleted.value
+onMounted(() => {
+  delayRun(() => {
+    // loadingCompleted.value = true
+
+    main()
+  })
+})
 
 </script>
 
 <template>
+
   <template
     v-for="matchResult in listPageMatchResults"
     :key="matchResult.cleanName"
   >
     <Teleport
-      v-if="matchResult.folderMatchedVideos.length"
-      :to="`.${matchResult.cleanName}`"
+      v-if="matchResult.folderMatchedVideos.length "
+      :to="`.${matchResult.id}`"
     >
       <!-- 事件处理包装器 -->
       <div
@@ -114,6 +128,8 @@ onMounted(() => delayRun(main))
       </div>
     </Teleport>
   </template>
+
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>

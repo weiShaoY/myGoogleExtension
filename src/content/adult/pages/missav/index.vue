@@ -21,14 +21,12 @@ onMounted(() => {
     document.body.classList.add('missav', bodyClass)
 
     loadingCompleted.value = true
-  }, 1000)
+  })
 })
 </script>
 
 <template>
-  <template
-    v-if="loadingCompleted"
-  >
+  <template>
     <ListPage
       v-if="isListPage"
     />

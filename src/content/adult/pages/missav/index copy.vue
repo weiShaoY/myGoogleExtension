@@ -21,7 +21,7 @@ onMounted(() => {
     document.body.classList.add('missav', bodyClass)
 
     loadingCompleted.value = true
-  }, 2000)
+  }, 1000)
 })
 </script>
 
