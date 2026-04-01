@@ -15,16 +15,11 @@ type PropsType = {
    */
   torrentList?: TorrentType[]
 
-  /**
-   *  滚动的目标元素
-   */
-  scrollTarget?: string
 }
 
 const props = withDefaults(defineProps<PropsType>(), {
   to: '',
   torrentList: (): TorrentType[] => [],
-  scrollTarget: '',
 })
 
 /**
@@ -32,7 +27,7 @@ const props = withDefaults(defineProps<PropsType>(), {
  */
 const torrentList = ref<TorrentType[]>(props.torrentList)
 
-console.log('%c Line:39 🍢 torrentList', 'color:#fca650', props)
+console.log('%c Line:39 🍢 torrentList', 'color:#fca650', props.torrentList)
 
 /**
  *  有中文字幕的数量
@@ -141,49 +136,8 @@ async function main() {
   })
 }
 
-/**
- *   滚动到磁链列表组件
- */
-function scrollToElement() {
-  //  如果配置 详情页 不 滚动，则直接返回
-  if (!TorrentConfig.isScrollToTorrentList) {
-    return
-  }
-
-  const offset = -200 // 向上偏移量
-
-  if (props.scrollTarget) {
-    const element = document.querySelector(props.scrollTarget)
-
-    if (element) {
-      // element.scrollIntoView({ behavior: 'smooth' })
-
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY
-
-      window.scrollTo({
-        top: elementPosition + offset,
-        behavior: 'smooth',
-      })
-    }
-  }
-  else {
-    //  滚动到 to
-    const element = document.querySelector(props.to)
-
-    if (element) {
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY
-
-      window.scrollTo({
-        top: elementPosition + offset,
-        behavior: 'smooth',
-      })
-    }
-  }
-}
-
 main()
 
-scrollToElement()
 </script>
 
 <template>
