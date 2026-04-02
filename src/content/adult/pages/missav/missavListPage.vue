@@ -83,7 +83,7 @@ onMounted(() => delayRun(main))
         @pointerup="preventEvent"
       >
         <div
-          class="h-auto w-full flex flex-col items-center border border-gray-200 rounded-lg bg-[rgb(255,255,255)] p-3 space-y-4"
+          class="h-auto w-full flex flex-col items-center border border-gray-200 rounded-lg bg-white p-3 space-y-4"
         >
           <section
             class="w-full space-y-2"

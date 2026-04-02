@@ -255,6 +255,11 @@ const sortedTorrentList = computed(() => {
               <!-- 文件大小 -->
               <div
                 class="m-l-3 w-30 group-hover:text-[#fff]"
+                :style="{
+                  color: getTorrentStyle(torrent).backgroundColor
+                    ? '#fff'
+                    : '#000',
+                }"
               >
                 <span
                   v-if="torrent.size"

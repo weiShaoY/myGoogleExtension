@@ -116,23 +116,23 @@ export const AdultConfig: AdultConfigType = {
     torrentTagRules: [
       {
         names: ['-c', '-C', '_ch', '-UC', '中文'],
-        icon: 'tag-ziMu',
+        icon: 'content-adult-tag-ziMu',
       },
       {
         names: ['4K'],
-        icon: 'tag-4k',
+        icon: 'content-adult-tag-4k',
       },
       {
         names: ['无码'],
-        icon: 'tag-wuMa',
+        icon: 'content-adult-tag-wuMa',
       },
       {
         names: ['破解'],
-        icon: 'tag-poJie',
+        icon: 'content-adult-tag-poJie',
       },
       {
         names: ['流出'],
-        icon: 'tag-liuChu',
+        icon: 'content-adult-tag-liuChu',
       },
     ],
 
@@ -142,25 +142,25 @@ export const AdultConfig: AdultConfigType = {
     torrentSortRules: [
       {
         name: 'UC.torrent.无码破解',
-        backgroundColor: '#00FFFF',
+        backgroundColor: '#f12e01',
         web: '色花堂',
       },
       {
         name: 'U.torrent.无码破解',
-        backgroundColor: '#FF9F9F',
+        backgroundColor: '#2accea',
         web: '色花堂',
       },
       {
         name: '破解-c',
-        backgroundColor: '#00BFFF',
+        backgroundColor: '#8441d8',
       },
       {
         name: 'UC',
-        backgroundColor: '#fca650',
+        backgroundColor: '#7baefe',
       },
       {
         name: '-c',
-        backgroundColor: '#FF6347',
+        backgroundColor: '#25c9ba',
       },
       {
         name: '-C.torrent',
@@ -177,11 +177,11 @@ export const AdultConfig: AdultConfigType = {
       },
       {
         name: 'ch',
-        backgroundColor: '#2A9D8F',
+        backgroundColor: '#b6d984',
       },
       {
         name: '-U',
-        backgroundColor: '#8FBC8F',
+        backgroundColor: '#e147a3',
       },
       {
         name: 'ThZu.Cc',
@@ -194,7 +194,7 @@ export const AdultConfig: AdultConfigType = {
       },
       {
         name: '4k',
-        backgroundColor: '#C75B7A',
+        backgroundColor: '#e7bc86',
       },
       {
         name: '无码破解',
