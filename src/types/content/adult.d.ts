@@ -313,11 +313,11 @@ namespace AdultType {
      * 文件夹中匹配到的视频列表
      */
     folderMatchedVideos: AdultType.VideoFile[]
-
     /**
-     * 唯一标识
+     * 挂载目标选择器
+     * @description 用于 Teleport 组件挂载的 DOM 目标（类名/ID选择器），动态指定内容渲染位置
      */
-    id?: string
+    teleportTarget?: string
   }
 
   /**

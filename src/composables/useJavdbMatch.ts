@@ -29,7 +29,7 @@ export function useJavdbMatch() {
     cleanName: string,
     folderMatchedVideos: AdultType.VideoFile[],
     hasChineseTag: boolean,
-    id = '',
+    teleportTarget = '',
   ): AdultType.PageVideoMatchItem {
     // 判断是否需要显示中文字幕更新按钮：
     // 1. 必须有中文字幕标签
@@ -42,7 +42,7 @@ export function useJavdbMatch() {
       cleanName,
       folderMatchedVideos,
       isShowUpdateChinese: needsChineseUpdate,
-      id,
+      teleportTarget,
     }
   }
 

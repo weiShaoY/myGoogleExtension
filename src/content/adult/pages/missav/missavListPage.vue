@@ -22,15 +22,9 @@ const { cleanVideoName, createMatchResult } = useJavdbMatch()
 function main() {
   // 获取所有视频项
   $$('div.thumbnail.group').forEach((item) => {
-    // const link = $<HTMLAnchorElement>(item, 'a.text-secondary')
-
-    // const videoName = link?.getAttribute('alt').replace(/-chinese-subtitle$/i, '') ?? ''
-
     const videoName = $(item, '.text-secondary.group-hover\\:text-primary')?.textContent.trim().split(' ')[0] ?? ''
 
     const cleanName = cleanVideoName(videoName)
-
-    console.log('🚀 ~ file: missavListPage.vue:31 ~ cleanName:', cleanName)
 
     const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
 
@@ -38,17 +32,14 @@ function main() {
       return
     }
 
+    const teleportTarget = `${cleanName}_${getRandomNumber(10)}`
+
     const targetElement = item
-
-    const id = `a${getRandomNumber(10)}`
-
-    console.log('🚀 ~ file: missavListPage.vue:46 ~ id:', id)
 
     // 添加样式类
     if (isElementExists(targetElement)) {
-      targetElement.classList.add(cleanName)
       targetElement.classList.add('is-highlight')
-      targetElement.classList.add(id)
+      targetElement.classList.add(teleportTarget)
     }
 
     // 检查是否有中文字幕标签
@@ -59,7 +50,7 @@ function main() {
       cleanName,
       folderMatchedVideos,
       hasChineseTag,
-      id,
+      teleportTarget,
     )
 
     listPageMatchResults.value.push(matchResultItem)
@@ -67,14 +58,7 @@ function main() {
   })
 }
 
-// loadingCompleted.value
-onMounted(() => {
-  delayRun(() => {
-    // loadingCompleted.value = true
-
-    main()
-  })
-})
+onMounted(() => delayRun(main))
 
 </script>
 
@@ -82,11 +66,11 @@ onMounted(() => {
 
   <template
     v-for="matchResult in listPageMatchResults"
-    :key="matchResult.cleanName"
+    :key="matchResult.teleportTarget"
   >
     <Teleport
       v-if="matchResult.folderMatchedVideos.length "
-      :to="`.${matchResult.id}`"
+      :to="`.${matchResult.teleportTarget}`"
     >
       <!-- 事件处理包装器 -->
       <div

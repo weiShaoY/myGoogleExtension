@@ -40,12 +40,14 @@ function main() {
       return
     }
 
+    const teleportTarget = `${cleanName}_${getRandomNumber(10)}`
+
     const targetElement = $(item, '.box')
 
     // 添加样式类
     if (isElementExists(targetElement)) {
-      targetElement.classList.add(cleanName)
       targetElement.classList.add('is-highlight')
+      targetElement.classList.add(teleportTarget)
     }
 
     // 检查是否有中文字幕标签
@@ -56,6 +58,7 @@ function main() {
       cleanName,
       folderMatchedVideos,
       hasChineseTag,
+      teleportTarget,
     )
 
     listPageMatchResults.value.push(matchResultItem)
@@ -68,11 +71,11 @@ onMounted(() => delayRun(main))
 <template>
   <template
     v-for="matchResult in listPageMatchResults"
-    :key="matchResult.cleanName"
+    :key="matchResult.teleportTarget"
   >
     <Teleport
       v-if="matchResult.folderMatchedVideos.length"
-      :to="`.${matchResult.cleanName}`"
+      :to="`.${matchResult.teleportTarget}`"
     >
       <!-- 事件处理包装器 -->
       <div

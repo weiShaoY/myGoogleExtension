@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
-const { cleanVideoName, createMatchResult } = useJavdbMatch()
+import { useJavdbMatch } from '@/composables/useJavdbMatch'
 
 /**
  * 文件夹存储
@@ -13,14 +13,19 @@ const adultStore = useAdultStore()
  */
 const listPageMatchResults = ref<AdultType.ListPageMatchResultList>([])
 
+/**
+ * 导入共享逻辑
+ */
+const { cleanVideoName, createMatchResult } = useJavdbMatch()
+
 function main() {
   $$('#waterfall .movie-box').forEach((item) => {
-    const name = item
+    const videoName = item
       .getAttribute('href')
       ?.split('/')
       .pop() ?? ''
 
-    const cleanName = cleanVideoName(name)
+    const cleanName = cleanVideoName(videoName)
 
     if (!cleanName) {
       return
@@ -32,12 +37,14 @@ function main() {
       return
     }
 
+    const teleportTarget = `${cleanName}_${getRandomNumber(10)}`
+
     const targetElement = item
 
     // 添加样式类
     if (isElementExists(targetElement)) {
-      targetElement.classList.add(cleanName)
       targetElement.classList.add('is-highlight')
+      targetElement.classList.add(teleportTarget)
     }
 
     // 检查是否有中文字幕标签
@@ -48,6 +55,7 @@ function main() {
       cleanName,
       folderMatchedVideos,
       hasChineseTag,
+      teleportTarget,
     )
 
     listPageMatchResults.value.push(matchResultItem)
@@ -55,16 +63,17 @@ function main() {
 }
 
 onMounted(() => delayRun(main))
+
 </script>
 
 <template>
   <template
     v-for="matchResult in listPageMatchResults"
-    :key="matchResult.cleanName"
+    :key="matchResult.teleportTarget"
   >
     <Teleport
       v-if="matchResult.folderMatchedVideos.length"
-      :to="`.${matchResult.cleanName}`"
+      :to="`.${matchResult.teleportTarget}`"
     >
       <!-- 事件处理包装器 -->
       <div
