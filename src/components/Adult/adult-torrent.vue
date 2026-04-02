@@ -253,7 +253,7 @@ const sortedTorrentList = computed(() => {
               </div>
 
               <!-- 文件大小 -->
-              <div
+              <!-- <div
                 class="m-l-3 w-30 group-hover:text-[#fff]"
                 :style="{
                   color: getTorrentStyle(torrent).backgroundColor
@@ -271,8 +271,9 @@ const sortedTorrentList = computed(() => {
                 <span
                   v-if="torrent.size"
                   class="font-semibold"
-                > GB </span>
-              </div>
+                > GB
+                </span>
+              </div> -->
 
               <!-- 标签图标 -->
               <div
@@ -291,11 +292,48 @@ const sortedTorrentList = computed(() => {
             <div
               class="w-auto p-2"
             >
-              <el-button
+
+              <!-- <button
+                class="cursor-pointer border-b-[4px] border-[#af35eb] rounded-lg bg-[#c25cf6] px-5 py-2 text-white transition-all active:translate-y-[2px] active:border-b-[2px] hover:border-b-[6px] active:brightness-90 hover:brightness-110 hover:-translate-y-[1px]"
                 @click="copyTorrentUrl(torrent)"
               >
-                复制
-              </el-button>
+                <SvgIcon
+                  icon="content-adult-torrent-copy"
+                />
+              </button> -->
+
+              <button
+                class="group relative h-14 flex items-center justify-center whitespace-nowrap border-2 border-yellow-500 rounded-xl bg-yellow-400 pl-[4.5rem] pr-6 text-lg text-slate-950 font-bold shadow-[0_6px_0_0_#b45309] transition-all duration-200 will-change-transform active:translate-y-[6px] active:shadow-[0_0px_0_0_#b45309] hover:shadow-[0_8px_0_0_#b45309] hover:-translate-y-0.5"
+                @click="copyTorrentUrl(torrent)"
+              >
+
+                <div
+                  class="absolute bottom-1 left-1 top-1 h-11 w-11 flex items-center justify-center rounded-lg bg-white p-2 text-slate-950 shadow-sm transition-all duration-300 group-active:rotate-90 group-hover:rotate-180"
+                >
+                  <SvgIcon
+                    icon="content-adult-torrent-copy"
+                  />
+                </div>
+
+                <div
+                  class="flex items-center tracking-wide transition-transform duration-300 group-hover:scale-105"
+                >
+
+                  <div
+                    class="min-w-14 flex items-start font-bold"
+                  >
+                    {{ torrent.size }}
+                  </div>
+
+                  <span
+                    class="font-black"
+                  >
+                    GB
+                  </span>
+                </div>
+
+              </button>
+
             </div>
           </div>
 
