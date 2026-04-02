@@ -1,8 +1,21 @@
-#crxjs-app {
-  all: initial;
+/* 全局字体定义 */
+@font-face {
+  font-family: 'shouJinTi';
+  src: url('@/assets/fonts/shouJinTi.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  unicode-range: U+4E00-9FFF;
+}
+@font-face {
+  font-family: 'firaCode';
+  src: url('@/assets/fonts/firaCode.woff2') format('woff2-variations');
+  font-weight: 300 700;
+  font-style: normal;
+  unicode-range: U+0020-007E;
 }
 
-// 修复 影响 element plus 官网
-// .el-scrollbar {
-//   position: absolute;
-// }
+/* 🔥 强制覆盖 Element Plus 所有字体，永远生效 */
+#crxjs-app {
+  all: initial;
+  font-family: 'shouJinTi', 'firaCode', monospace, sans-serif !important;
+}

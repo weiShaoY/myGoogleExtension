@@ -14,6 +14,29 @@ export default defineConfig({
       emby: '#52b44b',
       red: '#ea1179',
     },
+    fontFamily: {
+      // 中文瘦金体
+      shouJin: [
+        'shouJinTi',
+        'system-ui',
+        'sans-serif',
+      ],
+
+      // 英文 / 代码
+      firaCode: [
+        'firaCode',
+        'monospace',
+        'sans-serif',
+      ],
+
+      // 混合字体（推荐全局用）
+      mixed: [
+        'shouJinTi',
+        'firaCode',
+        'monospace',
+        'sans-serif',
+      ],
+    },
   },
 
   shortcuts: [
