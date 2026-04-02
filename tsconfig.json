@@ -9,7 +9,12 @@
       "@/*": ["./src/*"]
     },
     "resolveJsonModule": true,
-    "types": ["vite/client", "@crxjs/vite-plugin/client", "chrome"],
+    "types": [
+      "vite/client",
+      "@crxjs/vite-plugin/client",
+      "chrome",
+      "vite-plugin-svg-icons-ng/client"
+    ],
     "allowImportingTsExtensions": true,
     "allowJs": true,
     "strict": true,
