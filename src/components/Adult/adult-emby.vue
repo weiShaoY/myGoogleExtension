@@ -135,13 +135,13 @@ function embyBtnHandler() {
       >
         <!-- 默认图标 → 慢慢隐藏 -->
         <SvgIcon
-          icon="adult-setting-emby"
+          icon="content-adult-setting-emby"
           :size="30"
           class="absolute opacity-100 transition-opacity duration-1000 group-hover:opacity-0"
         />
         <!-- 悬浮图标 → 慢慢显示 -->
         <SvgIcon
-          icon="adult-setting-embyHover"
+          icon="content-adult-setting-embyHover"
           :size="30"
           class="absolute text-white opacity-0 transition-opacity duration-1000 group-hover:opacity-100"
         />

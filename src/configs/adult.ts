@@ -14,6 +14,7 @@ type AdultConfigType = {
    * @description 连接和请求 Emby 服务器的配置信息
    */
   emby: {
+
     /**
      * Emby 服务器请求配置
      * @description 包含连接 Emby 服务器所需的全部请求参数
@@ -26,6 +27,7 @@ type AdultConfigType = {
    * @description 适用于整个项目的规则配置，包括字幕匹配、文件类型等
    */
   rules: {
+
     /**
      * 中文字幕匹配关键词
      * @description 用于识别文件名中是否包含中文字幕信息的关键词列表

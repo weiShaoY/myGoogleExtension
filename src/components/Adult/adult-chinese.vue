@@ -8,12 +8,12 @@
     class="flex items-center justify-center gap-3 rounded-2 bg-[#ffe52a] text-4 text-amber font-bold"
   >
     <SvgIcon
-      icon="adult-setting-update"
+      icon="content-adult-setting-update"
       :size="30"
     />
 
     <SvgIcon
-      icon="adult-setting-chinese"
+      icon="content-adult-setting-chinese"
       :size="30"
     />
   </div>

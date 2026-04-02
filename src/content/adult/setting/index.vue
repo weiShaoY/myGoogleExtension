@@ -46,13 +46,13 @@ function handleSelect(key: string) {
       >
         <SvgIcon
           v-if="!isLoading"
-          icon="adult-setting-emby"
+          icon="content-adult-setting-emby"
           :size="30"
         />
 
         <SvgIcon
           v-else
-          icon="adult-setting-emby"
+          icon="content-adult-setting-emby"
           :size="30"
           class="!animate-spin"
           style="--animate-duration: 3s"
@@ -86,7 +86,7 @@ function handleSelect(key: string) {
           class="m-x-auto mb-2 w-[calc(100%-16px)] rounded-3"
         >
           <SvgIcon
-            icon="folderScanner"
+            icon="content-adult-setting-folderScanner"
             class="mr-3"
           />
 
@@ -108,7 +108,7 @@ function handleSelect(key: string) {
             #title
           >
             <SvgIcon
-              icon="findDuplicate"
+              icon="content-adult-setting-findDuplicate"
               class="mr-3"
             />
 
@@ -120,7 +120,7 @@ function handleSelect(key: string) {
             class="m-x-auto mb-2 w-[calc(100%-16px)] rounded-3"
           >
             <SvgIcon
-              icon="adult-setting-allDuplicate"
+              icon="content-adult-setting-allDuplicate"
               class="mr-3"
             />
             所有重复
@@ -131,7 +131,7 @@ function handleSelect(key: string) {
             class="m-x-auto mb-2 w-[calc(100%-16px)] rounded-3"
           >
             <SvgIcon
-              icon="adult-setting-uniqueDuplicate"
+              icon="content-adult-setting-uniqueDuplicate"
               class="mr-3"
             />
             去重重复
