@@ -1,8 +1,22 @@
 /**
- *  搜索组件配置
+ * 搜索组件配置文件
+ * @description 包含搜索组件的显示路径和站点配置
+ */
+
+/**
+ * 搜索组件配置
+ * @description 定义搜索组件的显示路径和站点列表
  */
 export const SearchConfig: {
+  /**
+   * 搜索组件显示的网站路径列表
+   * @description 定义在哪些网站路径上显示搜索组件
+   */
   displayOnPaths: SearchConfigType.displayOnPaths
+  /**
+   * 站点分组列表
+   * @description 包含所有搜索引擎和网站的分组配置
+   */
   siteGroups: SearchConfigType.SiteItem[]
 } = {
   displayOnPaths: [

@@ -1,25 +1,55 @@
 /**
+ * 成人内容全局配置文件
+ * @description 包含 Emby 服务器配置、全局规则等全项目复用的配置项
+ */
+
+/**
  * 成人内容全局配置类型定义
+ * @description 定义成人内容模块的全局配置结构
  */
 type AdultConfigType = {
 
   /**
    * Emby 媒体服务器相关配置
+   * @description 连接和请求 Emby 服务器的配置信息
    */
   emby: {
+    /**
+     * Emby 服务器请求配置
+     * @description 包含连接 Emby 服务器所需的全部请求参数
+     */
     request: AdultType.EmbyRequest
   }
 
   /**
    * 全局通用规则（全项目复用）
+   * @description 适用于整个项目的规则配置，包括字幕匹配、文件类型等
    */
   rules: {
-    chineseSubtitleRules: string[] // 中文字幕匹配关键词
-    videoExtRules: string[] // 视频文件后缀
-    torrentTagRules: AdultType.TorrentTagRule[] // 种子标签规则
-    torrentSortRules: AdultType.TorrentSortRule[] // 种子排序规则
-  }
+    /**
+     * 中文字幕匹配关键词
+     * @description 用于识别文件名中是否包含中文字幕信息的关键词列表
+     */
+    chineseSubtitleRules: string[]
 
+    /**
+     * 视频文件后缀
+     * @description 支持的视频文件扩展名列表（不含点号）
+     */
+    videoExtRules: string[]
+
+    /**
+     * 种子标签规则
+     * @description 从种子文件名匹配标签并映射到对应图标的规则配置
+     */
+    torrentTagRules: AdultType.TorrentTagRule[]
+
+    /**
+     * 种子排序规则
+     * @description 定义种子列表的排序优先级、背景颜色和来源标识的规则配置
+     */
+    torrentSortRules: AdultType.TorrentSortRule[]
+  }
 }
 
 /**
