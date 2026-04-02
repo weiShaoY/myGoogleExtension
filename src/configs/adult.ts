@@ -23,6 +23,19 @@ type AdultConfigType = {
   }
 
   /**
+   * 文件夹相关配置
+   * @description 包含文件夹相关的配置信息
+   */
+  folder: {
+
+    /**
+     * 文件夹路径（不含文件）
+     * @description 包含文件夹路径的配置信息
+     */
+    dirPath: string
+  }
+
+  /**
    * 全局通用规则（全项目复用）
    * @description 适用于整个项目的规则配置，包括字幕匹配、文件类型等
    */
@@ -81,6 +94,11 @@ export const AdultConfig: AdultConfigType = {
         Limit: 30,
       },
     },
+  },
+
+  folder: {
+
+    dirPath: 'Z:/日本-有码/',
   },
 
   // ==========================================

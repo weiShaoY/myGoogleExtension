@@ -247,9 +247,9 @@ namespace AdultType {
     /**
      * 视频文件在文件系统中的完整目录路径
      * @description 数组形式，从根目录到文件所在目录的层级结构
-     * @example ["日本-有码", "优梨舞奈", "328HMDN-412-C 优梨舞奈", "328HMDN-412-C.mp4"]
+     * @example ["日本-有码", "优梨舞奈", "328HMDN-412-C 优梨舞奈", "328HMDN-412-C.mp4"] 然后通过 join 方法拼接为完整路径
      */
-    filePath: string[]
+    path: string
 
     /**
      * 视频文件是否包含中文字幕

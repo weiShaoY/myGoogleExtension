@@ -135,6 +135,8 @@ async function mainBtnHandler() {
        */
       const file = await fileData.fileHandle.getFile()
 
+      console.log('🚀 ~ file: folderScanner.vue:139 ~ fileData.directoryPath:', fileData.directoryPath)
+
       /**
        *  解析后的Nfo文件内容
        */
@@ -157,7 +159,7 @@ async function mainBtnHandler() {
 
         extension: file.name.replace(/^.*\./, ''),
 
-        filePath: [...fileData.directoryPath, file.name],
+        path: fileData.directoryPath.concat(file.name).join('/'),
 
         tags: getVideoTagsFromName(
           file.name.substring(0, file.name.lastIndexOf('.')),

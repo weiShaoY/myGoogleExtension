@@ -15,6 +15,10 @@ const props = withDefaults(defineProps<PropsType>(), {
 
 })
 
+const fullDirPath = computed(() => {
+  return `${AdultConfig.folder.dirPath}${props.file.path}`
+})
+
 /**
  *  视频位置复制到 剪切板
  */
@@ -26,11 +30,9 @@ function copyFileName() {
 }
 
 function copyFilePath() {
-  const path = props.file.filePath.join('\\')
-
-  copyToClipboard((path), {
+  copyToClipboard((fullDirPath.value), {
     title: '文件位置 复制到剪切板',
-    message: path,
+    message: fullDirPath.value,
   })
 }
 </script>
@@ -67,7 +69,7 @@ function copyFilePath() {
         class="mt-2 break-all hover:text-emby"
         @click="copyFilePath"
       >
-        {{ props.file.filePath.join('\\') }}
+        {{ fullDirPath }}
       </div>
     </div>
   </div>
