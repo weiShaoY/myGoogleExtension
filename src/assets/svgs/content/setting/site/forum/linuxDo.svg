@@ -1,8 +1,6 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE
-  svg
-  PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"
-><svg
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg
   t="1749112381239"
   class="icon"
   viewBox="0 0 1024 1024"
@@ -258,11 +256,7 @@
     fill="#E2E2E2"
     p-id="3801"
   ></path>
-  <path
-    d="M917.013145 827.040672v2.999081z"
-    fill="#AAAAAA"
-    p-id="3802"
-  ></path>
+  <path d="M917.013145 827.040672v2.999081z" fill="#AAAAAA" p-id="3802"></path>
   <path
     d="M1003.986499 659.092126l0.999694 3.998775zM19.288176 659.092126l0.999694 3.998775zM18.288482 655.093351l0.999694 3.998775z"
     fill="#EFEFEF"

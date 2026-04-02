@@ -244,6 +244,23 @@ onMounted(() => {
         </el-menu-item>
       </template>
     </el-menu>
+
+    <div
+      class="h-30 w-10 bg-black"
+    >
+      <SvgIcon
+        icon="copy"
+      />
+
+      <SvgIcon
+        icon="finish"
+      />
+
+      <SvgIcon
+        icon="thumbnail"
+      />
+    </div>
+
   </div>
 </template>
 
