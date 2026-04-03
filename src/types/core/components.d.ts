@@ -39,12 +39,14 @@ declare module 'vue' {
     EmbyPlayButton: typeof import('./../../components/EmbyPlayButton/index.vue')['default']
     HelloWorld: typeof import('./../../components/HelloWorld.vue')['default']
     Main: typeof import('./../../components/Search/main.vue')['default']
-    OnlinePlay: typeof import('../../content/OnlinePlay/index.vue')['default']
+    OnlinePlay: typeof import('./../../components/OnlinePlay/index.vue')['default']
     PendingUpdateChineseButton: typeof import('./../../components/PendingUpdateChineseButton/index.vue')['default']
     Search: typeof import('./../../components/Search/index.vue')['default']
-    Site_btn: typeof import('../../content/OnlinePlay/site_btn.vue')['default']
+    Site: typeof import('./../../components/OnlinePlay/site.vue')['default']
+    Site_btn: typeof import('./../../components/OnlinePlay/site_btn.vue')['default']
     SvgIcon: typeof import('./../../components/SvgIcon/index.vue')['default']
     TorrentList: typeof import('./../../components/TorrentList/index.vue')['default']
+    VideoThumbnail: typeof import('./../../components/OnlinePlay/components/videoThumbnail/index.vue')['default']
   }
   export interface GlobalDirectives {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

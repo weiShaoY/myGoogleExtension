@@ -116,8 +116,6 @@ function getTorrentList() {
   // 8. 安全插入容器（一次性插入，顺序不乱）
   const targetSelector = '.grid.grid-cols-2.md\\:grid-cols-3.xl\\:grid-cols-4.gap-5'
 
-  console.log('🚀 ~ file: missavDetailsPage.vue:118 ~ targetSelector:', targetSelector)
-
   const inserted = insertHtml(targetSelector, `
     <div id="TorrentList"></div>
     <div id="OnlinePlay"></div>
