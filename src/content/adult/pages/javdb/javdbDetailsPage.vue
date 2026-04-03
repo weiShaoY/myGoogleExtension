@@ -30,6 +30,11 @@ const isShowTorrentList = ref<boolean>(false)
 const torrentList = ref<AdultType.TorrentItem[]>([])
 
 /**
+ *  页面视频名称
+ */
+const pageVideoName = ref<string>('')
+
+/**
  * 导入共享逻辑
  */
 const { cleanVideoName, createMatchResult } = useJavdbMatch()
@@ -106,18 +111,18 @@ function getTorrentList() {
       time,
       tags,
     })
+
+    // 4. 插入容器（使用封装好的安全函数）
+    const success1 = insertHtml('.no-bottom', '<div id="TorrentList"></div>')
+
+    const success2 = insertHtml('.no-bottom', '<div id="OnlinePlay"></div>')
+
+    // 只有插入成功才显示
+    if (success1 && success2) {
+      isShowTorrentList.value = true
+      isShowOnlinePlay.value = true
+    }
   })
-
-  // 4. 插入容器（使用封装好的安全函数）
-  const success1 = insertHtml('.no-bottom', '<div id="TorrentList"></div>')
-
-  const success2 = insertHtml('.no-bottom', '<div id="OnlinePlay"></div>')
-
-  // 只有插入成功才显示
-  if (success1 && success2) {
-    isShowTorrentList.value = true
-    isShowOnlinePlay.value = true
-  }
 }
 
 /**
@@ -127,6 +132,8 @@ function main() {
   const videoName = $('.video-detail strong')?.textContent
 
   const cleanName = cleanVideoName(videoName)
+
+  pageVideoName.value = cleanName
 
   if (!cleanName) {
     return
@@ -155,15 +162,17 @@ onMounted(() => {
     getTorrentList()
 
     main()
+
+    console.log('🚀 ~ file: javdbDetailsPage.vue:160 ~ detailsPageMatchResult.value:', detailsPageMatchResult.value)
   })
 })
 </script>
 
 <template>
   <OnlinePlay
-    v-if="isShowOnlinePlay"
+    v-if="isShowOnlinePlay && pageVideoName"
     to="#OnlinePlay"
-    :video-name="detailsPageMatchResult.cleanName"
+    :video-name="pageVideoName"
   />
 
   <!-- 自定义磁链列表 -->

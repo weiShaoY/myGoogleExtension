@@ -113,9 +113,11 @@ export async function request<T = any>(config: HttpRequestConfig): Promise<HttpR
     clearTimeout(timeoutId)
 
     let responseData: any
+
     if (responseType === 'text') {
       responseData = await response.text()
-    } else {
+    }
+    else {
       responseData = await response.json()
     }
 

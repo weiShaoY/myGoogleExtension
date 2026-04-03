@@ -114,8 +114,13 @@ export async function handleFetch(
   code: string,
 ): Promise<OnlinePlayConfigType.SiteRequestResponse> {
   try {
+    // 为请求添加适当的头配置，避免设置不必要的 Content-Type
     const response = await get(url, {
       responseType: 'text',
+      headers: {
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Content-Type': 'text/plain'
+      }
     })
 
     if (
@@ -178,8 +183,13 @@ export async function handleFetchJavBle(
   _code: string,
 ): Promise<OnlinePlayConfigType.SiteRequestResponse> {
   try {
+    // 为请求添加适当的头配置，避免设置不必要的 Content-Type
     const response = await get(url, {
       responseType: 'text',
+      headers: {
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Content-Type': 'text/plain'
+      }
     })
 
     if (isErrorCode(response.status)) {

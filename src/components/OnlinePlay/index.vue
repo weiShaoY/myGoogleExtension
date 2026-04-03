@@ -46,7 +46,7 @@ type PropsType = {
         />
 
         <!-- 遍历站点列表，根据条件渲染 SiteBtn 组件 -->
-        <template
+   <template
           v-for="siteItem in onlinePlayConfig.siteList"
           :key="siteItem.name"
         >

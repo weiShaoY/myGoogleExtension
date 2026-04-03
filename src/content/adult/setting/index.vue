@@ -4,6 +4,8 @@ import { useAdultStore } from '@/stores'
 
 import FolderScanner from './folderScanner.vue'
 
+import ReferTampermonkeyScript from './referTampermonkeyScript.vue'
+
 const adultStore = useAdultStore()
 
 /**
@@ -20,7 +22,7 @@ function onClick() {
 /**
  *  菜单栏激活项
  */
-const activeIndex = ref('0')
+const activeIndex = ref('2')
 
 function handleSelect(key: string) {
   activeIndex.value = key
@@ -137,6 +139,18 @@ function handleSelect(key: string) {
             去重重复
           </el-menu-item>
         </el-sub-menu>
+
+        <el-menu-item
+          index="2"
+          class="m-x-auto mb-2 w-[calc(100%-16px)] rounded-3"
+        >
+          <SvgIcon
+            icon="content-adult-setting-tampermonkey"
+            class="mr-3"
+          />
+          参考脚本
+        </el-menu-item>
+
       </el-menu>
 
       <!-- 右侧内容 -->
@@ -186,6 +200,12 @@ function handleSelect(key: string) {
               class="mb-3 !h-15"
             />
           </el-scrollbar>
+        </template>
+
+        <template
+          v-else-if="activeIndex === '2'"
+        >
+          <ReferTampermonkeyScript />
         </template>
       </div>
     </div>

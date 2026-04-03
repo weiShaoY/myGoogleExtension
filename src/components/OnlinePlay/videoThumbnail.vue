@@ -28,7 +28,7 @@ const videoThumbnailUrl = ref(`https://image.memojav.com/image/screenshot/${prop
 
 console.log('🚀 ~ file: videoThumbnail.vue:28 ~ props.videoName:', props.videoName)
 
-console.log('🚀 ~ file: videoThumbnail.vue:28 ~ videoThumbnailUrl:', videoThumbnailUrl)
+console.log('🚀 ~ file: videoThumbnail.vue:28 ~ videoThumbnailUrl:', videoThumbnailUrl.value)
 
 /**
  *  是否显示视频缩略图弹窗
@@ -41,20 +41,19 @@ async function handleClick() {
 
 onMounted(async () => {
   try {
-    const response = await get(videoThumbnailUrl.value)
+    // 直接使用浏览器的 fetch API 来请求图片，避免使用我们的封装方法
+    const response = await fetch(videoThumbnailUrl.value)
 
-    if (response.status === 200) {
+    console.log('🚀 ~ file: videoThumbnail.vue:45 ~ response:', response)
+
+    if (response.ok) {
       isShowThumbnail.value = true
     }
   }
   catch (error) {
     console.error('获取视频缩略图失败:', error)
-    window.$notification.error(
-      {
-        title: '获取视频缩略图失败',
-        duration: 0,
-      },
-    )
+
+    // 不显示错误通知，因为图片加载失败是正常的
   }
 })
 
