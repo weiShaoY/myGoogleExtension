@@ -1,10 +1,10 @@
+import { get } from '@/apis/http/fetch'
+
 import {
   isCaseInsensitiveEqual,
   isErrorCode,
   regEnum,
 } from './'
-
-import { gmGet } from './gmRequest'
 
 /**
  * 针对视频播放页进行解析，寻找字幕等信息
@@ -114,7 +114,9 @@ export async function handleFetch(
   code: string,
 ): Promise<OnlinePlayConfigType.SiteRequestResponse> {
   try {
-    const response = await gmGet(url)
+    const response = await get(url, {
+      responseType: 'text',
+    })
 
     if (
       siteItem.name === '18av'
@@ -139,10 +141,10 @@ export async function handleFetch(
     }
 
     if (siteItem.fetchType === 'get') {
-      return parseVideoPage(response.responseText, siteItem.domQuery)
+      return parseVideoPage(response.data, siteItem.domQuery)
     }
     else if (siteItem.fetchType === 'parser') {
-      return parseSearchPage(response.responseText, siteItem.domQuery, siteItem.hostname, code)
+      return parseSearchPage(response.data, siteItem.domQuery, siteItem.hostname, code)
     }
 
     return {
@@ -176,7 +178,9 @@ export async function handleFetchJavBle(
   _code: string,
 ): Promise<OnlinePlayConfigType.SiteRequestResponse> {
   try {
-    const response = await gmGet(url)
+    const response = await get(url, {
+      responseType: 'text',
+    })
 
     if (isErrorCode(response.status)) {
       return {
@@ -187,7 +191,7 @@ export async function handleFetchJavBle(
       }
     }
 
-    return parseVideoPage(response.responseText, siteItem.domQuery)
+    return parseVideoPage(response.data, siteItem.domQuery)
   }
   catch (error) {
     console.error('Jable 请求失败:', error)

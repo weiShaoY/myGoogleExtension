@@ -3,9 +3,9 @@
 
 import { onlinePlayConfig } from '@/configs'
 
-import VideoThumbnail from './components/videoThumbnail/index.vue'
-
 import Site from './site.vue'
+
+import VideoThumbnail from './videoThumbnail.vue'
 
 defineProps<PropsType>()
 

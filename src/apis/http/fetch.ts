@@ -25,6 +25,9 @@ export type HttpRequestConfig = {
 
   /** 超时时间（毫秒） */
   timeout?: number
+
+  /** 响应类型 */
+  responseType?: 'json' | 'text'
 }
 
 /**
@@ -70,6 +73,7 @@ export async function request<T = any>(config: HttpRequestConfig): Promise<HttpR
     params,
     data,
     timeout = 10000,
+    responseType = 'json',
   } = config
 
   // 构建完整 URL（包含查询参数）
@@ -108,7 +112,12 @@ export async function request<T = any>(config: HttpRequestConfig): Promise<HttpR
 
     clearTimeout(timeoutId)
 
-    const responseData = await response.json()
+    let responseData: any
+    if (responseType === 'text') {
+      responseData = await response.text()
+    } else {
+      responseData = await response.json()
+    }
 
     return {
       status: response.status,

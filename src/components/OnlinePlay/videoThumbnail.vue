@@ -2,7 +2,9 @@
 <!------------------------------------    ------------------------------------------------->
 <script lang="ts" setup>
 
-import { gmGet } from '@/utils'
+import { get } from '@/apis/http/fetch'
+
+// import { gmGet } from './utils/gmRequest'
 
 type Props = {
 
@@ -24,6 +26,10 @@ const isShowThumbnail = ref(false)
  */
 const videoThumbnailUrl = ref(`https://image.memojav.com/image/screenshot/${props.videoName.toLocaleUpperCase()}.jpg`)
 
+console.log('🚀 ~ file: videoThumbnail.vue:28 ~ props.videoName:', props.videoName)
+
+console.log('🚀 ~ file: videoThumbnail.vue:28 ~ videoThumbnailUrl:', videoThumbnailUrl)
+
 /**
  *  是否显示视频缩略图弹窗
  */
@@ -35,7 +41,7 @@ async function handleClick() {
 
 onMounted(async () => {
   try {
-    const response = await gmGet(videoThumbnailUrl.value)
+    const response = await get(videoThumbnailUrl.value)
 
     if (response.status === 200) {
       isShowThumbnail.value = true

@@ -53,8 +53,6 @@ function getTorrentList() {
 
   const items = Array.from(magnetsContent.querySelectorAll('tr'))
 
-  console.log('🚀 ~ file: javbusDetailsPage.vue:55 ~ items:', items)
-
   items.forEach((itemElement) => {
     const item = asHTMLElement(itemElement)
 

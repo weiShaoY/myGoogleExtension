@@ -135,8 +135,6 @@ async function mainBtnHandler() {
        */
       const file = await fileData.fileHandle.getFile()
 
-      console.log('🚀 ~ file: folderScanner.vue:139 ~ fileData.directoryPath:', fileData.directoryPath)
-
       /**
        *  解析后的Nfo文件内容
        */

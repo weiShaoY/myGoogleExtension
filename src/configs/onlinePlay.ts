@@ -8,7 +8,7 @@ export const onlinePlayConfig: {
     {
       isVisible: true,
       name: 'JavDB',
-      icon: 'av-javdb',
+      icon: 'content-adult-site-javdb',
       hostname: 'javdb.com',
       searchUrl: '/search?q={{code}}',
       fetchType: 'parser',
@@ -20,7 +20,7 @@ export const onlinePlayConfig: {
     {
       isVisible: true,
       name: 'MISSAV',
-      icon: 'av-missav',
+      icon: 'content-adult-site-missav',
       hostname: 'missav.ws',
       searchUrl: '/{{code}}/',
       fetchType: 'get',
@@ -32,7 +32,7 @@ export const onlinePlayConfig: {
     {
       isVisible: true,
       name: 'JavBus',
-      icon: 'av-javBus',
+      icon: 'content-adult-site-javBus',
       hostname: 'javbus.com',
       searchUrl: '/{{code}}',
       fetchType: 'get',
@@ -43,7 +43,7 @@ export const onlinePlayConfig: {
     {
       isVisible: true,
       name: 'Jable',
-      icon: 'av-jable',
+      icon: 'content-adult-site-jable',
       hostname: 'jable.tv',
       searchUrl: '/videos/{{code}}/',
       fetchType: 'get',
@@ -57,7 +57,7 @@ export const onlinePlayConfig: {
     {
       isVisible: true,
       name: '123av',
-      icon: 'av-njav',
+      icon: 'content-adult-site-njav',
       hostname: '123av.com',
       searchUrl: '/zh/search?keyword={{code}}',
       fetchType: 'parser',
@@ -71,7 +71,7 @@ export const onlinePlayConfig: {
     {
       isVisible: true,
       name: 'Supjav',
-      icon: 'av-supjav',
+      icon: 'content-adult-site-supjav',
       hostname: 'supjav.com',
       searchUrl: '/zh/?s={{code}}',
       fetchType: 'parser',
@@ -83,7 +83,7 @@ export const onlinePlayConfig: {
     {
       isVisible: true,
       name: 'NETFLAV',
-      icon: 'av-netflav',
+      icon: 'content-adult-site-netflav',
       hostname: 'netflav5.com',
       searchUrl: '/search?type=title&keyword={{code}}',
       fetchType: 'parser',
@@ -95,7 +95,7 @@ export const onlinePlayConfig: {
     {
       isVisible: true,
       name: 'BestJP',
-      icon: 'av-bestjavporn',
+      icon: 'content-adult-site-bestjavporn',
       hostname: 'bestjavporn.com',
       searchUrl: '/search/{{code}}',
       fetchType: 'parser',
@@ -107,18 +107,18 @@ export const onlinePlayConfig: {
     {
       isVisible: true,
       name: 'JAVMENU',
-      icon: 'av-javmenu',
+      icon: 'content-adult-site-javmenu',
       hostname: 'javmenu.com',
       searchUrl: '/{{code}}',
       fetchType: 'get',
       domQuery: {
-        videoQuery: 'a.nav-link[aria-controls=\'pills-0\']',
+        videoQuery: 'a.ncontent-adult-site-link[aria-controls=\'pills-0\']',
       },
     },
     {
       isVisible: true,
       name: 'Jav.Guru',
-      icon: 'av-javGuru',
+      icon: 'content-adult-site-javGuru',
       hostname: 'jav.guru',
       searchUrl: '/?s={{code}}',
       fetchType: 'parser',
@@ -130,7 +130,7 @@ export const onlinePlayConfig: {
     {
       isVisible: true,
       name: 'JAVMOST',
-      icon: 'av-javmost',
+      icon: 'content-adult-site-javmost',
       hostname: 'javmost.cx',
       searchUrl: '/search/{{code}}/',
       fetchType: 'parser',
@@ -142,7 +142,7 @@ export const onlinePlayConfig: {
     {
       isVisible: true,
       name: 'HAYAV',
-      icon: 'av-hayav',
+      icon: 'content-adult-site-hayav',
       hostname: 'hayav.com',
       searchUrl: '/video/{{code}}/',
       fetchType: 'get',
@@ -152,7 +152,7 @@ export const onlinePlayConfig: {
     {
       isVisible: true,
       name: 'AvJoy',
-      icon: 'av-avjoy',
+      icon: 'content-adult-site-avjoy',
       hostname: 'avjoy.me',
       searchUrl: '/search/videos/{{code}}',
       fetchType: 'parser',
@@ -165,7 +165,7 @@ export const onlinePlayConfig: {
     // {
     //   isVisible: true,
     //   name: 'JAVFC2',
-    //   icon: 'av-javfc2',
+    //   icon: 'content-adult-site-javfc2',
     //   hostname: 'javfc2.net',
     //   searchUrl: '/?s={{code}}',
     //   fetchType: 'parser',
@@ -177,7 +177,7 @@ export const onlinePlayConfig: {
     {
       isVisible: true,
       name: 'paipancon-(FC2)',
-      icon: 'av-paipancon',
+      icon: 'content-adult-site-paipancon',
       hostname: 'paipancon.com',
       searchUrl: '/search/{{code}}',
       fetchType: 'parser',
@@ -189,7 +189,7 @@ export const onlinePlayConfig: {
     {
       isVisible: true,
       name: 'GGJAV',
-      icon: 'av-ggjav',
+      icon: 'content-adult-site-ggjav',
       hostname: 'ggjav.com',
       searchUrl: '/main/search?string={{code}}',
       fetchType: 'parser',
@@ -202,7 +202,7 @@ export const onlinePlayConfig: {
     {
       isVisible: true,
       name: 'AV01',
-      icon: 'av-av01',
+      icon: 'content-adult-site-av01',
       hostname: 'av01.tv',
       searchUrl: '/cn/search?q={{code}}',
       fetchType: 'parser',
@@ -214,7 +214,7 @@ export const onlinePlayConfig: {
     {
       isVisible: true,
       name: 'highporn',
-      icon: 'av-highporn',
+      icon: 'content-adult-site-highporn',
       hostname: 'highporn.net',
       searchUrl: '/search/videos?search_query={{code}}',
       fetchType: 'parser',
@@ -226,7 +226,7 @@ export const onlinePlayConfig: {
     {
       isVisible: true,
       name: 'evojav',
-      icon: 'av-evojav',
+      icon: 'content-adult-site-evojav',
       hostname: 'evojav.pro',
       searchUrl: '/video/{{code}}/',
       fetchType: 'get',
@@ -236,7 +236,7 @@ export const onlinePlayConfig: {
     {
       isVisible: true,
       name: '18av',
-      icon: 'av-18av',
+      icon: 'content-adult-site-18av',
       hostname: '18av.mm-cg.com',
       searchUrl: '/zh/fc_search/all/{{code}}/1.html',
       fetchType: 'parser',
@@ -249,7 +249,7 @@ export const onlinePlayConfig: {
     // {
     //   isVisible: true,
     //   name: 'JAVLib',
-    //   icon: 'av-javlib',
+    //   icon: 'content-adult-site-javlib',
     //   hostname: 'javlibrary.com',
     //   searchUrl: '/cn/vl_searchbyid.php?keyword={{code}}',
     //   fetchType: 'false',

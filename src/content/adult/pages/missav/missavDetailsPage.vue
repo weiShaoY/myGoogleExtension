@@ -71,13 +71,9 @@ function getTorrentList() {
     // 安全获取链接（指定 a 标签类型）
     const link = $<HTMLAnchorElement>(firstCell, 'a')
 
-    console.log('🚀 ~ file: missavDetailsPage.vue:73 ~ link:', link)
-
     const url = link?.href ?? ''
 
     const name = link?.textContent?.trim() ?? ''
-
-    console.log('🚀 ~ file: missavDetailsPage.vue:79 ~ name:', name)
 
     const time = cells[2]?.textContent?.trim() ?? ''
 
@@ -111,8 +107,6 @@ function getTorrentList() {
     })
   })
 
-  console.log('🚀 ~ file: missavDetailsPage.vue:115 ~ torrentList.value:', torrentList.value)
-
   // 8. 安全插入容器（一次性插入，顺序不乱）
   const targetSelector = '.grid.grid-cols-2.md\\:grid-cols-3.xl\\:grid-cols-4.gap-5'
 
@@ -134,8 +128,6 @@ function getTorrentList() {
 function main() {
   const videoName = $('h1.text-base.lg\\:text-lg.text-nord6')?.textContent.split(' ')[0] ?? ''
 
-  console.log('🚀 ~ file: missavDetailsPage.vue:130 ~ videoName:', videoName)
-
   const cleanName = cleanVideoName(videoName)
 
   if (!cleanName) {
@@ -151,10 +143,6 @@ function main() {
   const targetElement = $('.relative.-mx-4.sm\\:m-0.-mt-6')
 
   // const targetElement = $('.flex-1.order-first')
-
-  console.log('🚀 ~ file: missavDetailsPage.vue:154 ~ targetElement:', targetElement)
-
-  // console.log('🚀 ~ file: missavDetailsPage.vue:154 ~ targetElement:', targetElement)
 
   targetElement?.classList.add('is-highlight')
 
