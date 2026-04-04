@@ -1,17 +1,5 @@
 <script setup lang="ts">
-function onClick() {
-  try {
-    if (chrome.runtime.openOptionsPage) {
-      chrome.runtime.openOptionsPage()
-    }
-    else {
-      window.open(chrome.runtime.getURL('options.html'))
-    }
-  }
-  catch (error) {
-    console.error('跳转选项页失败:', error)
-  }
-}
+import HelloWorld from '@/components/HelloWorld.vue'
 </script>
 
 <template>
@@ -50,15 +38,9 @@ function onClick() {
     </a>
   </div>
 
-  <!-- <HelloWorld
+  <HelloWorld
     msg="Vite + Vue + CRXJS"
-  /> -->
-
-  <button
-    @click="onClick"
-  >
-    跳转到 option 页
-  </button>
+  />
 </template>
 
 <style scoped>
