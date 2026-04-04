@@ -17,6 +17,8 @@ export function useJavdbMatch() {
       .replace(/\s+/g, '')
   }
 
+  // getFolderMatchedVideoList
+
   /**
    * 创建视频匹配结果项
    * @description 根据清理后的文件名、匹配到的视频列表、字幕标签，生成页面所需的匹配结果结构

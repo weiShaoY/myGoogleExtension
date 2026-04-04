@@ -4,7 +4,7 @@ import { useAdultStore } from '@/stores'
 
 import FolderScanner from './folderScanner.vue'
 
-import ReferTampermonkeyScript from './referTampermonkeyScript.vue'
+import ReferScript from './referScript.vue'
 
 const adultStore = useAdultStore()
 
@@ -68,10 +68,11 @@ function handleSelect(key: string) {
     v-if="isShowMainDialog"
     v-model="isShowMainDialog"
     width="70%"
-    :close-on-click-modal="false"
     :lock-scroll="true"
     :append-to-body="true"
   >
+    <!-- :close-on-click-modal="false" -->
+
     <div
       v-loading="isLoading"
       class="layout-sidebar h-[60vh] w-full flex justify-between"
@@ -205,7 +206,7 @@ function handleSelect(key: string) {
         <template
           v-else-if="activeIndex === '2'"
         >
-          <ReferTampermonkeyScript />
+          <ReferScript />
         </template>
       </div>
     </div>

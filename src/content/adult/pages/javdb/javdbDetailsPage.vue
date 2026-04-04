@@ -169,11 +169,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <OnlinePlay
+  <!-- <OnlinePlay
     v-if="isShowOnlinePlay && pageVideoName"
     to="#OnlinePlay"
     :video-name="pageVideoName"
-  />
+  /> -->
 
   <!-- 自定义磁链列表 -->
   <AdultTorrent
