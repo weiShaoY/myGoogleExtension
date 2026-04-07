@@ -20,7 +20,6 @@ export default defineManifest({
     'sidePanel', // 侧边栏权限，启用Chrome官方侧边栏功能
     'contentSettings', // 内容设置权限，管理网页JS、图片、权限等配置
     'storage', // 本地存储权限，持久化保存插件配置数据
-    'system.storage', // 系统存储权限，获取设备磁盘存储信息
     'unlimitedStorage', // 无限制存储权限，突破本地存储大小限制
     'clipboardRead', // 剪贴板读取权限，读取用户剪贴板内容
     'clipboardWrite', // 剪贴板写入权限，向剪贴板写入内容
@@ -46,4 +45,5 @@ export default defineManifest({
     page: 'src/option/index.html',
     open_in_tab: true,
   },
+
 })
