@@ -25,9 +25,14 @@ const dualMenuShowText = ref(true)
 
 const route = useRoute()
 
-const currentRoute = computed(() => route.path)
+/**
+ * 当前路由对应的第一级菜单项
+ */
+const currentRoute = computed<RouterType.Route | undefined>(() => {
+  return findTopRouteByPath(route.path, menuList)
+})
 
-console.log('🚀 ~ 当前路由:', currentRoute.value)
+console.log('🚀 ~ file: index.vue:37 ~ currentRoute:', currentRoute.value)
 </script>
 
 <template>
@@ -66,7 +71,7 @@ console.log('🚀 ~ 当前路由:', currentRoute.value)
           <div
             class="aspect-square flex flex-col items-center justify-center rounded-md text-center transition-all duration-300 hover:cursor-pointer"
             :class="[
-              currentRoute === menu.path ? 'bg-[#eef3ff] text-primary' : '',
+              currentRoute?.path === menu.path ? 'bg-[#eef3ff] text-primary' : '',
               dualMenuShowText ? 'w-[80%]' : 'w-[70%]',
             ]"
           >

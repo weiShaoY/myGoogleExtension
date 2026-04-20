@@ -17,6 +17,7 @@ declare global {
   const addClassAndPush: typeof import('../../utils/dom').addClassAndPush
   const addClassAndUpdateList: typeof import('../../utils/classHelper').addClassAndUpdateList
   const addClassIfNotExists: typeof import('../../utils/helper').addClassIfNotExists
+  const adminMenuJump: typeof import('../../utils/router').adminMenuJump
   const asHTMLElement: typeof import('../../utils/dom').asHTMLElement
   const asyncComputed: typeof import('@vueuse/core').asyncComputed
   const autoResetRef: typeof import('@vueuse/core').autoResetRef
@@ -56,6 +57,7 @@ declare global {
   const effectScope: typeof import('vue').effectScope
   const ensureMountPointAfter: typeof import('../../composables/useDetailsPageTorrentList').ensureMountPointAfter
   const extendRef: typeof import('@vueuse/core').extendRef
+  const findTopRouteByPath: typeof import('../../utils/router').findTopRouteByPath
   const formatTimestampToChineseDate: typeof import('../../utils/time').formatTimestampToChineseDate
   const getActivePinia: typeof import('pinia').getActivePinia
   const getClipboardText: typeof import('../../utils/clipboard').getClipboardText
@@ -94,6 +96,7 @@ declare global {
   const mapStores: typeof import('pinia').mapStores
   const mapWritableState: typeof import('pinia').mapWritableState
   const markRaw: typeof import('vue').markRaw
+  const menuJump: typeof import('../../utils/router').menuJump
   const nextTick: typeof import('vue').nextTick
   const onActivated: typeof import('vue').onActivated
   const onBeforeMount: typeof import('vue').onBeforeMount
@@ -134,6 +137,11 @@ declare global {
   const reactiveOmit: typeof import('@vueuse/core').reactiveOmit
   const reactivePick: typeof import('@vueuse/core').reactivePick
   const readonly: typeof import('vue').readonly
+  const recursiveFindRoutesByProperty: typeof import('../../utils/router').recursiveFindRoutesByProperty
+  const recursiveHandleIframeRoutes: typeof import('../../utils/router').recursiveHandleIframeRoutes
+  const recursiveNormalizeRoutesPath: typeof import('../../utils/router').recursiveNormalizeRoutesPath
+  const recursiveSetRoutesRedirect: typeof import('../../utils/router').recursiveSetRoutesRedirect
+  const recursiveSortRoutesByOrder: typeof import('../../utils/router').recursiveSortRoutesByOrder
   const ref: typeof import('vue').ref
   const refAutoReset: typeof import('@vueuse/core').refAutoReset
   const refDebounced: typeof import('@vueuse/core').refDebounced
@@ -422,6 +430,7 @@ declare module 'vue' {
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
+    readonly findTopRouteByPath: UnwrapRef<typeof import('../../utils/router')['findTopRouteByPath']>
     readonly formatTimestampToChineseDate: UnwrapRef<typeof import('../../utils/time')['formatTimestampToChineseDate']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getClipboardText: UnwrapRef<typeof import('../../utils/clipboard')['getClipboardText']>
@@ -455,6 +464,7 @@ declare module 'vue' {
     readonly mapStores: UnwrapRef<typeof import('pinia')['mapStores']>
     readonly mapWritableState: UnwrapRef<typeof import('pinia')['mapWritableState']>
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
+    readonly menuJump: UnwrapRef<typeof import('../../utils/router')['menuJump']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
     readonly onBeforeMount: UnwrapRef<typeof import('vue')['onBeforeMount']>
@@ -492,6 +502,11 @@ declare module 'vue' {
     readonly reactiveOmit: UnwrapRef<typeof import('@vueuse/core')['reactiveOmit']>
     readonly reactivePick: UnwrapRef<typeof import('@vueuse/core')['reactivePick']>
     readonly readonly: UnwrapRef<typeof import('vue')['readonly']>
+    readonly recursiveFindRoutesByProperty: UnwrapRef<typeof import('../../utils/router')['recursiveFindRoutesByProperty']>
+    readonly recursiveHandleIframeRoutes: UnwrapRef<typeof import('../../utils/router')['recursiveHandleIframeRoutes']>
+    readonly recursiveNormalizeRoutesPath: UnwrapRef<typeof import('../../utils/router')['recursiveNormalizeRoutesPath']>
+    readonly recursiveSetRoutesRedirect: UnwrapRef<typeof import('../../utils/router')['recursiveSetRoutesRedirect']>
+    readonly recursiveSortRoutesByOrder: UnwrapRef<typeof import('../../utils/router')['recursiveSortRoutesByOrder']>
     readonly ref: UnwrapRef<typeof import('vue')['ref']>
     readonly refAutoReset: UnwrapRef<typeof import('@vueuse/core')['refAutoReset']>
     readonly refDebounced: UnwrapRef<typeof import('@vueuse/core')['refDebounced']>
@@ -519,7 +534,6 @@ declare module 'vue' {
     readonly toRef: UnwrapRef<typeof import('vue')['toRef']>
     readonly toRefs: UnwrapRef<typeof import('vue')['toRefs']>
     readonly toValue: UnwrapRef<typeof import('vue')['toValue']>
-    readonly transformRoutes: UnwrapRef<typeof import('../../utils/router')['transformRoutes']>
     readonly triggerRef: UnwrapRef<typeof import('vue')['triggerRef']>
     readonly tryOnBeforeMount: UnwrapRef<typeof import('@vueuse/core')['tryOnBeforeMount']>
     readonly tryOnBeforeUnmount: UnwrapRef<typeof import('@vueuse/core')['tryOnBeforeUnmount']>

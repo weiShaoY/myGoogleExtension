@@ -1,5 +1,7 @@
 import type { App } from 'vue'
 
+import type { RouteRecordRaw } from 'vue-router'
+
 /**
  * 路由入口
  * @description 创建并导出 vue-router 实例
@@ -10,9 +12,26 @@ import { createRouterGuard } from './guard'
 
 import { routes } from './routes'
 
-const router = createRouter({
+console.log('🚀 ~ file: index.ts:12 ~ routes:', routes)
+
+export const router = createRouter({
   history: createWebHashHistory(),
-  routes,
+
+  routes: [
+
+    {
+
+      name: 'Root',
+
+      path: '/',
+
+      redirect: '/emby',
+
+    },
+
+    ...routes as RouteRecordRaw[], // ✅ 正确：数组展开
+
+  ],
 })
 
 /**
