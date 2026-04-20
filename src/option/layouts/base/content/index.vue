@@ -12,7 +12,7 @@ const transitionProps = {
 
 <template>
   <div
-    class="layout-content m-auto max-w-full w-full"
+    class="layout-content h-full flex-1 overflow-auto p-5"
   >
 
     <RouterView

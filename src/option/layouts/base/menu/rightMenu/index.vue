@@ -22,7 +22,7 @@ const rightMenuWidth = `${OptionConfig.layoutStyle.rightMenuWidth}px`
 
 <template>
   <div
-    class=""
+    class="border-r-2 border-solid !border-[#eeeeee]"
   >
     <div
       class="h-15 flex items-center justify-center"

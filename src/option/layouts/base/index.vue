@@ -9,15 +9,13 @@ import Menu from './menu/index.vue'
 
 const layoutStyle = computed(() => ({
   paddingLeft: `calc(${OptionConfig.layoutStyle.leftMenuWidth}px + ${OptionConfig.layoutStyle.rightMenuWidth}px)`,
-  paddingTop: `122px`,
 }))
 
 </script>
 
 <template>
   <div
-    class="h-[100vh] w-[100vw] bg-[#fafbfc] transition-all duration-300"
-    :style="layoutStyle"
+    class="h-[100vh] w-[100vw] flex overflow-hidden bg-[#fafbfc] transition-all duration-300"
   >
     <Menu />
 

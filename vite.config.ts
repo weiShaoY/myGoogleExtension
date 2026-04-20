@@ -16,7 +16,7 @@ import { defineConfig } from 'vite'
 
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons-ng'
 
-import vueDevTools from 'vite-plugin-vue-devtools'
+// import vueDevTools from 'vite-plugin-vue-devtools'
 
 import zip from 'vite-plugin-zip-pack'
 
@@ -37,7 +37,7 @@ export default defineConfig({
   plugins: [
     vue(),
 
-    vueDevTools(),
+    // vueDevTools(),
 
     // ===== 样式相关插件 =====
     unoCSS({

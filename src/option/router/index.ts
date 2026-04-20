@@ -8,6 +8,8 @@ import type { RouteRecordRaw } from 'vue-router'
  */
 import { createRouter, createWebHashHistory } from 'vue-router'
 
+import { BASE_LAYOUT } from '@/option/layouts'
+
 import { createRouterGuard } from './guard'
 
 import { routes } from './routes'
@@ -20,17 +22,14 @@ export const router = createRouter({
   routes: [
 
     {
-
       name: 'Root',
-
       path: '/',
-
       redirect: '/emby',
-
+      component: BASE_LAYOUT,
+      children: [
+        ...routes as RouteRecordRaw[], // ✅ 正确：数组展开
+      ],
     },
-
-    ...routes as RouteRecordRaw[], // ✅ 正确：数组展开
-
   ],
 })
 

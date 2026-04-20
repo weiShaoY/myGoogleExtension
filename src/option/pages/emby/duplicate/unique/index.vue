@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+const adultStore = useAdultStore()
 
 /**
  * 首页
@@ -6,19 +7,35 @@
 </script>
 
 <template>
-  <div
-    class="p-6"
-  >
-    <h1
-      class="mb-4 text-2xl font-bold"
-    >
-      欢迎使用设置中心
-    </h1>
 
-    <p
-      class="text-gray-600"
+  <div
+    class="box-border h-full flex items-center justify-center p-20"
+  >
+
+    <el-scrollbar
+      v-if="adultStore.embyFolder.folderUniqueDuplicateVideoNames"
+      always
+      class="w-full"
+      view-class="p-15 box-border"
     >
-      请从左侧菜单选择要设置的模块
-    </p>
+      <!-- 所有重复 AllDuplicate -->
+      <AdultEmby
+        v-for="(item, index) in adultStore.embyFolder
+          .folderUniqueDuplicateVideoNames"
+        :key="index"
+        :video-name="item"
+        :is-from-setting-dialog="true"
+        class="mb-3 !h-15"
+      />
+    </el-scrollbar>
+
+    <div
+      v-else
+      class="text-20"
+    >
+      暂无重复视频
+    </div>
+
   </div>
+
 </template>

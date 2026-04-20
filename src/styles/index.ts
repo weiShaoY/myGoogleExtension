@@ -6,6 +6,8 @@
 
 // import 'virtual:uno.css'
 
+import './core/fonts.scss'
+
 import 'virtual:svg-icons/register'
 
 // 顶部进度条样式 (NProgress Styles)
