@@ -6,43 +6,38 @@ import LeftMenu from './leftMenu/index.vue'
 
 import RightMenu from './rightMenu/index.vue'
 
-const currentIndex = ref('1')
+const router = useRouter()
 
-const menuList = [
-  {
-    index: '1',
-    title: 'Emby',
-    icon: 'option-menu-emby',
-  },
-  {
-    index: '2',
-    title: '设置',
-    icon: 'option-menu-emby',
+// 获取 当前路由数组
+const allRoutes = router.getRoutes()
 
-  },
-]
+console.log('🚀 ~ file: index.vue:29 ~ allRoutes:', allRoutes)
+
+const menuList = computed(() => router.getRoutes()) as any
+
+function handleMenuJump(menu: RouterType.Route) {
+  router.push(menu.path)
+}
 
 </script>
 
 <template>
   <div
-    class="h-full flex select-none border-r-1 border-[#EAECF1] bg-[rgb(227,180,203)] pt-20"
+    class="h-full flex select-none border-r-1 border-[#EAECF1]"
   >
 
     <!-- 左侧菜单 -->
     <LeftMenu
-      :current-index="currentIndex"
       :menu-list="menuList"
+      @menu-jump="handleMenuJump"
     />
 
     <!-- 右侧菜单 -->
-    <!-- <RightMenu /> -->
+    <RightMenu />
 
   </div>
 </template>
 
 <style lang="scss" scoped>
-:deep(.el-scrollbar__bar.is-vertical) {
-  display: none;
-}
+
 </style>

@@ -2,9 +2,9 @@
 <!------------------------------------    ------------------------------------------------->
 <script lang="ts" setup>
 type PropsType = {
-  menuList: MenuItem[]
 
-  currentIndex: string
+  /** 路由列表 */
+  menuList: RouterType.Route[]
 }
 const { menuList } = defineProps<PropsType>()
 
@@ -15,71 +15,89 @@ const emits = defineEmits<{
    * @param menu 菜单项
    * @param jumpToFirst 是否跳转到第一个子菜单
    */
-  menuJump: [menu: MenuItem, jumpToFirst: boolean]
+  menuJump: [menu: RouterType.Route, jumpToFirst: boolean]
 }>()
 
 /**
  *  是否显示菜单文字
  */
-const dualMenuShowText = ref(false)
+const dualMenuShowText = ref(true)
+
+const route = useRoute()
+
+const currentRoute = computed(() => route.path)
+
+console.log('🚀 ~ 当前路由:', currentRoute.value)
 </script>
 
 <template>
-
   <!-- 左侧菜单 -->
   <div
-    class="h-full w-20 border border-r-[1px] border-[#EAECF1] !relative"
+    class="relative h-full w-20 border-r-2 border-solid !border-[#eeeeee]"
   >
+    <div
+      class="aspect-square w-full flex items-center justify-center"
+    >
+      <SvgIcon
+        icon="logo"
+        :size="40"
+      />
+
+    </div>
+
     <el-scrollbar
       class="h-full"
     >
       <div
         v-for="menu in menuList"
-        :key="menu.index"
-        class="mb-3 box-border flex items-center justify-center"
+        :key="menu.path"
+        class="mb-3 flex items-center justify-center"
         @click="emits('menuJump', menu, true)"
       >
         <el-tooltip
           class="box-item"
           effect="dark"
-          :content="menu.title"
+          :content="menu.meta.title"
           placement="right"
           :offset="25"
           :hide-after="0"
           :disabled="dualMenuShowText"
         >
           <div
-            class="aspect-square flex flex-col items-center justify-center rounded-2 text-center transition-all duration-300 hover:cursor-pointer"
+            class="aspect-square flex flex-col items-center justify-center rounded-md text-center transition-all duration-300 hover:cursor-pointer"
             :class="[
-              currentIndex === menu.index ? 'bg-[#F3B03D] color-white' : '',
+              currentRoute === menu.path ? 'bg-[#eef3ff] text-primary' : '',
               dualMenuShowText ? 'w-[80%]' : 'w-[70%]',
             ]"
           >
             <SvgIcon
-              v-if="menu.icon"
-              :icon="menu.icon"
-              :class="dualMenuShowText ? 'mb-1 ' : 'scale-130'"
+              v-if="menu.meta.icon"
+              :icon="menu.meta.icon"
+              :class="dualMenuShowText ? 'mb-1' : 'scale-130'"
             />
 
             <span
               v-if="dualMenuShowText"
               class="max-w-[90%] text-ellipsis"
             >
-              {{ menu.title }}
+              {{ menu.meta.title }}
             </span>
           </div>
         </el-tooltip>
       </div>
     </el-scrollbar>
 
+    <!-- 菜单收缩/展开按钮 -->
     <div
-      class="absolute bottom-13 left-0 right-0 flex items-center justify-center !absolute hover:cursor-pointer"
+      class="absolute bottom-10 left-0 right-0 flex items-center justify-center hover:cursor-pointer"
       @click="dualMenuShowText = !dualMenuShowText"
     >
       <SvgIcon
-        icon="option-menu-emby"
+        icon="option-menu-switch"
       />
     </div>
-
   </div>
 </template>
+
+<style lang="scss" scoped>
+</style>

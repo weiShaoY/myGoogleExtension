@@ -8,6 +8,8 @@ import Pinia from '../stores'
 
 import App from './App.vue'
 
+import router from './router'
+
 import '../styles/index'
 
 /**
@@ -17,6 +19,8 @@ function mountApp() {
   const app = createApp(App)
 
   app.use(Pinia)
+
+  app.use(router)
 
   setupPlugins(app)
 
