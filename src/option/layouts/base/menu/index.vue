@@ -46,7 +46,7 @@ const rightMenuList = computed(() => {
 
 <template>
   <div
-    class="h-full flex select-none border-r-1 border-[#EAECF1]"
+    class="fixed left-0 top-0 h-full flex select-none border-r-1 border-[#EAECF1]"
   >
 
     <!-- 左侧菜单 -->

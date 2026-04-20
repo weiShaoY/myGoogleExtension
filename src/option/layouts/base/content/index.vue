@@ -1,42 +1,44 @@
 <!-- 内容布局 -->
 <script setup lang="ts">
 
+// 过渡动画配置
+const transitionProps = {
+  name: 'slide-bottom',
+  mode: 'out-in',
+  appear: true,
+} as const
+
 </script>
 
 <template>
   <div
-    class="layout-content m-auto h-full w-full"
+    class="layout-content m-auto mr w-[calc(100%-325px)]"
   >
-    <!-- 路由切换动画 -->
-    <Suspense>
-      <template
-        #default
-      >
-        <router-view
-          v-slot="{ Component }"
-        >
-          <Transition
-            name="slide-left"
-            mode="out-in"
-            appear
-          >
-            <component
-              :is="Component"
-            />
-          </Transition>
-        </router-view>
-      </template>
+    <div
+      class=""
+    >
+      1
 
-      <template
-        #fallback
-      >
-        <IconLoading />
-      </template>
-    </Suspense>
+    </div>
 
+    <RouterView
+      v-slot="{ Component, route }"
+      class="w-full"
+    >
+      <Transition
+        v-bind="transitionProps"
+      >
+        <component
+          :is="Component"
+          :key="route.path"
+        />
+      </Transition>
+    </RouterView>
   </div>
 </template>
 
-<style scoped lang="scss">
-
+<style scoped>
+.layout-content {
+  transition: max-width 0.3s ease-in-out;
+}
 </style>

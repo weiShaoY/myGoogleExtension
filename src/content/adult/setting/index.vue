@@ -95,7 +95,9 @@ function handleSelect(key: string) {
 
           <span
             class="menu-name"
-          > 文件夹扫描 </span>
+          >
+            文件夹扫描
+          </span>
         </el-menu-item>
 
         <!-- Find Duplicate -->

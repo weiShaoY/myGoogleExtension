@@ -15,11 +15,44 @@ export const routes: RouterType.Route[] = [
         path: 'folder-scanner',
         name: 'EmbyFolderScanner',
         component: () =>
-          import('@/option/pages/emby/folderScanner/aaa.vue'),
+          import('@/option/pages/emby/folder-scanner/index.vue'),
         meta: {
           title: '文件夹扫描',
+          icon: 'option-menu-folderScanner',
         },
       },
+
+      {
+        path: 'duplicate',
+        name: 'EmbyDuplicate',
+        meta: {
+          title: '查找重复',
+          icon: 'option-menu-duplicate',
+        },
+        children: [
+          {
+            path: 'all',
+            name: 'EmbyDuplicateAll',
+            component: () =>
+              import('@/option/pages/emby/duplicate/all/index.vue'),
+            meta: {
+              title: '所有重复',
+              icon: 'option-menu-duplicateAll',
+            },
+          },
+          {
+            path: 'unique',
+            name: 'EmbyDuplicateUnique',
+            component: () =>
+              import('@/option/pages/emby/duplicate/unique/index.vue'),
+            meta: {
+              title: '去重重复',
+              icon: 'option-menu-duplicateUnique',
+            },
+          },
+        ],
+      },
+
       {
         path: 'home',
         name: 'EmbyHome',
@@ -28,18 +61,8 @@ export const routes: RouterType.Route[] = [
         meta: {
           title: '首页',
         },
-        children: [
-          {
-            path: 'detail',
-            name: 'EmbyHomeDetail',
-            component: () =>
-              import('@/option/pages/emby/home/index.vue'),
-            meta: {
-              title: '详情',
-            },
-          },
-        ],
       },
+
     ],
   },
 ]

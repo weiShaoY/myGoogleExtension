@@ -13,7 +13,7 @@ import Menu from './menu/index.vue'
   >
     <Menu />
 
-    <!-- <Content /> -->
+    <Content />
   </div>
 </template>
 
