@@ -155,6 +155,7 @@
     "toRef": true,
     "toRefs": true,
     "toValue": true,
+    "transformRoutes": true,
     "triggerRef": true,
     "tryOnBeforeMount": true,
     "tryOnBeforeUnmount": true,

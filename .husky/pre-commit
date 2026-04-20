@@ -1,0 +1,12 @@
+npm test
+echo "🔄 正在更新版本时间戳..."
+
+node scripts/update-version.js
+
+# 等待文件写入磁盘（关键修复！）
+sleep 0.2
+
+# 强制把变更加入暂存区
+git add /src/option/index.html
+
+echo "✅ 版本已更新，文件已加入提交"

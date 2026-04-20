@@ -8,6 +8,4 @@
 
 import 'virtual:svg-icons/register'
 
-import 'element-plus/dist/index.css'
-
 import './core/main.scss'

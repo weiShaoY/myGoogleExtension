@@ -2,6 +2,8 @@ import type { App as VueApp } from 'vue'
 
 import { setElementPlus } from './elementPlus'
 
+import { setVersionTip } from './version'
+
 import { setWelcome } from './welcome'
 
 /**
@@ -11,4 +13,5 @@ import { setWelcome } from './welcome'
 export function setupPlugins(app: VueApp) {
   setElementPlus(app)
   setWelcome()
+  setVersionTip()
 }
