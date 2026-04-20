@@ -15,6 +15,7 @@
     "InjectionKey": true,
     "MaybeRef": true,
     "MaybeRefOrGetter": true,
+    "OptionConfig": true,
     "PropType": true,
     "Ref": true,
     "SearchConfig": true,

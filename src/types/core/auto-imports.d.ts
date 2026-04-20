@@ -11,6 +11,7 @@ declare global {
   const AdultConfig: typeof import('../../configs/adult').AdultConfig
   const AppConfig: typeof import('../../configs/app').AppConfig
   const EffectScope: typeof import('vue').EffectScope
+  const OptionConfig: typeof import('../../configs/option').OptionConfig
   const SearchConfig: typeof import('../../configs/search').SearchConfig
   const WHITESPACE_REGEX: typeof import('../../utils/folder').WHITESPACE_REGEX
   const acceptHMRUpdate: typeof import('pinia').acceptHMRUpdate
@@ -394,6 +395,7 @@ declare module 'vue' {
     readonly AdultConfig: UnwrapRef<typeof import('../../configs/adult')['AdultConfig']>
     readonly AppConfig: UnwrapRef<typeof import('../../configs/app')['AppConfig']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly OptionConfig: UnwrapRef<typeof import('../../configs/option')['OptionConfig']>
     readonly SearchConfig: UnwrapRef<typeof import('../../configs/search')['SearchConfig']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly addClassAndPush: UnwrapRef<typeof import('../../utils/dom')['addClassAndPush']>

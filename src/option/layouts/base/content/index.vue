@@ -12,14 +12,8 @@ const transitionProps = {
 
 <template>
   <div
-    class="layout-content m-auto mr w-[calc(100%-325px)]"
+    class="layout-content m-auto max-w-full w-full"
   >
-    <div
-      class=""
-    >
-      1
-
-    </div>
 
     <RouterView
       v-slot="{ Component, route }"

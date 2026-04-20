@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
 
+import { OptionConfig } from '@/configs'
+
 import SubMenu from './sub-menu.vue'
 
 const { menuList } = defineProps<Props>()
@@ -14,6 +16,7 @@ type Props = {
    */
   menuList: RouterType.Route[]
 }
+const rightMenuWidth = `${OptionConfig.layoutStyle.rightMenuWidth}px`
 
 </script>
 
@@ -38,7 +41,7 @@ type Props = {
       <el-menu
         :default-active="route.path"
         :style="{
-          width: '240px',
+          width: rightMenuWidth,
         }"
       >
         <SubMenu
@@ -48,3 +51,9 @@ type Props = {
     </el-scrollbar>
   </div>
 </template>
+
+<style>
+.el-menu {
+  border: none !important;
+}
+</style>
