@@ -23,9 +23,9 @@ export const useAdultStore = defineStore(
     function saveEmbyFolderData(_folderName: string, folderVideoFiles: AdultType.VideoFile[], startTime: number) {
       embyFolder.value = {
         folderName: _folderName,
-        folderVideoFiles,
         folderScanTimestamp: Date.now(),
         folderScanDuration: getDuration(startTime, Date.now()),
+        folderVideoFiles,
         folderAllDuplicateVideoFiles: getDuplicateItems(folderVideoFiles, 'cleanName'),
         folderUniqueDuplicateVideoNames: getDuplicateItemKeys(folderVideoFiles, 'cleanName'),
       }

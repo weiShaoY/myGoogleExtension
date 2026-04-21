@@ -21,11 +21,12 @@ export default defineManifest({
     'contentSettings', // 内容设置权限，管理网页JS、图片、权限等配置
     'storage', // 本地存储权限，持久化保存插件配置数据
     'unlimitedStorage', // 无限制存储权限，突破本地存储大小限制
-    'clipboardRead', // 剪贴板读取权限，读取用户剪贴板内容
+    'clipboardRead', // 剪贴板读取权限，读取用户剪贴板内容z
     'clipboardWrite', // 剪贴板写入权限，向剪贴板写入内容
     'tabs', // 标签页权限，获取、管理浏览器标签页信息
     'declarativeNetRequest', // 网络请求权限，拦截/修改/重定向网络请求
     'scripting', // 脚本注入权限，动态向网页注入JS/CSS代码
+    'fileSystem', // 文件系统权限，读取/写入文件系统
   ],
   host_permissions: [
     'http://192.168.0.3:8096/*', // 允许插件访问该HTTP本地服务地址

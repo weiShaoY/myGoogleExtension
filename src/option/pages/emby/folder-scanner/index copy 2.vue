@@ -265,16 +265,16 @@ async function mainBtnHandler() {
 
 <template>
   <div
-    class="h-full flex flex-col items-center justify-center gap-10"
+    class="h-full flex flex-col items-center justify-center gap-6"
   >
 
     <!-- 选择按钮 -->
-    <!-- <div
-      class="cursor-pointer rounded-lg bg-emby px-8 py-6 text-8 text-white font-bold hover:bg-green-600"
+    <div
+      class="cursor-pointer rounded-lg bg-green-500 px-6 py-3 text-white font-bold hover:bg-green-600"
       @click="mainBtnHandler"
     >
       选择 Emby 文件夹
-    </div> -->
+    </div>
 
     <!-- 隐藏 input -->
     <input
@@ -285,180 +285,35 @@ async function mainBtnHandler() {
       @change="handleInputSelect"
     >
 
+    <!-- 信息展示 -->
     <div
-      class="group relative h-[calc(90px*1.7)] min-w-[230px] w-[20%] flex flex-col items-center justify-end rounded-[15px] bg-[linear-gradient(135deg,#6acf63,#52b44b)] p-[10px] shadow-[0_15px_30px_rgba(0,0,0,0.2)]"
+      class="text-sm space-y-2"
     >
-
-      <div
-        class="absolute left-[calc(50%-60px)] top-[-20px] animate-[float_2.5s_infinite_ease-in-out] transition-transform duration-350 ease-in-out group-hover:scale-105"
-      >
-
-        <div
-          class="absolute h-[80px] w-[120px] rounded-[10px] bg-[linear-gradient(135deg,#ffe563,#ffc663)] shadow-[0_15px_30px_rgba(0,0,0,0.3)]"
-        >
-          <div
-            class="absolute inset-0 origin-bottom rounded-[15px] bg-white opacity-50 transition-transform duration-350 group-hover:[transform:rotateX(-5deg)_skewX(5deg)]"
-          />
-
-          <div
-            class="absolute inset-0 origin-bottom rounded-[15px] bg-white opacity-50 transition-transform duration-350 group-hover:[transform:rotateX(-15deg)_skewX(12deg)]"
-          />
-        </div>
-
-        <div
-          class="relative z-10 origin-bottom transition-transform duration-350 group-hover:[transform:rotateX(-40deg)_skewX(15deg)]"
-        >
-          <div
-            class="absolute top-[-10px] z-20 h-[20px] w-[80px] rounded-t-[12px] bg-[linear-gradient(135deg,#ff9a56,#ff6f56)] shadow-[0_5px_15px_rgba(0,0,0,0.2)]"
-          />
-
-          <div
-            class="h-[80px] w-[120px] rounded-[10px] bg-[linear-gradient(135deg,#ffe563,#ffc663)] shadow-[0_15px_30px_rgba(0,0,0,0.3)]"
-          />
-        </div>
+      <div>
+        📁 文件夹：{{ adultStore.embyFolder.folderName }}
       </div>
 
-      <label
-        class="relative w-[80%] cursor-pointer rounded-[10px] bg-white/20 px-[35px] py-[10px] text-center text-[1.1em] text-white font-bold shadow-[0_10px_20px_rgba(0,0,0,0.1)] transition-colors duration-350 hover:bg-white/40"
-        @click="mainBtnHandler"
-      >
+      <div>
+        🎬 总数：{{ adultStore.embyFolder.folderVideoFiles.length }}
+      </div>
 
-        选择 Emby 文件夹
-      </label>
+      <div>
+        ♻️ 重复：{{ adultStore.embyFolder.folderAllDuplicateVideoFiles.length }}
+      </div>
+
+      <div>
+        ✅ 去重：{{ adultStore.embyFolder.folderUniqueDuplicateVideoNames.length }}
+      </div>
+
+      <div>
+        ⏱ 扫描耗时：{{ adultStore.embyFolder.folderScanDuration }}
+      </div>
+
+      <div>
+        🕒 上次扫描：{{ formatTimestampToChineseDate(adultStore.embyFolder.folderScanTimestamp) }}
+      </div>
     </div>
 
-    <!-- 信息展示 -->
-    <el-timeline
-      class="text-6"
-    >
-      <el-timeline-item>
-        <div
-          class="flex items-center"
-        >
-          <span>
-            📁  文件夹
-          </span>
-
-          <span
-            class="m-x-2 text-6 color-emby font-bold"
-          >
-            {{ adultStore.embyFolder.folderName }}
-          </span>
-
-        </div>
-
-      </el-timeline-item>
-
-      <el-timeline-item>
-        <div
-          class="flex items-center"
-        >
-          <span>
-            🎬  总共
-          </span>
-
-          <span
-            class="m-x-2 text-6 color-emby font-bold"
-          >
-            {{ adultStore.embyFolder.folderVideoFiles.length }}
-          </span>
-
-          <span>
-            部
-          </span>
-
-        </div>
-
-      </el-timeline-item>
-
-      <el-timeline-item>
-        <div
-          class="flex items-center"
-        >
-          <span>
-            ♻️  已重复
-          </span>
-
-          <span
-            class="m-x-2 text-6 color-emby font-bold"
-          >
-            {{ adultStore.embyFolder.folderAllDuplicateVideoFiles.length }}
-          </span>
-
-          <span>
-            部
-          </span>
-        </div>
-      </el-timeline-item>
-
-      <el-timeline-item>
-        <div
-          class="flex items-center"
-        >
-          <span>
-            ✅  去重后
-          </span>
-
-          <span
-            class="m-x-2 text-6 color-emby font-bold"
-          >
-            {{ adultStore.embyFolder.folderUniqueDuplicateVideoNames.length }}
-          </span>
-
-          <span>
-            部
-          </span>
-        </div>
-      </el-timeline-item>
-
-      <el-timeline-item>
-        <div
-          class="flex items-center"
-        >
-          <span>
-            ⏰  上次扫描耗时
-          </span>
-
-          <span
-            class="m-x-2 text-6 color-emby font-bold"
-          >
-            {{ adultStore.embyFolder.folderScanDuration }}
-          </span>
-        </div>
-      </el-timeline-item>
-
-      <el-timeline-item>
-        <div
-          class="flex items-center"
-        >
-          <span>
-            🕒  距离上次扫描
-          </span>
-
-          <span
-            class="m-x-2 text-6 color-emby font-bold"
-          >
-            {{ getElapsedTime(adultStore.embyFolder.folderScanTimestamp) }}
-          </span>
-        </div>
-      </el-timeline-item>
-
-      <el-timeline-item>
-        <div
-          class="flex items-center"
-        >
-          <span>
-            🧭  最后扫描时间
-          </span>
-
-          <span
-            class="m-x-2 text-6 color-emby font-bold"
-          >
-            {{ formatTimestampToChineseDate(adultStore.embyFolder.folderScanTimestamp) }}        </span>
-
-        </div>
-      </el-timeline-item>
-    </el-timeline>
   </div>
 </template>
 
