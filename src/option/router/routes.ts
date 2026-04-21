@@ -88,4 +88,23 @@ export const routes: RouterType.Route[] = [
       },
     ],
   },
+  {
+    path: '/test',
+    name: 'Test',
+    meta: {
+      title: '测试',
+      icon: 'option-menu-test',
+    },
+    children: [
+      {
+        path: 'tampermonkey',
+        name: 'TestTampermonkey',
+        component: () => import('@/option/pages/test/tampermonkey/index.vue'),
+        meta: {
+          title: '油猴脚本',
+          icon: 'option-menu-tampermonkey',
+        },
+      },
+    ],
+  },
 ]
