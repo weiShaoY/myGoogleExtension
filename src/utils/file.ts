@@ -19,3 +19,44 @@ export function parseFileSizeToGB(text: string): number {
 
   return Math.round(sizeInGB * 100) / 100
 }
+
+/**
+ * 视频时长格式化
+ * 👉 秒 → HH:MM:SS
+ *
+ * @param input 秒数（number 或 string）
+ * @returns HH:MM:SS
+ */
+export function parseVideoDurationToSeconds(input: string | number): string {
+  /**
+   * 转换为 number
+   */
+  const totalSeconds = typeof input === 'number'
+    ? input
+    : Number(input)
+
+  /**
+   * 非法值兜底
+   */
+  if (Number.isNaN(totalSeconds) || totalSeconds < 0) {
+    return '00:00:00'
+  }
+
+  /**
+   * 向下取整（去掉小数）
+   */
+  const seconds = Math.floor(totalSeconds)
+
+  const h = Math.floor(seconds / 3600)
+
+  const m = Math.floor((seconds % 3600) / 60)
+
+  const s = seconds % 60
+
+  /**
+   * 补零
+   */
+  const pad = (n: number) => String(n).padStart(2, '0')
+
+  return `${pad(h)}:${pad(m)}:${pad(s)}`
+}

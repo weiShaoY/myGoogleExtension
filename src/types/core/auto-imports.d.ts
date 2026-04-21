@@ -125,6 +125,7 @@ declare global {
   const parseFileSizeToGB: typeof import('../../utils/file').parseFileSizeToGB
   const parseNfoContent: typeof import('../../utils/parseNfoContent').parseNfoContent
   const parseSizeTextToGB: typeof import('../../composables/useDetailsPageTorrentList').parseSizeTextToGB
+  const parseVideoDurationToSeconds: typeof import('../../utils/file').parseVideoDurationToSeconds
   const pausableWatch: typeof import('@vueuse/core').pausableWatch
   const piniaChromeStoragePlugin: typeof import('../../stores/piniaChromeStoragePlugin').piniaChromeStoragePlugin
   const preventEvent: typeof import('../../utils/dom').preventEvent
@@ -493,6 +494,7 @@ declare module 'vue' {
     readonly openLink: UnwrapRef<typeof import('../../utils/openLink')['openLink']>
     readonly parseFileSizeToGB: UnwrapRef<typeof import('../../utils/file')['parseFileSizeToGB']>
     readonly parseNfoContent: UnwrapRef<typeof import('../../utils/parseNfoContent')['parseNfoContent']>
+    readonly parseVideoDurationToSeconds: UnwrapRef<typeof import('../../utils/file')['parseVideoDurationToSeconds']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
     readonly preventEvent: UnwrapRef<typeof import('../../utils/dom')['preventEvent']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>

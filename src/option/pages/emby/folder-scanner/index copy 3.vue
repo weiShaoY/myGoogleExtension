@@ -118,7 +118,7 @@ async function processFile(fileData: FileData) {
 
       resolution: `${meta.width}x${meta.height}`,
 
-      duration: meta.duration,
+      durationText: meta.duration,
 
       hasChineseSubtitle:
         file.name.includes('-c')

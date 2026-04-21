@@ -120,6 +120,7 @@
     "openLink": true,
     "parseFileSizeToGB": true,
     "parseNfoContent": true,
+    "parseVideoDurationToSeconds": true,
     "pausableWatch": true,
     "preventEvent": true,
     "provide": true,
