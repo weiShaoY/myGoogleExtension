@@ -51,80 +51,123 @@ function getVideoMeta(
   height: number
 }> {
   return new Promise((resolve) => {
-    /**
-     * 创建 video 元素用于解析 metadata
-     */
     const video = document.createElement('video')
 
     //  只加载 metadata，不下载视频内容
     video.preload = 'metadata'
 
-    /**
-     * 元数据加载完成回调
-     */
-    video.onloadedmetadata = () => {
-      resolve({
-        duration: video.duration,
-        width: video.videoWidth,
-        height: video.videoHeight,
-      })
+    const objectUrl = URL.createObjectURL(file)
 
-      //  释放 blob，避免内存泄漏
-      URL.revokeObjectURL(video.src)
+    let finished = false
+
+    const cleanup = () => {
+      try {
+        video.onloadedmetadata = null
+        video.onerror = null
+
+        //  触发资源释放
+        video.removeAttribute('src')
+        video.load()
+        video.remove()
+      }
+      catch {}
+
+      try {
+        URL.revokeObjectURL(objectUrl)
+      }
+      catch {}
     }
 
-    //  创建 blob URL
-    video.src = URL.createObjectURL(file)
+    const finish = (meta: { duration: number, width: number, height: number }) => {
+      if (finished) {
+        return
+      }
+
+      finished = true
+      cleanup()
+      resolve(meta)
+    }
+
+    const timer = window.setTimeout(() => {
+      //  超时：避免某些异常文件导致 Promise 永远不 resolve
+      finish({
+        duration: 0,
+        width: 0,
+        height: 0,
+      })
+    }, 10_000)
+
+    video.onloadedmetadata = () => {
+      window.clearTimeout(timer)
+      finish({
+        duration: Number.isFinite(video.duration) ? video.duration : 0,
+        width: Number.isFinite(video.videoWidth) ? video.videoWidth : 0,
+        height: Number.isFinite(video.videoHeight) ? video.videoHeight : 0,
+      })
+    }
+
+    video.onerror = () => {
+      window.clearTimeout(timer)
+      finish({
+        duration: 0,
+        width: 0,
+        height: 0,
+      })
+    }
+
+    video.src = objectUrl
   })
 }
 
 /**
- * 并发控制工具
- * 👉 限制同时执行任务数量
+ * 让出主线程（避免大数据量时长任务卡死）
  */
-async function runWithConcurrency<T>(
-  list: T[],
+async function yieldToBrowser() {
+  await new Promise<void>((resolve) => {
+    requestAnimationFrame(() => resolve())
+  })
+}
+
+/**
+ * 并发控制（支持超大列表）
+ * 👉 不再把所有 Promise 收集到数组里，避免大数据量内存暴涨
+ */
+async function runWithConcurrency<T, R>(
+  iterable: AsyncIterable<T> | Iterable<T>,
   limit: number,
-  handler: (item: T) => Promise<any>,
+  handler: (item: T) => Promise<R>,
+  onResult?: (result: R) => void,
 ) {
-  /**
-   * 所有任务
-   */
-  const result: Promise<any>[] = []
+  const pool = new Set<Promise<void>>()
 
-  /**
-   * 当前执行池
-   */
-  const pool: Promise<any>[] = []
+  let started = 0
 
-  //  遍历任务列表
-  for (const item of list) {
-    /**
-     * 执行任务
-     */
-    const task = handler(item)
+  for await (const item of iterable as any) {
+    started += 1
 
-    result.push(task)
+    const task = (async () => {
+      const result = await handler(item)
 
-    /**
-     * 加入执行池
-     */
-    const p = task.finally(() => {
-      pool.splice(pool.indexOf(p), 1)
+      onResult?.(result)
+    })()
+
+    pool.add(task)
+
+    task.finally(() => {
+      pool.delete(task)
     })
 
-    pool.push(p)
-
-    //  控制并发数
-    if (pool.length >= limit) {
+    if (pool.size >= limit) {
       await Promise.race(pool)
+    }
+
+    //  扫描/处理数量大时，定期让出主线程
+    if (started % 25 === 0) {
+      await yieldToBrowser()
     }
   }
 
-  /**
-   * 等待全部完成
-   */
-  return Promise.all(result)
+  await Promise.allSettled(Array.from(pool))
 }
 
 /**
@@ -188,7 +231,9 @@ async function processFile(fileData: FileData) {
       /**
        * 分辨率
        */
-      resolution: `${meta.width}x${meta.height}`,
+      resolution: meta.width > 0 && meta.height > 0
+        ? `${meta.width}x${meta.height}`
+        : '',
 
       /**
        * 视频时长
@@ -225,6 +270,8 @@ async function handleInputSelect(e: Event) {
     return
   }
 
+  const filesList = files
+
   // ✅ 用户确认后开始
   pageLoadingMittBus.emit('pageLoadingStart')
 
@@ -239,49 +286,38 @@ async function handleInputSelect(e: Event) {
   const startTime = Date.now()
 
   try {
-  /**
-   * 文件列表
-   */
-    const fileList: FileData[] = []
+    const firstFile = files.item(0)
 
-    //  遍历文件
-    for (const file of files) {
-    //  过滤非视频文件
-      if (
-        !AdultConfig.rules.videoExtRules.some(ext =>
-          file.name.endsWith(`.${ext}`),
-        )
-      ) {
-        continue
+    const folderName = firstFile?.webkitRelativePath?.split('/')?.[0] || '未知文件夹'
+
+    async function* getInputVideoFiles(): AsyncGenerator<FileData> {
+      for (const file of filesList) {
+        if (
+          !AdultConfig.rules.videoExtRules.some(ext =>
+            file.name.endsWith(`.${ext}`),
+          )
+        ) {
+          continue
+        }
+
+        const path = file.webkitRelativePath.split('/')
+
+        yield {
+          file,
+          directoryPath: path.slice(0, -1),
+          nfoContent: '',
+        }
       }
-
-      /**
-     * 相对路径拆分
-     */
-      const path = file.webkitRelativePath.split('/')
-
-      fileList.push({
-        file,
-        directoryPath: path.slice(0, -1),
-        nfoContent: '',
-      })
     }
 
-    /**
-   * 并发处理
-   */
-    const result = await runWithConcurrency(fileList, 5, processFile)
-
-    //  写入 Set
-    result.forEach((item) => {
+    await runWithConcurrency(getInputVideoFiles(), 3, processFile, (item) => {
       if (item) {
         videoFileSet.add(item)
       }
     })
 
-    //  保存到 store
     adultStore.saveEmbyFolderData(
-      fileList[0]?.directoryPath?.[0] || '未知文件夹',
+      folderName,
       Array.from(videoFileSet),
       startTime,
     )
@@ -353,26 +389,9 @@ async function handleDirectoryPicker() {
       }
     }
 
-    /**
-   * 收集文件
-   */
-    const fileList: FileData[] = []
-
-    for await (const f of getFiles(directoryHandle, [
+    await runWithConcurrency(getFiles(directoryHandle, [
       directoryHandle.name,
-    ])) {
-      fileList.push(f)
-    }
-
-    /**
-   * 并发处理
-   */
-    const result = await runWithConcurrency(fileList, 1, processFile)
-
-    /**
-   * 写入 Set
-   */
-    result.forEach((item) => {
+    ]), 1, processFile, (item) => {
       if (item) {
         videoFileSet.add(item)
       }

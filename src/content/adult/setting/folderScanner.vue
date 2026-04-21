@@ -165,6 +165,10 @@ async function mainBtnHandler() {
 
         resolution: nfoContent.resolution || '',
 
+        durationText: nfoContent.runtime
+          ? parseVideoDurationToSeconds(nfoContent.runtime * 60)
+          : '00:00:00',
+
         hasChineseSubtitle:
           file.name.includes('-c')
           || file.name.includes('-C')

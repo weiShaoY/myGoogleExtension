@@ -52,8 +52,6 @@ export function getVideoTagsFromName(fullName: string): string[] {
   // m[0] 表示匹配到的完整字符串
   const lowerMatches = matches.map(m => m[0].toLowerCase())
 
-  console.log('🚀 ~ file: adult.ts:145 ~ lowerMatches:', lowerMatches)
-
   // 创建空数组用于存储匹配到的图标标识
   const icons: string[] = []
 
