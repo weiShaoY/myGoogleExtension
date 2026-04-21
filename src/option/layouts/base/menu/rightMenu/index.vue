@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
 
-import { OptionConfig } from '@/configs'
-
 import SubMenu from './sub-menu.vue'
 
 const { menuList } = defineProps<Props>()
@@ -16,7 +14,6 @@ type Props = {
    */
   menuList: RouterType.Route[]
 }
-const rightMenuWidth = `${OptionConfig.layoutStyle.rightMenuWidth}px`
 
 </script>
 
@@ -41,7 +38,7 @@ const rightMenuWidth = `${OptionConfig.layoutStyle.rightMenuWidth}px`
       <el-menu
         :default-active="route.path"
         :style="{
-          width: rightMenuWidth,
+          width: '260px',
         }"
       >
         <SubMenu

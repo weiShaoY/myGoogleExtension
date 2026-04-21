@@ -120,7 +120,7 @@ declare global {
   const onUnmounted: typeof import('vue').onUnmounted
   const onUpdated: typeof import('vue').onUpdated
   const onWatcherCleanup: typeof import('vue').onWatcherCleanup
-  const onlinePlayConfig: typeof import('../../configs/onlinePlay').onlinePlayConfig
+  const onlinePlayConfig: typeof import('../../configs/sitePlay').sitePlayConfig
   const openLink: typeof import('../../utils/openLink').openLink
   const parseFileSizeToGB: typeof import('../../utils/file').parseFileSizeToGB
   const parseNfoContent: typeof import('../../utils/parseNfoContent').parseNfoContent
@@ -160,6 +160,7 @@ declare global {
   const shallowReactive: typeof import('vue').shallowReactive
   const shallowReadonly: typeof import('vue').shallowReadonly
   const shallowRef: typeof import('vue').shallowRef
+  const sitePlayConfig: typeof import('../../configs/sitePlay').sitePlayConfig
   const sortAndDecorateTorrentList: typeof import('../../utils/torrent').sortAndDecorateTorrentList
   const sortTorrentList: typeof import('../../utils/torrent').sortTorrentList
   const storeToRefs: typeof import('pinia').storeToRefs
@@ -377,6 +378,8 @@ declare global {
   const watchThrottled: typeof import('@vueuse/core').watchThrottled
   const watchTriggerable: typeof import('@vueuse/core').watchTriggerable
   const watchWithFilter: typeof import('@vueuse/core').watchWithFilter
+  const wePlayConfig: typeof import('../../configs/sitePlay').sitePlayConfig
+  const webPlayConfig: typeof import('../../configs/sitePlay').sitePlayConfig
   const whenever: typeof import('@vueuse/core').whenever
 }
 // for type re-export
@@ -490,7 +493,6 @@ declare module 'vue' {
     readonly onUnmounted: UnwrapRef<typeof import('vue')['onUnmounted']>
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
     readonly onWatcherCleanup: UnwrapRef<typeof import('vue')['onWatcherCleanup']>
-    readonly onlinePlayConfig: UnwrapRef<typeof import('../../configs/onlinePlay')['onlinePlayConfig']>
     readonly openLink: UnwrapRef<typeof import('../../utils/openLink')['openLink']>
     readonly parseFileSizeToGB: UnwrapRef<typeof import('../../utils/file')['parseFileSizeToGB']>
     readonly parseNfoContent: UnwrapRef<typeof import('../../utils/parseNfoContent')['parseNfoContent']>

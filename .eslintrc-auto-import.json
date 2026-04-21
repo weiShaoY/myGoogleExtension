@@ -116,7 +116,6 @@
     "onUnmounted": true,
     "onUpdated": true,
     "onWatcherCleanup": true,
-    "onlinePlayConfig": true,
     "openLink": true,
     "parseFileSizeToGB": true,
     "parseNfoContent": true,

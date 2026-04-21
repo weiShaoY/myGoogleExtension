@@ -1,16 +1,15 @@
-<!------  2025-04-16---15:03---星期三  ------>
+<!------  2025-04-16---15:03---星期三  ------>  
 <!------------------------------------    ------------------------------------------------->
 <script lang="ts" setup>
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 
 import MenuItem from './menu-item.vue'
 
+const router = useRouter()
+
 defineOptions({
   name: 'Submenu',
-})
-
-const props = withDefaults(defineProps<Props>(), {
-  menuList: () => [],
-  level: 0,
 })
 
 type Props = {
@@ -18,7 +17,7 @@ type Props = {
   /**
    *  菜单
    */
-  menuList?: RouterType.Route[]
+  menuList?: any[]
 
   /**
    *  菜单等级
@@ -26,8 +25,13 @@ type Props = {
   level?: number
 }
 
+const props = withDefaults(defineProps<Props>(), {
+  menuList: () => [],
+  level: 0,
+})
+
 // 判断是否有子菜单
-function hasChildren(item: RouterType.Route): boolean {
+function hasChildren(item: any): boolean {
   console.log('🚀 ~ file: sub-menu.vue:31 ~ item:', item)
   return Boolean(item.children?.length)
 }
@@ -36,8 +40,8 @@ function hasChildren(item: RouterType.Route): boolean {
  * 过滤菜单路由
  */
 function filterRoutes(
-  items: RouterType.Route[],
-): RouterType.Route[] {
+  items: any[],
+): any[] {
   return items
     .filter(item => !item.meta.isHideInMenu)
     .map(item => ({
@@ -54,8 +58,19 @@ console.log('🚀 ~ file: sub-menu.vue:50 ~ filteredMenuItems:', filteredMenuIte
 /**
  *  跳转页面
  */
-function goPage(item: RouterType.Route) {
+function goPage(item: any) {
   menuJump(item)
+}
+
+/**
+ * 菜单跳转
+ */
+function menuJump(menu: any) {
+  if (menu.children && menu.children.length > 0) {
+    router.push(menu.children[0].path)
+  } else {
+    router.push(menu.path)
+  }
 }
 
 </script>

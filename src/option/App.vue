@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import AppProvider from '@/components/AppProvider/index.vue'
 
 </script>
 

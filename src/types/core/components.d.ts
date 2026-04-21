@@ -49,7 +49,7 @@ declare module 'vue' {
     HelloWorld: typeof import('./../../components/HelloWorld.vue')['default']
     IconLoading: typeof import('./../../components/icon-loading/index.vue')['default']
     Main: typeof import('./../../components/Search/main.vue')['default']
-    OnlinePlay: typeof import('./../../components/OnlinePlay/index.vue')['default']
+    OnlinePlay: typeof import('../../components/site-play.vue')['default']
     PageLoading: typeof import('./../../components/Loading/page-loading/index.vue')['default']
     PendingUpdateChineseButton: typeof import('./../../components/PendingUpdateChineseButton/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -57,9 +57,11 @@ declare module 'vue' {
     Search: typeof import('./../../components/Search/index.vue')['default']
     Site: typeof import('./../../components/OnlinePlay/site.vue')['default']
     Site_btn: typeof import('./../../components/OnlinePlay/site_btn.vue')['default']
+    SitePlay: typeof import('./../../components/site-play.vue')['default']
     SvgIcon: typeof import('./../../components/SvgIcon/index.vue')['default']
     TorrentList: typeof import('./../../components/TorrentList/index.vue')['default']
-    VideoThumbnail: typeof import('./../../components/OnlinePlay/videoThumbnail.vue')['default']
+    VideoThumbnail: typeof i../../components/site-play.vueePlay/videoThumbnail.vue')['default']
+    WebPlay: typeof import('./../../components/web-play.vue')['default']
   }
   export interface GlobalDirectives {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

@@ -4,7 +4,7 @@ import { AdultConfig } from '@/configs'
  * 生成 Emby 首页 URL
  * @returns Emby 首页 URL
  */
-function getEmbyHomeUrl(): string {
+export function getEmbyHomeUrl(): string {
   const { url, port } = AdultConfig.emby.request
 
   return `${url}:${port}/web/index.html#!/home`
@@ -15,7 +15,7 @@ function getEmbyHomeUrl(): string {
  * @param item Emby 项目对象
  * @returns Emby 详情页 URL
  */
-function getEmbyItemUrl(item: any): string {
+export function getEmbyItemUrl(item: any): string {
   const { url, port } = AdultConfig.emby.request
 
   return `${url}:${port}/web/index.html#!/item?id=${item.Id}&serverId=${item.ServerId}`
@@ -26,7 +26,7 @@ function getEmbyItemUrl(item: any): string {
  * @param videoName 视频名称
  * @returns Promise<EmbySearchResponse>
  */
-async function requestEmbySearch(videoName: string): Promise<AdultType.EmbyResponse> {
+export async function searchEmby(videoName: string): Promise<AdultType.EmbyResponse> {
   const url = `${AdultConfig.emby.request.url}:${AdultConfig.emby.request.port}/emby/Users/${AdultConfig.emby.request.userId}/Items`
 
   const requestParams = {
@@ -85,75 +85,5 @@ async function requestEmbySearch(videoName: string): Promise<AdultType.EmbyRespo
   catch (error) {
     console.error('Emby 搜索请求失败:', error)
     throw error
-  }
-}
-
-/**
- * 使用 Chrome 扩展 API 打开 Emby 标签页
- * @param url - 要打开的 URL
- */
-function openEmbyTab(url: string): void {
-  chrome.runtime.sendMessage(
-    {
-      type: 'openEmbyTab',
-      data: {
-        url,
-      },
-    },
-    (response) => {
-      console.log('🚀 ~ file: adult-emby.vue:86 ~ response:', response)
-      if (chrome.runtime.lastError) {
-        console.error('打开标签页失败:', chrome.runtime.lastError)
-
-        // 如果扩展 API 失败，尝试使用普通方法
-        openLink(url)
-      }
-    },
-  )
-}
-
-/**
- *  搜索 Emby 服务器上的视频
- *  @param  videoName - 视频名称
- */
-export async function embySearch(videoName: string) {
-  try {
-    const result = await requestEmbySearch(videoName)
-
-    //  如果结果为空，则提示没有找到
-    if (result.Items.length === 0) {
-      window.$messageBox
-        .confirm(`是否打开 Emby 首页?`, 'Emby中没有找到该视频!', {
-          confirmButtonText: '确认',
-          cancelButtonText: '取消',
-          type: 'warning',
-        })
-        .then(() => {
-          openEmbyTab(getEmbyHomeUrl())
-        })
-        .catch(() => {
-          window.$notification.error('Emby中没有找到该视频!')
-        })
-    }
-
-    //  如果只有一个结果，则直接打开
-    else if (result.Items.length === 1) {
-      const item = result.Items[0]
-
-      const url = getEmbyItemUrl(item)
-
-      openEmbyTab(url)
-    }
-    else {
-      window.$notification.error('Emby中找到多个结果!')
-      openEmbyTab(getEmbyHomeUrl())
-    }
-  }
-  catch (error) {
-    console.error('Emby 搜索失败:', error)
-    window.$notification.error({
-      title: '请求失败, 请检查 Emby 服务器',
-      duration: 5000,
-    })
   }
 }

@@ -36,6 +36,51 @@ type AdultConfigType = {
   }
 
   /**
+   * 在线播放站点配置列表
+   * @description
+   * 用于定义外部视频站点的搜索/播放规则配置，
+   * 通过 hostname + searchUrl 模板拼接实现跳转到不同站点。
+   * 支持在全局多个模块中复用（如：视频列表、详情页、右键菜单等）
+   */
+  siteList: {
+
+    /**
+     * 是否在界面中显示该站点
+     * @description 控制该站点是否参与渲染（不影响逻辑调用）
+     */
+    isVisible: boolean
+
+    /**
+     * 站点名称
+     * @example "JavDB"
+     */
+    name: string
+
+    /**
+     * 站点图标标识
+     * @description 用于 UI 图标渲染（通常对应 SvgIcon key）
+     * @example "content-adult-site-javdb"
+     */
+    icon: string
+
+    /**
+     * 站点域名
+     * @description 用于标识站点来源或做白名单/匹配判断
+     * @example "javdb.com"
+     */
+    hostname: string
+
+    /**
+     * 搜索 / 播放路径模板
+     * @description
+     * 支持 {{code}} 占位符，会被视频文件名或番号替换
+     * @example "/search?q={{code}}"
+     * @example "/videos/{{code}}/"
+     */
+    searchUrl: string
+  }[]
+
+  /**
    * 全局通用规则（全项目复用）
    * @description 适用于整个项目的规则配置，包括字幕匹配、文件类型等
    */
@@ -100,6 +145,32 @@ export const AdultConfig: AdultConfigType = {
 
     dirPath: 'Z:/日本-有码/',
   },
+  siteList: [
+    {
+      isVisible: true,
+      name: 'JavDB',
+      icon: 'adult-site-javdb',
+      hostname: 'javdb.com',
+      searchUrl: '/search?q={{code}}',
+
+    },
+
+    {
+      isVisible: true,
+      name: 'JavBus',
+      icon: 'adult-site-javBus',
+      hostname: 'javbus.com',
+      searchUrl: '/{{code}}',
+
+    },
+    {
+      isVisible: true,
+      name: 'MISSAV',
+      icon: 'adult-site-missAv',
+      hostname: 'missav.ws',
+      searchUrl: '/{{code}}/',
+    },
+  ],
 
   // ==========================================
   // 2. 全局通用规则

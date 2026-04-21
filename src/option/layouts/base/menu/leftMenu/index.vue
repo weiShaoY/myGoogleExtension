@@ -1,7 +1,6 @@
 <!------  2026-04-06---04:23---星期一  ------>
 <!------------------------------------    ------------------------------------------------->
 <script lang="ts" setup>
-import { OptionConfig } from '@/configs'
 
 type PropsType = {
 
@@ -19,8 +18,6 @@ const emits = defineEmits<{
    */
   menuJump: [menu: RouterType.Route, jumpToFirst: boolean]
 }>()
-
-const leftMenuWidth = `${OptionConfig.layoutStyle.leftMenuWidth}px`
 
 /**
  *  是否显示菜单文字
@@ -44,7 +41,7 @@ console.log('🚀 ~ file: index.vue:37 ~ currentRoute:', currentRoute.value)
   <div
     class="relative h-full w-20 border-r-2 border-solid !border-[#eeeeee]"
     :style="{
-      width: leftMenuWidth,
+      width: '80px',
     }"
   >
     <div
