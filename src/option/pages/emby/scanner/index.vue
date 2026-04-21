@@ -6,11 +6,14 @@
 import { AdultConfig } from '@/configs'
 
 /**
+   *  扫描过程中计数
+   */
+const scanCount = ref(0)
+
+/**
  * loading 状态（支持 v-model:isLoading）
  */
-const isLoading = defineModel<boolean>('isLoading', {
-  default: false,
-})
+const isLoading = ref(false)
 
 /**
  * Pinia store（业务数据存储）
@@ -176,6 +179,8 @@ async function runWithConcurrency<T, R>(
  */
 async function processFile(fileData: FileData) {
   try {
+    scanCount.value += 1
+
     /**
      * 文件对象
      */
@@ -272,9 +277,6 @@ async function handleInputSelect(e: Event) {
 
   const filesList = files
 
-  // ✅ 用户确认后开始
-  pageLoadingMittBus.emit('pageLoadingStart')
-
   isLoading.value = true
 
   //  清空集合
@@ -326,8 +328,6 @@ async function handleInputSelect(e: Event) {
     // ✅ 一定结束
 
     isLoading.value = false
-
-    pageLoadingMittBus.emit('pageLoadingEnd')
   }
 }
 
@@ -337,9 +337,6 @@ async function handleInputSelect(e: Event) {
 async function handleDirectoryPicker() {
   const directoryHandle: FileSystemDirectoryHandle
     = await (window as any).showDirectoryPicker()
-
-  // ✅ 用户确认选择后才开始
-  pageLoadingMittBus.emit('pageLoadingStart')
 
   isLoading.value = true
 
@@ -440,14 +437,6 @@ async function mainBtnHandler() {
   <div
     class="h-full flex flex-col items-center justify-center gap-10"
   >
-
-    <!-- 选择按钮 -->
-    <!-- <div
-      class="cursor-pointer rounded-lg bg-emby px-8 py-6 text-8 text-white font-bold hover:bg-green-600"
-      @click="mainBtnHandler"
-    >
-      选择 Emby 文件夹
-    </div> -->
 
     <!-- 隐藏 input -->
     <input
@@ -632,6 +621,24 @@ async function mainBtnHandler() {
         </div>
       </el-timeline-item>
     </el-timeline>
+
+    <div
+      v-if="isLoading"
+      class="mt-4 flex items-center gap-5 text-6"
+    >
+      <div
+        class=""
+      >
+        扫描视频文件中
+      </div>
+
+      <div
+        class="w-30 text-8 color-emby font-bold"
+      >
+        {{ scanCount }}
+      </div>
+
+    </div>
   </div>
 </template>
 
