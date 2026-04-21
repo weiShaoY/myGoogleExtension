@@ -10,10 +10,25 @@ const tableData = computed<AdultType.VideoFile[]>(() => {
 })
 
 /**
+ * 点击文件名
+ */
+function handleClickCopyFileName(row: AdultType.VideoFile) {
+  copyToClipboard((row.baseName), {
+    title: '文件名 已复制到剪切板',
+    message: row.baseName,
+  })
+}
+
+/**
  * 点击路径
  */
-function handleClickPath(row: AdultType.VideoFile) {
-  window.open(row.path)
+function handleClickCopyPath(row: AdultType.VideoFile) {
+  const fullDirPath = `${AdultConfig.folder.dirPath}${row.path}`
+
+  copyToClipboard((fullDirPath), {
+    title: '视频文件名 已复制到剪切板',
+    message: fullDirPath,
+  })
 }
 </script>
 
@@ -29,10 +44,35 @@ function handleClickPath(row: AdultType.VideoFile) {
     >
       <!-- 视频名称 -->
       <el-table-column
-        label="视频名称"
-        prop="originalName"
+        label="视频文件名"
+        prop="baseName"
         sortable
-      />
+      >
+        <template
+          #default="{ row }: { row: AdultType.VideoFile }"
+        >
+          <el-link
+            type="primary"
+            @click="handleClickCopyFileName(row)"
+          >
+            {{ row.baseName }}
+          </el-link>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        label="视频缩略图"
+        prop="baseName"
+        sortable
+      >
+        <template
+          #default="{ row }: { row: AdultType.VideoFile }"
+        >
+          <AdultThumbnail
+            :video-name="row.cleanName"
+          />
+        </template>
+      </el-table-column>
 
       <!-- 视频大小 -->
       <el-table-column
@@ -126,8 +166,18 @@ function handleClickPath(row: AdultType.VideoFile) {
         label="视频路径"
         prop="path"
         sortable
-        @click="handleClickPath"
-      />
+      >
+        <template
+          #default="{ row }: { row: AdultType.VideoFile }"
+        >
+          <el-link
+            type="primary"
+            @click="handleClickCopyPath(row)"
+          >
+            {{ row.path }}
+          </el-link>
+        </template>
+      </el-table-column>
 
       <template
         #empty

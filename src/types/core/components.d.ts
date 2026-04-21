@@ -15,6 +15,7 @@ declare module 'vue' {
     AdultChinese: typeof import('./../../components/Adult/adult-chinese.vue')['default']
     AdultEmby: typeof import('./../../components/Adult/adult-emby.vue')['default']
     AdultInventory: typeof import('./../../components/Adult/adult-inventory.vue')['default']
+    AdultThumbnail: typeof import('./../../components/Adult/adult-thumbnail.vue')['default']
     AdultTorrent: typeof import('./../../components/Adult/adult-torrent.vue')['default']
     AppProvider: typeof import('./../../components/AppProvider/index.vue')['default']
     AvChinese: typeof import('../../components/Adult/adult-chinese.vue')['default']
