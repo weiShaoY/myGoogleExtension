@@ -2,283 +2,164 @@
 
 import { AdultConfig } from '@/configs'
 
+/**
+ * 扫描进度计数（已处理的视频文件数）
+ */
 const scanCount = ref(0)
 
+/**
+ * 页面是否正在扫描（用于 loading 展示）
+ */
 const isLoading = ref(false)
 
+/**
+ * 成人内容相关 Store（用于保存扫描结果）
+ */
 const adultStore = useAdultStore()
 
+/**
+ * 扫描中间态文件数据结构
+ */
 type FileData = {
+
+  /**
+   * 文件对象
+   */
   file: File
+
+  /**
+   * 文件所在目录路径（分段数组）
+   */
   directoryPath: string[]
+
+  /**
+   * 预留：nfo 文件内容（此页暂未读取）
+   */
   nfoContent: string
 }
 
-const VIDEO_META_TIMEOUT_MS = 10_000
-
+/**
+ * 每处理 N 个文件让出一次主线程（避免大数据量卡 UI）
+ */
 const YIELD_EVERY_N_ITEMS = 25
 
-const INPUT_CONCURRENCY = 3
-
-const DIRECTORY_CONCURRENCY = 1
-
-const videoExtRules = AdultConfig.rules.videoExtRules
-
-function isSupportedVideoFile(fileName: string) {
-  const lower = fileName.toLowerCase()
-
-  return videoExtRules.some(ext => lower.endsWith(`.${ext.toLowerCase()}`))
-}
-
-function getBaseName(fileName: string) {
-  const idx = fileName.lastIndexOf('.')
-
-  return idx > 0 ? fileName.substring(0, idx) : fileName
-}
-
-function getFolderNameFromInputFiles(files: FileList) {
-  const firstFile = files.item(0)
-
-  return firstFile?.webkitRelativePath?.split('/')?.[0] || '未知文件夹'
-}
+/**
+ * input 模式并发数（同时解析 metadata 的数量）
+ */
+const inputConcurrency = 3
 
 /**
- * 获取视频元数据（分辨率 + 时长）
- * 👉 通过 video 标签解析 file
+ * directory picker 模式并发数（通常保持 1，避免同时创建过多 video 元素）
  */
-function getVideoMeta(
-  file: File,
-): Promise<{
-  duration: number
-  width: number
-  height: number
-}> {
-  return new Promise((resolve) => {
-    const video = document.createElement('video')
-
-    //  只加载 metadata，不下载视频内容
-    video.preload = 'metadata'
-
-    const objectUrl = URL.createObjectURL(file)
-
-    let finished = false
-
-    const cleanup = () => {
-      try {
-        video.onloadedmetadata = null
-        video.onerror = null
-
-        //  触发资源释放
-        video.removeAttribute('src')
-        video.load()
-        video.remove()
-      }
-      catch {}
-
-      try {
-        URL.revokeObjectURL(objectUrl)
-      }
-      catch {}
-    }
-
-    const finish = (meta: { duration: number, width: number, height: number }) => {
-      if (finished) {
-        return
-      }
-
-      finished = true
-      cleanup()
-      resolve(meta)
-    }
-
-    const timer = window.setTimeout(() => {
-      //  超时：避免某些异常文件导致 Promise 永远不 resolve
-      finish({
-        duration: 0,
-        width: 0,
-        height: 0,
-      })
-    }, VIDEO_META_TIMEOUT_MS)
-
-    video.onloadedmetadata = () => {
-      window.clearTimeout(timer)
-      finish({
-        duration: Number.isFinite(video.duration) ? video.duration : 0,
-        width: Number.isFinite(video.videoWidth) ? video.videoWidth : 0,
-        height: Number.isFinite(video.videoHeight) ? video.videoHeight : 0,
-      })
-    }
-
-    video.onerror = () => {
-      window.clearTimeout(timer)
-      finish({
-        duration: 0,
-        width: 0,
-        height: 0,
-      })
-    }
-
-    video.src = objectUrl
-  })
-}
+const directoryConcurrency = 1
 
 /**
- * 让出主线程（避免大数据量时长任务卡死）
+ * 支持的视频扩展名列表（统一小写，用于 endsWith 匹配）
  */
-async function yieldToBrowser() {
-  await new Promise<void>((resolve) => {
-    requestAnimationFrame(() => resolve())
-  })
-}
+const videoExtRules = AdultConfig.rules.videoExtRules.map(ext => ext.toLowerCase())
 
 /**
- * 并发控制（支持超大列表）
- * 👉 不再把所有 Promise 收集到数组里，避免大数据量内存暴涨
+ * 执行扫描并保存到 store
+ * @param folderName 文件夹名
+ * @param files 扫描到的视频文件流
+ * @param concurrency 并发解析数量
  */
-async function runWithConcurrency<T, R>(
-  iterable: AsyncIterable<T>,
-  limit: number,
-  handler: (item: T) => Promise<R>,
-  onResult?: (result: R) => void,
-) {
-  const pool = new Set<Promise<void>>()
-
-  let started = 0
-
-  for await (const item of iterable) {
-    started += 1
-
-    const task = (async () => {
-      const result = await handler(item)
-
-      onResult?.(result)
-    })()
-
-    pool.add(task)
-
-    task.finally(() => {
-      pool.delete(task)
-    })
-
-    if (pool.size >= limit) {
-      await Promise.race(pool)
-    }
-
-    //  扫描/处理数量大时，定期让出主线程
-    if (started % YIELD_EVERY_N_ITEMS === 0) {
-      await yieldToBrowser()
-    }
-  }
-
-  await Promise.allSettled(Array.from(pool))
-}
-
-async function toVideoFile(fileData: FileData) {
-  try {
-    scanCount.value += 1
-
-    const file = fileData.file
-
-    const meta = await getVideoMeta(file)
-
-    const baseName = getBaseName(file.name)
-
-    const item: AdultType.VideoFile = {
-      id: getRandomNumber(),
-
-      baseName,
-
-      cleanName: baseName
-        .toLowerCase()
-        .replace(videoFileTagExtractionRegex, ''),
-
-      originalName: file.name,
-
-      size: `${(file.size / 1024 ** 3).toFixed(2)} GB`,
-
-      extension: file.name.replace(/^.*\./, ''),
-
-      path: fileData.directoryPath.concat(file.name).join('/'),
-
-      tags: getVideoTagsFromName(baseName),
-
-      resolution: meta.width > 0 && meta.height > 0
-        ? `${meta.width}x${meta.height}`
-        : '',
-
-      durationText: parseVideoDurationToSeconds(meta.duration),
-
-      hasChineseSubtitle:
-        file.name.includes('-c')
-        || file.name.includes('-C')
-        || file.name.includes('_ch'),
-    }
-
-    return item
-  }
-  catch (e) {
-    console.error('processFile error:', e)
-    return null
-  }
-}
-
-async function* getInputVideoFiles(files: FileList): AsyncGenerator<FileData> {
-  for (const file of files) {
-    if (!isSupportedVideoFile(file.name)) {
-      continue
-    }
-
-    const path = file.webkitRelativePath.split('/')
-
-    yield {
-      file,
-      directoryPath: path.slice(0, -1),
-      nfoContent: '',
-    }
-  }
-}
-
-async function* getDirectoryVideoFiles(
-  dir: FileSystemDirectoryHandle,
-  path: string[] = [],
-): AsyncGenerator<FileData> {
-  for await (const [name, handle] of dir.entries()) {
-    if (handle.kind === 'file') {
-      if (!isSupportedVideoFile(name)) {
-        continue
-      }
-
-      yield {
-        file: await handle.getFile(),
-        directoryPath: [...path],
-        nfoContent: '',
-      }
-
-      continue
-    }
-
-    yield* getDirectoryVideoFiles(handle, [...path, name])
-  }
-}
-
-async function scanAndSave(
-  folderName: string,
-  files: AsyncIterable<FileData>,
-  concurrency: number,
-) {
+async function scan(folderName: string, files: AsyncIterable<FileData>, concurrency: number) {
   scanCount.value = 0
   isLoading.value = true
 
+  /**
+   * 扫描开始时间戳（用于计算耗时）
+   */
   const startTime = Date.now()
 
+  /**
+   * 扫描结果集合（用于去重）
+   */
   const videoFileSet = new Set<AdultType.VideoFile>()
 
+  /**
+   * 并发执行池
+   */
+  const pool = new Set<Promise<void>>()
+
+  /**
+   * 已开始处理的文件数量（用于 yield 节奏控制）
+   */
+  let started = 0
+
+  /**
+   * 让出主线程（避免长任务阻塞 UI）
+   */
+  const yieldToBrowser = () => new Promise<void>((resolve) => {
+    requestAnimationFrame(() => resolve())
+  })
+
   try {
-    await runWithConcurrency(files, concurrency, toVideoFile, (item) => {
-      if (item) {
-        videoFileSet.add(item)
+    for await (const fileData of files) {
+      /**
+       * 当前待处理文件数据（显式变量便于注释与调试）
+       */
+      const currentFileData = fileData
+
+      started += 1
+
+      /**
+       * 当前文件的处理任务（加入并发池）
+       */
+      const task = (async () => {
+        try {
+          scanCount.value += 1
+
+          /**
+           * 当前文件对象
+           */
+          const file = currentFileData.file
+
+          /**
+           * 文件名最后一个点号位置（用于切割 baseName）
+           */
+          const dotIdx = file.name.lastIndexOf('.')
+
+          /**
+           * 基础文件名（不包含扩展名）
+           */
+          const baseName = dotIdx > 0 ? file.name.substring(0, dotIdx) : file.name
+
+          videoFileSet.add({
+            id: getRandomNumber(),
+            baseName,
+            cleanName: baseName.toLowerCase().replace(videoFileTagExtractionRegex, ''),
+            originalName: file.name,
+            size: `${(file.size / 1024 ** 3).toFixed(2)} GB`,
+            extension: file.name.replace(/^.*\./, ''),
+            path: currentFileData.directoryPath.concat(file.name).join('/'),
+            tags: getVideoTagsFromName(baseName),
+
+            hasChineseSubtitle:
+              file.name.includes('-c')
+              || file.name.includes('-C')
+              || file.name.includes('_ch'),
+          })
+        }
+        catch (e) {
+          console.error('processFile error:', e)
+        }
+      })()
+
+      pool.add(task)
+      task.finally(() => pool.delete(task))
+
+      if (pool.size >= concurrency) {
+        await Promise.race(pool)
       }
-    })
+
+      if (started % YIELD_EVERY_N_ITEMS === 0) {
+        await yieldToBrowser()
+      }
+    }
+
+    await Promise.allSettled(Array.from(pool))
 
     adultStore.saveEmbyFolderData(folderName, Array.from(videoFileSet), startTime)
   }
@@ -288,28 +169,55 @@ async function scanAndSave(
 }
 
 async function handleInputSelect(e: Event) {
+  /**
+   * input 选择的 FileList
+   */
   const files = (e.target as HTMLInputElement).files
 
   if (!files) {
     return
   }
 
-  await scanAndSave(
-    getFolderNameFromInputFiles(files),
-    getInputVideoFiles(files),
-    INPUT_CONCURRENCY,
-  )
-}
+  /**
+   * FileList 的稳定引用（避免 TS 缩小范围丢失）
+   */
+  const filesList = files
 
-async function handleDirectoryPicker() {
-  const directoryHandle: FileSystemDirectoryHandle
-    = await (window as any).showDirectoryPicker()
+  /**
+   * 从相对路径提取文件夹名
+   */
+  const folderName = filesList.item(0)?.webkitRelativePath?.split('/')?.[0] || '未知文件夹'
 
-  await scanAndSave(
-    directoryHandle.name,
-    getDirectoryVideoFiles(directoryHandle, [directoryHandle.name]),
-    DIRECTORY_CONCURRENCY,
-  )
+  async function* iterFiles(): AsyncGenerator<FileData> {
+    for (const file of filesList) {
+      /**
+       * 当前文件对象（显式变量便于注释与调试）
+       */
+      const currentFile = file
+
+      /**
+       * 当前文件名小写（用于后缀匹配）
+       */
+      const lower = currentFile.name.toLowerCase()
+
+      if (!videoExtRules.some(ext => lower.endsWith(`.${ext}`))) {
+        continue
+      }
+
+      /**
+       * 相对路径拆分数组
+       */
+      const path = currentFile.webkitRelativePath.split('/')
+
+      yield {
+        file: currentFile,
+        directoryPath: path.slice(0, -1),
+        nfoContent: '',
+      }
+    }
+  }
+
+  await scan(folderName, iterFiles(), inputConcurrency)
 }
 
 /**
@@ -320,7 +228,47 @@ async function mainBtnHandler() {
   //  支持 showDirectoryPicker
   if ('showDirectoryPicker' in window) {
     try {
-      await handleDirectoryPicker()
+      /**
+       * 用户选择的目录句柄
+       */
+      const directoryHandle: FileSystemDirectoryHandle
+        = await (window as any).showDirectoryPicker()
+
+      async function* walk(dir: FileSystemDirectoryHandle, path: string[]): AsyncGenerator<FileData> {
+        for await (const entry of dir.entries()) {
+          /**
+           * 当前条目名称
+           */
+          const name = entry[0]
+
+          /**
+           * 当前条目句柄（文件 / 目录）
+           */
+          const handle = entry[1]
+
+          if (handle.kind === 'file') {
+            /**
+             * 当前文件名小写（用于后缀匹配）
+             */
+            const lower = name.toLowerCase()
+
+            if (!videoExtRules.some(ext => lower.endsWith(`.${ext}`))) {
+              continue
+            }
+
+            yield {
+              file: await handle.getFile(),
+              directoryPath: [...path],
+              nfoContent: '',
+            }
+          }
+          else {
+            yield* walk(handle, [...path, name])
+          }
+        }
+      }
+
+      await scan(directoryHandle.name, walk(directoryHandle, [directoryHandle.name]), directoryConcurrency)
       return
     }
     catch {}

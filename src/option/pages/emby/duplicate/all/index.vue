@@ -82,22 +82,6 @@ function handleClickCopyPath(row: AdultType.VideoFile) {
         sortable
       />
 
-      <!-- 视频时长 -->
-      <el-table-column
-        label="视频时长"
-        prop="duration"
-        width="120"
-        sortable
-      />
-
-      <!-- 分辨率 -->
-      <el-table-column
-        label="视频分辨率"
-        prop="resolution"
-        width="140"
-        sortable
-      />
-
       <!-- 标签 -->
       <el-table-column
         label="视频标签"

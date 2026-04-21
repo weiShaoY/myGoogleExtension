@@ -135,11 +135,6 @@ async function mainBtnHandler() {
        */
       const file = await fileData.fileHandle.getFile()
 
-      /**
-       *  解析后的Nfo文件内容
-       */
-      const nfoContent = parseNfoContent(fileData.nfoContent)
-
       // 创建一个包含视频信息的对象
       const item: AdultType.VideoFile = {
         id: getRandomNumber(),
@@ -162,12 +157,6 @@ async function mainBtnHandler() {
         tags: getVideoTagsFromName(
           file.name.substring(0, file.name.lastIndexOf('.')),
         ),
-
-        resolution: nfoContent.resolution || '',
-
-        durationText: nfoContent.runtime
-          ? parseVideoDurationToSeconds(nfoContent.runtime * 60)
-          : '00:00:00',
 
         hasChineseSubtitle:
           file.name.includes('-c')
