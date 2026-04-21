@@ -7,6 +7,12 @@ import AppProvider from '@/components/AppProvider/index.vue'
 
   <AppProvider>
 
+    <div
+      class=""
+    >
+      <PageLoading />
+    </div>
+
     <RouterView />
 
   </AppProvider>

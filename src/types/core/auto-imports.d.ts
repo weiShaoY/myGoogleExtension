@@ -19,6 +19,7 @@ declare global {
   const addClassAndUpdateList: typeof import('../../utils/classHelper').addClassAndUpdateList
   const addClassIfNotExists: typeof import('../../utils/helper').addClassIfNotExists
   const adminMenuJump: typeof import('../../utils/router').adminMenuJump
+  const adminMittBus: typeof import('../../utils/mitt').adminMittBus
   const asHTMLElement: typeof import('../../utils/dom').asHTMLElement
   const asyncComputed: typeof import('@vueuse/core').asyncComputed
   const autoResetRef: typeof import('@vueuse/core').autoResetRef
@@ -74,6 +75,7 @@ declare global {
   const getRandomNumber: typeof import('../../utils/number').getRandomNumber
   const getVideoTagsFromName: typeof import('../../utils/adult').getVideoTagsFromName
   const h: typeof import('vue').h
+  const homeMittBus: typeof import('../../utils/mitt').homeMittBus
   const ignorableWatch: typeof import('@vueuse/core').ignorableWatch
   const inject: typeof import('vue').inject
   const injectLocal: typeof import('@vueuse/core').injectLocal
@@ -122,6 +124,7 @@ declare global {
   const onWatcherCleanup: typeof import('vue').onWatcherCleanup
   const onlinePlayConfig: typeof import('../../configs/sitePlay').sitePlayConfig
   const openLink: typeof import('../../utils/openLink').openLink
+  const pageLoadingMittBus: typeof import('../../utils/mitt').pageLoadingMittBus
   const parseFileSizeToGB: typeof import('../../utils/file').parseFileSizeToGB
   const parseNfoContent: typeof import('../../utils/parseNfoContent').parseNfoContent
   const parseSizeTextToGB: typeof import('../../composables/useDetailsPageTorrentList').parseSizeTextToGB
@@ -494,6 +497,7 @@ declare module 'vue' {
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
     readonly onWatcherCleanup: UnwrapRef<typeof import('vue')['onWatcherCleanup']>
     readonly openLink: UnwrapRef<typeof import('../../utils/openLink')['openLink']>
+    readonly pageLoadingMittBus: UnwrapRef<typeof import('../../utils/mitt')['pageLoadingMittBus']>
     readonly parseFileSizeToGB: UnwrapRef<typeof import('../../utils/file')['parseFileSizeToGB']>
     readonly parseNfoContent: UnwrapRef<typeof import('../../utils/parseNfoContent')['parseNfoContent']>
     readonly parseVideoDurationToSeconds: UnwrapRef<typeof import('../../utils/file')['parseVideoDurationToSeconds']>

@@ -117,6 +117,7 @@
     "onUpdated": true,
     "onWatcherCleanup": true,
     "openLink": true,
+    "pageLoadingMittBus": true,
     "parseFileSizeToGB": true,
     "parseNfoContent": true,
     "parseVideoDurationToSeconds": true,

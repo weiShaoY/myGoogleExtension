@@ -56,8 +56,6 @@ function getVideoMeta(
      */
     const video = document.createElement('video')
 
-    console.log('video meta parser init:', video)
-
     //  只加载 metadata，不下载视频内容
     video.preload = 'metadata'
 
@@ -227,6 +225,9 @@ async function handleInputSelect(e: Event) {
     return
   }
 
+  // ✅ 用户确认后开始
+  pageLoadingMittBus.emit('pageLoadingStart')
+
   isLoading.value = true
 
   //  清空集合
@@ -237,54 +238,61 @@ async function handleInputSelect(e: Event) {
    */
   const startTime = Date.now()
 
+  try {
   /**
    * 文件列表
    */
-  const fileList: FileData[] = []
+    const fileList: FileData[] = []
 
-  //  遍历文件
-  for (const file of files) {
+    //  遍历文件
+    for (const file of files) {
     //  过滤非视频文件
-    if (
-      !AdultConfig.rules.videoExtRules.some(ext =>
-        file.name.endsWith(`.${ext}`),
-      )
-    ) {
-      continue
+      if (
+        !AdultConfig.rules.videoExtRules.some(ext =>
+          file.name.endsWith(`.${ext}`),
+        )
+      ) {
+        continue
+      }
+
+      /**
+     * 相对路径拆分
+     */
+      const path = file.webkitRelativePath.split('/')
+
+      fileList.push({
+        file,
+        directoryPath: path.slice(0, -1),
+        nfoContent: '',
+      })
     }
 
     /**
-     * 相对路径拆分
-     */
-    const path = file.webkitRelativePath.split('/')
-
-    fileList.push({
-      file,
-      directoryPath: path.slice(0, -1),
-      nfoContent: '',
-    })
-  }
-
-  /**
    * 并发处理
    */
-  const result = await runWithConcurrency(fileList, 5, processFile)
+    const result = await runWithConcurrency(fileList, 5, processFile)
 
-  //  写入 Set
-  result.forEach((item) => {
-    if (item) {
-      videoFileSet.add(item)
-    }
-  })
+    //  写入 Set
+    result.forEach((item) => {
+      if (item) {
+        videoFileSet.add(item)
+      }
+    })
 
-  //  保存到 store
-  adultStore.saveEmbyFolderData(
-    fileList[0]?.directoryPath?.[0] || '未知文件夹',
-    Array.from(videoFileSet),
-    startTime,
-  )
+    //  保存到 store
+    adultStore.saveEmbyFolderData(
+      fileList[0]?.directoryPath?.[0] || '未知文件夹',
+      Array.from(videoFileSet),
+      startTime,
+    )
+  }
+  finally {
+    // ✅ 一定结束
 
-  isLoading.value = false
+    isLoading.value = false
+
+    pageLoadingMittBus.emit('pageLoadingEnd')
+  }
 }
 
 /**
@@ -294,88 +302,98 @@ async function handleDirectoryPicker() {
   const directoryHandle: FileSystemDirectoryHandle
     = await (window as any).showDirectoryPicker()
 
+  // ✅ 用户确认选择后才开始
+  pageLoadingMittBus.emit('pageLoadingStart')
+
   isLoading.value = true
 
   videoFileSet.clear()
 
   const startTime = Date.now()
 
+  try {
   /**
    * 递归扫描目录
    */
-  async function* getFiles(
-    dir: any,
-    path: string[] = [],
-  ): AsyncGenerator<FileData> {
-    for await (const [name, handle] of dir.entries()) {
+    async function* getFiles(
+      dir: any,
+      path: string[] = [],
+    ): AsyncGenerator<FileData> {
+      for await (const [name, handle] of dir.entries()) {
       /**
        * 文件节点
        */
-      if (handle.kind === 'file') {
-        const file = await handle.getFile()
+        if (handle.kind === 'file') {
+          const file = await handle.getFile()
 
-        /**
+          /**
          * 视频过滤
          */
-        if (
-          !AdultConfig.rules.videoExtRules.some(ext =>
-            name.endsWith(`.${ext}`),
-          )
-        ) {
-          continue
+          if (
+            !AdultConfig.rules.videoExtRules.some(ext =>
+              name.endsWith(`.${ext}`),
+            )
+          ) {
+            continue
+          }
+
+          yield {
+            file,
+            directoryPath: [...path],
+            nfoContent: '',
+          }
         }
 
-        yield {
-          file,
-          directoryPath: [...path],
-          nfoContent: '',
-        }
-      }
-
-      /**
+        /**
        * 文件夹递归
        */
-      else {
-        yield* getFiles(handle, [...path, name])
+        else {
+          yield* getFiles(handle, [...path, name])
+        }
       }
     }
-  }
 
-  /**
+    /**
    * 收集文件
    */
-  const fileList: FileData[] = []
+    const fileList: FileData[] = []
 
-  for await (const f of getFiles(directoryHandle, [
-    directoryHandle.name,
-  ])) {
-    fileList.push(f)
-  }
+    for await (const f of getFiles(directoryHandle, [
+      directoryHandle.name,
+    ])) {
+      fileList.push(f)
+    }
 
-  /**
+    /**
    * 并发处理
    */
-  const result = await runWithConcurrency(fileList, 5, processFile)
+    const result = await runWithConcurrency(fileList, 1, processFile)
 
-  /**
+    /**
    * 写入 Set
    */
-  result.forEach((item) => {
-    if (item) {
-      videoFileSet.add(item)
-    }
-  })
+    result.forEach((item) => {
+      if (item) {
+        videoFileSet.add(item)
+      }
+    })
 
-  /**
+    /**
    * 存储 Pinia
    */
-  adultStore.saveEmbyFolderData(
-    directoryHandle.name,
-    Array.from(videoFileSet),
-    startTime,
-  )
+    adultStore.saveEmbyFolderData(
+      directoryHandle.name,
+      Array.from(videoFileSet),
+      startTime,
+    )
 
-  isLoading.value = false
+  // isLoading.value = false
+  }
+  finally {
+    isLoading.value = false
+
+    pageLoadingMittBus.emit('pageLoadingEnd')
+  }
 }
 
 /**

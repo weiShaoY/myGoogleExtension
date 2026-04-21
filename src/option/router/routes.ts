@@ -19,8 +19,8 @@ export const routes: RouterType.Route[] = [
     children: [
       {
         path: 'folder-scanner',
-        name: 'EmbyFolderScanner',
-        component: () => import('@/option/pages/emby/folder-scanner/index.vue'),
+        name: 'EmbyScanner',
+        component: () => import('@/option/pages/emby/scanner/index.vue'),
         meta: {
           title: '文件夹扫描',
           icon: 'option-menu-scanner',
@@ -57,6 +57,15 @@ export const routes: RouterType.Route[] = [
           },
         ],
       },
+      {
+        path: 'folder',
+        name: 'EmbyFolder',
+        component: () => import('@/option/pages/emby/folder/index.vue'),
+        meta: {
+          title: '文件夹',
+          icon: 'option-menu-folder',
+        },
+      },
     ],
   },
   {
@@ -86,6 +95,15 @@ export const routes: RouterType.Route[] = [
           icon: 'option-menu-json',
         },
       },
+      {
+        path: 'indexedDB',
+        name: 'DataIndexedDB',
+        component: () => import('@/option/pages/data/indexedDB/index.vue'),
+        meta: {
+          title: 'IndexedDB',
+          icon: 'option-menu-indexedDB',
+        },
+      },
     ],
   },
   {
@@ -105,6 +123,7 @@ export const routes: RouterType.Route[] = [
           icon: 'option-menu-tampermonkey',
         },
       },
+
     ],
   },
 ]
