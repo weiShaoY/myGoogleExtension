@@ -53,14 +53,16 @@ export default defineConfig({
      * so presetWind3 is used here instead.
      * See: https://github.com/unocss/unocss/issues/1324
      */
-    presetWind3({
-      // 关闭全局 preflight，避免 content script 污染宿主页面
-      preflight: false,
+    // presetWind3({
+    //   // 关闭全局 preflight，避免 content script 污染宿主页面
+    //   preflight: false,
 
-      // 将所有工具类限制在扩展容器内（选项页 #app / content script #crxjs-app）
-      // 注意：这里必须是“单个选择器”，用 `:where()` 同时覆盖两个容器，避免逗号选择器破坏拼接结果。
-      important: ':where(#crxjs-app, #app)',
-    }),
+    //   // 将所有工具类限制在扩展容器内（选项页 #app / content script #crxjs-app）
+    //   // 注意：这里必须是“单个选择器”，用 `:where()` 同时覆盖两个容器，避免逗号选择器破坏拼接结果。
+    //   important: ':where(#crxjs-app, #app)',
+    // }),
+
+    presetWind3(),
     presetAttributify(),
     presetIcons({
       scale: 1.2,

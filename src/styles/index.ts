@@ -4,7 +4,7 @@
 
 // import 'uno.css'
 
-import 'virtual:uno.css'
+// import 'virtual:uno.css'
 
 import './core/fonts.scss'
 

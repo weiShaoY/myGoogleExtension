@@ -32,7 +32,7 @@ function main() {
       return
     }
 
-    const teleportTarget = `${cleanName}_${getRandomNumber(10)}`
+    const teleportTarget = `${cleanName}_${getRandomNumber()}`
 
     const targetElement = item
 
