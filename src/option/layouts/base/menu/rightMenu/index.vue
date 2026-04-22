@@ -15,6 +15,31 @@ type Props = {
   menuList: RouterType.Route[]
 }
 
+/**
+ * 获取所有需要展开的菜单 key
+ */
+function getOpenKeys(list: RouterType.Route[]): string[] {
+  const result: string[] = []
+
+  function traverse(menu: RouterType.Route[]) {
+    menu.forEach((item) => {
+      if (item.children && item.children.length) {
+        result.push(item.path) // 只展开有子菜单的
+
+        traverse(item.children)
+      }
+    })
+  }
+
+  traverse(list)
+
+  return result
+}
+
+/**
+ * 打开的菜单
+ */
+const openKeys = computed(() => getOpenKeys(menuList))
 </script>
 
 <template>
@@ -37,6 +62,7 @@ type Props = {
     >
       <el-menu
         :default-active="route.path"
+        :default-openeds="openKeys"
         :style="{
           width: '260px',
         }"
