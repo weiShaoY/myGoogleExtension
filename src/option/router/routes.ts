@@ -95,15 +95,6 @@ export const routes: RouterType.Route[] = [
           icon: 'option-menu-json',
         },
       },
-      {
-        path: 'indexedDB',
-        name: 'DataIndexedDB',
-        component: () => import('@/option/pages/data/indexedDB/index.vue'),
-        meta: {
-          title: 'IndexedDB',
-          icon: 'option-menu-indexedDB',
-        },
-      },
     ],
   },
   {
@@ -121,6 +112,15 @@ export const routes: RouterType.Route[] = [
         meta: {
           title: '油猴脚本',
           icon: 'option-menu-tampermonkey',
+        },
+      },
+      {
+        path: 'indexedDB',
+        name: 'TestIndexedDB',
+        component: () => import('@/option/pages/test/indexedDB/index.vue'),
+        meta: {
+          title: 'IndexedDB',
+          icon: 'option-menu-indexedDB',
         },
       },
 
