@@ -1,32 +1,35 @@
 <script setup lang="ts">
 
-type props = {
+type Props = {
 
   /**
-   *  加载图标的大小
+   * 加载图标的大小
    */
-  size?: number
+  size?: number | string
 }
 
-withDefaults(defineProps<props>(), {
+const props = withDefaults(defineProps<Props>(), {
   size: 24,
 })
 
+/**
+ * 计算图标尺寸
+ */
+const computedSize = computed(() => parseSize(props.size))
 </script>
 
 <template>
   <div
     class="h-full flex items-center justify-center"
   >
-    <!-- 这里是加载动画的具体内容 -->
+    <!-- 加载动画 -->
     <SvgIcon
       icon="loading"
-      :size="size"
+      :size="computedSize"
       class="animate-spin"
     />
   </div>
 </template>
 
 <style scoped>
-
 </style>

@@ -40,8 +40,10 @@ export default defineConfig({
     // vueDevTools(),
 
     // ===== 样式相关插件 =====
+    // 使用 `global` 模式输出 `virtual:uno.css`
+    // 通过 `unocss.config.ts` 的 `important` 选择器进行作用域隔离（避免污染宿主页面）
     unoCSS({
-      mode: 'vue-scoped',
+      mode: 'global',
     }),
 
     // ===== 自动导入插件 =====

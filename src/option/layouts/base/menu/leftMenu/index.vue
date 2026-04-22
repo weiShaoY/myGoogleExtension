@@ -113,7 +113,9 @@ function refresh() {
     </div>
 
     <BaseButton
-      class="absolute left-0 right-0"
+      class="absolute bottom-20 left-0 right-0"
+      :size="40"
+      rotates
       icon="option-menu-refresh"
       @click="refresh"
     />

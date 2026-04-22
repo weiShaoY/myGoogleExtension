@@ -127,6 +127,7 @@ declare global {
   const pageLoadingMittBus: typeof import('../../utils/mitt').pageLoadingMittBus
   const parseFileSizeToGB: typeof import('../../utils/file').parseFileSizeToGB
   const parseNfoContent: typeof import('../../utils/parseNfoContent').parseNfoContent
+  const parseSize: typeof import('../../utils/size').parseSize
   const parseSizeTextToGB: typeof import('../../composables/useDetailsPageTorrentList').parseSizeTextToGB
   const parseVideoDurationToSeconds: typeof import('../../utils/file').parseVideoDurationToSeconds
   const pausableWatch: typeof import('@vueuse/core').pausableWatch
@@ -168,6 +169,7 @@ declare global {
   const sortTorrentList: typeof import('../../utils/torrent').sortTorrentList
   const storeToRefs: typeof import('pinia').storeToRefs
   const stores: typeof import('../../stores/index').default
+  const subtractSize: typeof import('../../utils/size').subtractSize
   const syncRef: typeof import('@vueuse/core').syncRef
   const syncRefs: typeof import('@vueuse/core').syncRefs
   const templateRef: typeof import('@vueuse/core').templateRef
@@ -390,6 +392,9 @@ declare global {
   // @ts-ignore
   export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, ShallowRef, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
+  // @ts-ignore
+  export type { SizeValue } from '../../utils/size'
+  import('../../utils/size')
 }
 
 // for vue template auto import
@@ -500,6 +505,7 @@ declare module 'vue' {
     readonly pageLoadingMittBus: UnwrapRef<typeof import('../../utils/mitt')['pageLoadingMittBus']>
     readonly parseFileSizeToGB: UnwrapRef<typeof import('../../utils/file')['parseFileSizeToGB']>
     readonly parseNfoContent: UnwrapRef<typeof import('../../utils/parseNfoContent')['parseNfoContent']>
+    readonly parseSize: UnwrapRef<typeof import('../../utils/size')['parseSize']>
     readonly parseVideoDurationToSeconds: UnwrapRef<typeof import('../../utils/file')['parseVideoDurationToSeconds']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
     readonly preventEvent: UnwrapRef<typeof import('../../utils/dom')['preventEvent']>
@@ -534,6 +540,7 @@ declare module 'vue' {
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
     readonly storeToRefs: UnwrapRef<typeof import('pinia')['storeToRefs']>
     readonly stores: UnwrapRef<typeof import('../../stores/index')['default']>
+    readonly subtractSize: UnwrapRef<typeof import('../../utils/size')['subtractSize']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
     readonly templateRef: UnwrapRef<typeof import('@vueuse/core')['templateRef']>

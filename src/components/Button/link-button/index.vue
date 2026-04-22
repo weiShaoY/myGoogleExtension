@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+
 type IconLinkPropsType = {
 
   /**
@@ -9,7 +10,7 @@ type IconLinkPropsType = {
   /**
    * 图标大小
    */
-  size?: number
+  size?: number | string
 
   /**
    * 图标颜色
@@ -27,13 +28,17 @@ const props = withDefaults(defineProps<IconLinkPropsType>(), {
   color: 'white',
 })
 
+/**
+ * 计算图标尺寸
+ */
+const computedSize = computed(() => parseSize(props.size))
+
 function handleClick(event: MouseEvent) {
-  // 如果是中键点击，让浏览器默认行为处理
+  // 中键点击交给浏览器
   if (event.button === 1) {
     return
   }
 
-  // 其他点击行为使用自定义处理
   event.preventDefault()
   window.open(props.url, '_blank', 'noopener noreferrer')
 }
@@ -50,7 +55,7 @@ function handleClick(event: MouseEvent) {
     <SvgIcon
       class="transform transition-transform duration-500 hover:-translate-y-1"
       :icon="icon"
-      :size="size"
+      :size="computedSize"
       :style="{ color }"
     />
   </a>

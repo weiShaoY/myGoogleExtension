@@ -20,6 +20,12 @@ defineEmits<{
 }>()
 
 /**
+ * 图标尺寸偏移量
+ * 👉 用于按钮 size → icon size 的安全间距
+ */
+const ICON_SIZE_OFFSET = 14
+
+/**
  * 组件属性类型
  */
 type Props = {
@@ -31,7 +37,7 @@ type Props = {
   icon?: string
 
   /** 图标大小 */
-  size?: number
+  size?: number | string
 
   /** 图标额外的 class */
   iconClass?: string | Record<string, boolean> | Array<string | Record<string, boolean>>
@@ -52,25 +58,16 @@ type Props = {
   loading?: boolean
 
   /**
-   *  是否悬浮旋转
-   */
-  /**
-   *  是否悬浮旋转
+   * 是否悬浮旋转
    */
   rotate?: boolean
 }
 
-/**
- * 默认按钮类
- */
-const DEFAULT_CLASS = 'flex items-center justify-center '
+const DEFAULT_CLASS = 'flex items-center justify-center'
 
-/**
- * 处理 class，兼容多种格式
- * @param input - 输入的类
- * @returns 拼接后的类字符串
- */
-function stringifyClass(input?: string | Record<string, boolean> | Array<string | Record<string, boolean>>): string {
+function stringifyClass(
+  input?: string | Record<string, boolean> | Array<string | Record<string, boolean>>,
+): string {
   if (!input) {
     return ''
   }
@@ -80,40 +77,40 @@ function stringifyClass(input?: string | Record<string, boolean> | Array<string 
   }
 
   if (Array.isArray(input)) {
-    return input
-      .map(item => stringifyClass(item))
+    return input.map(stringifyClass)
       .filter(Boolean)
       .join(' ')
   }
 
   return Object.entries(input)
-    .filter(([_, value]) => value)
-    .map(([key]) => key)
+    .filter(([_, v]) => v)
+    .map(([k]) => k)
     .join(' ')
 }
 
-/**
- * 计算按钮的最终类名
- */
-const computedButtonClass = computed(() => twMerge(DEFAULT_CLASS, stringifyClass(props.class)))
+const computedButtonClass = computed(() =>
+  twMerge(DEFAULT_CLASS, stringifyClass(props.class)),
+)
 
-/**
- * 计算图标的最终类名（包含旋转效果）
- */
 const computedIconClass = computed(() => {
-  const baseClass = stringifyClass(props.iconClass)
+  const base = stringifyClass(props.iconClass)
 
-  const rotateClass = props.rotate ? 'hover:rotate-180 hover:transition-transform hover:duration-1000' : ''
+  const rotate = props.rotate
+    ? 'hover:rotate-180 hover:transition-transform hover:duration-1000'
+    : ''
 
-  return twMerge(baseClass, rotateClass)
+  return twMerge(base, rotate)
 })
 
-/**
- * 计算按钮的行内样式
- */
+const computedSize = computed(() => parseSize(props.size))
+
+const computedIconSize = computed(() =>
+  subtractSize(props.size, ICON_SIZE_OFFSET),
+)
+
 const computedStyle = computed(() => ({
-  width: `${props.size}px`,
-  height: `${props.size}px`,
+  width: computedSize.value,
+  height: computedSize.value,
   ...props.style,
 }))
 </script>
@@ -142,7 +139,7 @@ const computedStyle = computed(() => ({
             <slot>
               <SvgIcon
                 :icon="icon"
-                :size="size - 14"
+                :size="computedIconSize"
                 :class="computedIconClass"
               />
             </slot>
@@ -152,7 +149,7 @@ const computedStyle = computed(() => ({
             v-else
           >
             <IconLoading
-              :size="size - 14"
+              :size="computedIconSize"
             />
           </template>
         </div>
@@ -160,3 +157,6 @@ const computedStyle = computed(() => ({
     </el-tooltip>
   </div>
 </template>
+
+<style scoped lang="scss">
+</style>

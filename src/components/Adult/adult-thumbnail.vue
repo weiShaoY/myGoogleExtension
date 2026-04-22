@@ -1,18 +1,24 @@
 <!------  2025-08-16---05:08---星期六  ------>
 <!------------------------------------    ------------------------------------------------->
-<script lang="ts" setup>
+<script setup lang="ts">
+import { parseSize, subtractSize } from '@/utils/size'
 
 type Props = {
 
   /**
-   *   视频名称
+   * 视频名称
    */
   videoName: string
 
   /**
-   *   大小
+   * 外壳大小（容器尺寸）
    */
-  size?: number
+  size?: number | string
+
+  /**
+   * 图标大小（可选，不传则默认 size - offset）
+   */
+  iconSize?: number | string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -20,71 +26,112 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 /**
- *  是否显示缩略图
+ * 容器尺寸偏移量
+ */
+const THUMBNAIL_SIZE_OFFSET = 5
+
+/**
+ * 是否显示缩略图
  */
 const isShowThumbnail = ref(false)
 
 /**
- *  视频缩略图 URL
- */
-const videoThumbnailUrl = ref(`https://image.memojav.com/image/screenshot/${props.videoName.toLocaleUpperCase()}.jpg`)
-
-/**
- *  是否显示视频缩略图弹窗
+ * 弹窗状态
  */
 const isShowVideoThumbnailDialog = ref(false)
 
-async function handleClick() {
+/**
+ * 缩略图 URL
+ */
+const videoThumbnailUrl = computed(() =>
+  `https://image.memojav.com/image/screenshot/${props.videoName.toLocaleUpperCase()}.jpg`,
+)
+
+/**
+ * 点击
+ */
+function handleClick() {
   isShowVideoThumbnailDialog.value = true
 }
 
-onMounted(async () => {
+/**
+ * 检测缩略图是否存在
+ */
+async function checkThumbnailExists(url: string) {
   try {
-    const response = await fetch(videoThumbnailUrl.value)
+    const response = await fetch(url, {
+      method: 'HEAD',
+    })
 
-    if (response.status === 200) {
-      isShowThumbnail.value = true
-    }
+    return response.ok
   }
   catch (error) {
     console.error('获取视频缩略图失败:', error)
-    window.$notification.error(
-      {
-        title: '获取视频缩略图失败',
-        duration: 0,
-      },
-    )
-  }
-})
 
+    window.$notification?.error?.({
+      title: '获取视频缩略图失败',
+      duration: 0,
+    })
+
+    return false
+  }
+}
+
+/**
+ * 初始化
+ */
+async function init() {
+  const ok = await checkThumbnailExists(videoThumbnailUrl.value)
+
+  isShowThumbnail.value = ok
+}
+
+onMounted(init)
+
+/**
+ * 容器尺寸（统一解析）
+ */
+const containerSize = computed(() =>
+  parseSize(props.size),
+)
+
+/**
+ * 图标尺寸
+ * 👉 如果传 iconSize 就用 iconSize
+ * 👉 否则 = size - 5
+ */
+const resolvedIconSize = computed(() => {
+  if (props.iconSize !== undefined && props.iconSize !== null) {
+    return parseSize(props.iconSize)
+  }
+
+  return subtractSize(props.size, THUMBNAIL_SIZE_OFFSET)
+})
 </script>
 
 <template>
-
   <div
     v-if="isShowThumbnail"
-    class="aspect-square flex cursor-pointer items-center justify-center justify-between rounded-2 bg-white p-1 transition-all duration-300 hover:scale-105"
+    class="aspect-square flex cursor-pointer items-center justify-center rounded-2 bg-white p-1 transition-all duration-300 hover:scale-105"
     :style="{
-      height: `${size + 5}px`,
-      width: `${size + 5}px`,
+      width: containerSize,
+      height: containerSize,
     }"
     @click="handleClick"
   >
     <SvgIcon
       icon="thumbnail"
-      :size="size"
+      :size="resolvedIconSize"
     />
   </div>
 
   <el-dialog
-    v-if="isShowVideoThumbnailDialog"
     v-model="isShowVideoThumbnailDialog"
     :title="videoName"
     width="70%"
     :show-close="false"
-    :append-to-body="true"
+    append-to-body
   >
-
     <el-scrollbar
       height="60vh"
       always
@@ -98,6 +145,5 @@ onMounted(async () => {
   </el-dialog>
 </template>
 
-<style lang="scss" scoped>
-
+<style scoped lang="scss">
 </style>

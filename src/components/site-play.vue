@@ -1,13 +1,27 @@
-<!------  2026-04-21---14:35---星期二  ------>
-<!------------------------------------    ------------------------------------------------->
-<script lang="ts" setup>
+<!------  2026-04-21---14:35---星期二 ------>
+<!------------------------------------ ----------------------------------------->
+
+<script setup lang="ts">
 import type { CSSProperties } from 'vue'
 
 import { embySearch } from '@/apis'
 
 import { AdultConfig } from '@/configs'
 
-type PropsType = {
+import { parseSize, subtractSize } from '@/utils/size'
+
+const props = withDefaults(defineProps<Props>(), {
+  size: 40,
+  class: '!aspect-square !p-2',
+})
+
+/**
+ * 图标默认偏移量
+ * 👉 iconSize 未传时使用 size - 5
+ */
+const ICON_SIZE_OFFSET = 5
+
+type Props = {
 
   /**
    * 视频名称
@@ -19,85 +33,144 @@ type PropsType = {
    */
   site: string
 
-  /** 图标的大小 */
+  /**
+   * 容器尺寸
+   */
   size?: string | number
 
-  /** 图标大小 */
+  /**
+   * 图标尺寸（不传默认 size - 5）
+   */
   iconSize?: string | number
 
-  /** 额外的 CSS 类名 */
+  /**
+   * 容器 class
+   */
   class?: string | Record<string, boolean> | Array<string | Record<string, boolean>>
 
-  /** 行内样式 */
+  /**
+   * 图标 class
+   */
+  iconClass?: string | Record<string, boolean> | Array<string | Record<string, boolean>>
+
+  /**
+   * 行内样式
+   */
   style?: CSSProperties
 }
 
 /**
- * 组件属性默认值
+ * class 处理工具
  */
-const props = withDefaults(defineProps<PropsType>(), {
-  size: 40,
-  iconSize: 30,
-  class: '!aspect-square !p-2',
+function stringifyClass(
+  input?: string | Record<string, boolean> | Array<string | Record<string, boolean>>,
+): string {
+  if (!input) {
+    return ''
+  }
 
+  if (typeof input === 'string') {
+    return input
+  }
+
+  if (Array.isArray(input)) {
+    return input.map(stringifyClass)
+      .filter(Boolean)
+      .join(' ')
+  }
+
+  return Object.entries(input)
+    .filter(([_, v]) => v)
+    .map(([k]) => k)
+    .join(' ')
+}
+
+/**
+ * 容器尺寸
+ */
+const computedSize = computed(() => parseSize(props.size))
+
+/**
+ * 图标尺寸
+ */
+const computedIconSize = computed(() => {
+  return props.iconSize !== undefined
+    ? parseSize(props.iconSize)
+    : subtractSize(props.size, ICON_SIZE_OFFSET)
 })
 
 /**
- * 计算 SVG 的行内样式
+ * 容器样式
  */
-const computedStyle = computed(() => ({
+const computedStyle = computed<CSSProperties>(() => ({
   verticalAlign: 'middle',
-  width: props.size ? `${props.size}px` : '24px',
-  height: props.size ? `${props.size}px` : '24px',
+  width: computedSize.value,
+  height: computedSize.value,
   ...props.style,
 }))
 
-// 根据传入的站点 在 AdultConfig 中查找对应的配置 转换为小写
-const siteConfig = AdultConfig.siteList.find(item => item.name.toLowerCase() === props.site.toLowerCase())
+/**
+ * 站点 key
+ */
+const siteKey = computed(() => props.site.toLowerCase())
 
 /**
-   *  识别为emby
-   */
-const isEmby = computed(() => props.site.toLowerCase() === 'emby')
+ * 站点配置
+ */
+const siteConfig = computed(() =>
+  AdultConfig.siteList.find(
+    item => item.name.toLowerCase() === siteKey.value,
+  ),
+)
 
 /**
-   *  播放
-   */
+ * 是否 emby
+ */
+const isEmby = computed(() => siteKey.value === 'emby')
+
+/**
+ * 打开站点
+ */
 function sitePlay() {
-  if (siteConfig?.name) {
-    const url = `https://${siteConfig?.hostname}${siteConfig?.searchUrl.replace('{{code}}', props.videoName)}`
+  const config = siteConfig.value
+
+  if (config?.name) {
+    const url = `https://${config.hostname}${config.searchUrl.replace(
+      '{{code}}',
+      props.videoName,
+    )}`
 
     openLink(url)
+    return
   }
-  else if (isEmby.value) {
+
+  if (isEmby.value) {
     embySearch(props.videoName)
   }
 }
-
 </script>
 
 <template>
-
   <el-button
-    :class="props.class"
+    :class="stringifyClass(props.class)"
     :style="computedStyle"
     @click="sitePlay"
   >
     <SvgIcon
       v-if="siteConfig"
       :icon="siteConfig.icon"
-      :size="props.iconSize || '24px'"
+      :size="computedIconSize"
+      :class="stringifyClass(props.iconClass)"
     />
 
     <SvgIcon
       v-else-if="isEmby"
       icon="adult-site-emby"
-      :size="props.iconSize || '24px'"
+      :size="computedIconSize"
+      :class="stringifyClass(props.iconClass)"
     />
   </el-button>
-
 </template>
 
-<style lang="scss" scoped>
-
+<style scoped lang="scss">
 </style>
