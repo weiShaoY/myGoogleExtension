@@ -35,7 +35,7 @@ const torrentList = ref<AdultType.TorrentItem[]>([])
 const pageVideoName = ref<string>('')
 
 /**
- * 导入共享逻辑
+ * 工具
  */
 const { cleanVideoName, createMatchResult } = useJavdbMatch()
 
@@ -49,7 +49,7 @@ const detailsPageMatchResult = ref<AdultType.DetailsPageMatchResult>({
 })
 
 /**
- * 获取页面中的磁链列表
+ * 磁链处理
  */
 function getTorrentList() {
   // 1. 清空数据（防止重复追加）
@@ -59,7 +59,7 @@ function getTorrentList() {
   // 2. 获取容器并校验
   const magnetsContent = $('#magnets-content')
 
-  if (!magnetsContent || !magnetsContent.children.length) {
+  if (!magnetsContent?.children.length) {
     console.warn('未找到磁链区域或内容为空')
     return
   }
@@ -68,16 +68,20 @@ function getTorrentList() {
 
   const items = Array.from($$(magnetsContent, '.columns'))
 
-  items.forEach((itemElement) => {
-    // 1. 安全转为 HTMLElement
-    const item = asHTMLElement(itemElement)
+  const list: AdultType.TorrentItem[] = []
+
+  for (const el of items) {
+    const item = asHTMLElement(el)
 
     if (!item) {
-      return
+      continue
     }
 
-    // 提取字段
     const url = $(item, '.copy-to-clipboard')?.dataset.clipboardText || ''
+
+    if (!url) {
+      continue
+    }
 
     const name = $(item, '.name')?.textContent?.trim() || ''
 
@@ -89,38 +93,28 @@ function getTorrentList() {
 
     const tags = getVideoTagsFromName(name)
 
-    // 无 URL 直接跳过
-    if (!url) {
-      return
-    }
-
-    // 判断中文字幕
-    const isChineseSub = AdultConfig.rules.chineseSubtitleRules.some(tag =>
+    const isChinese = AdultConfig.rules.chineseSubtitleRules.some(tag =>
       name.toLowerCase().includes(tag.toLowerCase()),
     )
 
-    if (isChineseSub) {
+    if (isChinese) {
       hasChineseTag.value = true
     }
 
-    // 推入列表
-    torrentList.value.push({
+    list.push({
       url,
       name,
       size,
       time,
       tags,
     })
+  }
 
-    // 4. 插入容器（使用封装好的安全函数）
-    const success1 = insertHtml('.no-bottom', '<div id="TorrentList"></div>')
+  torrentList.value = list
 
-    // 只有插入成功才显示
-    if (success1) {
-      isShowTorrentList.value = true
-      isShowSitePlay.value = true
-    }
-  })
+  const ok = insertHtml('.no-bottom', '<div id="TorrentList"></div>')
+
+  isShowTorrentList.value = ok
 }
 
 /**
@@ -132,25 +126,24 @@ function main() {
   const cleanName = cleanVideoName(videoName)
 
   pageVideoName.value = cleanName
+
   console.log('🚀 ~ file: javdbDetailsPage.vue:135 ~ pageVideoName.value:', pageVideoName.value)
 
   if (!cleanName) {
     return
   }
 
-  const success2 = insertHtml(
+  const ok = insertHtml(
     '.panel.movie-panel-info',
     '<div id="SitePlay"></div>',
     'beforeend',
   )
 
-  if (success2) {
-    isShowSitePlay.value = true
-  }
+  isShowSitePlay.value = ok
 
   const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
 
-  if (folderMatchedVideos.length === 0) {
+  if (!folderMatchedVideos.length) {
     return
   }
 
@@ -178,56 +171,9 @@ onMounted(() => {
 </script>
 
 <template>
-
-  <!-- 自定义磁链列表 -->
-  <AdultTorrent
-    v-if="isShowTorrentList"
-    to="#TorrentList"
-    :torrent-list="torrentList"
-  />
-
-  <Teleport
-    v-if="isShowSitePlay && pageVideoName"
-    to="#SitePlay"
-  >
-    <div
-      class="ml-5 mt-5 w-full flex items-center gap-4"
-    >
-      <SitePlayButton
-        :video-name="pageVideoName"
-        site="javdb"
-        :size="60"
-      />
-
-      <SitePlayButton
-        :video-name="pageVideoName"
-        site="javBus"
-        :size="60"
-      />
-
-      <SitePlayButton
-        :video-name="pageVideoName"
-        site="missAv"
-        :size="60"
-      />
-
-      <SitePlayButton
-        v-if="detailsPageMatchResult.folderMatchedVideos.length > 0 && detailsPageMatchResult.cleanName"
-        :video-name="detailsPageMatchResult.cleanName"
-        site="emby"
-        :size="60"
-      />
-
-      <AdultThumbnail
-        :video-name="pageVideoName"
-        :size="60"
-      />
-    </div>
-
-  </Teleport>
-
+  <!-- 侧边栏 -->
   <div
-    v-if="detailsPageMatchResult.folderMatchedVideos.length > 0 "
+    v-if="detailsPageMatchResult.folderMatchedVideos.length"
     class="fixed left-2 top-60 box-border !w-70"
   >
     <div
@@ -253,6 +199,54 @@ onMounted(() => {
       </section>
     </div>
   </div>
+
+  <!-- 网站↑组件 -->
+  <Teleport
+    v-if="isShowSitePlay && pageVideoName"
+    to="#SitePlay"
+  >
+    <div
+      class="ml-5 mt-5 w-full flex items-center gap-4"
+    >
+      <AdultThumbnail
+        :video-name="pageVideoName"
+        :size="60"
+      />
+
+      <SitePlayButton
+        :video-name="pageVideoName"
+        site="javdb"
+        :size="60"
+      />
+
+      <SitePlayButton
+        :video-name="pageVideoName"
+        site="javBus"
+        :size="60"
+      />
+
+      <SitePlayButton
+        :video-name="pageVideoName"
+        site="missAv"
+        :size="60"
+      />
+
+      <SitePlayButton
+        v-if="detailsPageMatchResult.folderMatchedVideos.length"
+        :video-name="detailsPageMatchResult.cleanName"
+        site="emby"
+        :size="60"
+      />
+    </div>
+  </Teleport>
+
+  <!-- 自定义磁链列表 -->
+  <AdultTorrent
+    v-if="isShowTorrentList"
+    to="#TorrentList"
+    :torrent-list="torrentList"
+  />
+
 </template>
 
 <style lang="scss" scoped>
