@@ -86,6 +86,29 @@ const resolvedIconSize = computed(() => {
     :show-close="false"
     append-to-body
   >
+
+    <template
+      #title
+    >
+      <div
+        class="w-full flex items-center justify-between gap-5"
+      >
+        <span
+          class="text-7 font-bold"
+        >
+          {{ videoName }}
+        </span>
+
+        <BaseButton
+          icon="external"
+          :size="40"
+          tooltip-content="新标签页打开"
+          tooltip-placement="top"
+          @click="openLink(videoThumbnailUrl)"
+        />
+      </div>
+    </template>
+
     <el-scrollbar
       height="60vh"
       always

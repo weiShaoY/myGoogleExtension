@@ -127,8 +127,6 @@ function main() {
 
   pageVideoName.value = cleanName
 
-  console.log('🚀 ~ file: javdbDetailsPage.vue:135 ~ pageVideoName.value:', pageVideoName.value)
-
   if (!cleanName) {
     return
   }
@@ -179,15 +177,14 @@ onMounted(() => {
     <div
       class="h-auto w-full flex flex-col items-center border border-gray-200 rounded-lg bg-white p-3 space-y-4"
     >
+      <AdultChinese
+        v-if="detailsPageMatchResult.isShowUpdateChinese"
+      />
 
       <AdultInventory
         v-for="file in detailsPageMatchResult.folderMatchedVideos"
         :key="file.id"
         :file="file"
-      />
-
-      <AdultChinese
-        v-if="detailsPageMatchResult.isShowUpdateChinese"
       />
     </div>
   </div>

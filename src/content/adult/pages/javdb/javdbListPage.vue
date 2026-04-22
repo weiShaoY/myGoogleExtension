@@ -11,9 +11,9 @@ import { useJavdbMatch } from '@/composables/useJavdbMatch'
 const adultStore = useAdultStore()
 
 /**
- * 页面上匹配到的视频结果列表
+ *  页面所有视频列表盒子
  */
-const listPageMatchResults = ref<AdultType.ListPageMatchResultList>([])
+const listPageAllVideoBoxes = ref<AdultType.ListPageMatchResultList>([])
 
 /**
  * 导入共享逻辑
@@ -34,13 +34,7 @@ function main() {
       return
     }
 
-    const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
-
-    if (folderMatchedVideos.length === 0) {
-      return
-    }
-
-    const teleportTarget = `${cleanName}_${getRandomNumber()}`
+    const teleportTarget = `${getRandomString()}_${cleanName}`
 
     const targetElement = $(item, '.box')
 
@@ -53,6 +47,8 @@ function main() {
     // 检查是否有中文字幕标签
     const hasChineseTag = isElementExists($(item, '.is-warning'))
 
+    const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
+
     // 创建匹配结果项
     const matchResultItem = createMatchResult(
       cleanName,
@@ -61,26 +57,27 @@ function main() {
       teleportTarget,
     )
 
-    listPageMatchResults.value.push(matchResultItem)
+    listPageAllVideoBoxes.value.push(matchResultItem)
   })
+  console.log('🚀 ~ file: javdbListPage.vue:73 ~ listPageMatchResults.value:', listPageAllVideoBoxes.value)
 }
 
 onMounted(() => delayRun(main))
 </script>
 
 <template>
+
   <template
-    v-for="matchResult in listPageMatchResults"
-    :key="matchResult.teleportTarget"
+    v-for="item in listPageAllVideoBoxes"
+    :key="item.teleportTarget"
   >
     <Teleport
-      v-if="matchResult.folderMatchedVideos.length"
-      :to="`.${matchResult.teleportTarget}`"
+      :to="`.${item.teleportTarget}`"
     >
       <!-- 事件处理包装器 -->
       <div
         class="teleport-wrapper"
-        style="pointer-events: auto;"
+        style="pointer-events: auto"
         @click="preventEvent"
         @mousedown="preventEvent"
         @mouseup="preventEvent"
@@ -90,35 +87,57 @@ onMounted(() => delayRun(main))
         <div
           class="h-auto w-full flex flex-col items-center border border-gray-200 rounded-lg bg-white p-3 space-y-4"
         >
-          <section
-            class="w-full space-y-2"
+          <div
+            class="w-full flex items-center justify-start gap-2"
           >
+            <AdultThumbnail
+              :video-name="item.cleanName"
+              :size="40"
+            />
+
+            <SitePlayButton
+              :video-name="item.cleanName"
+              site="javdb"
+              :size="40"
+            />
+
+            <SitePlayButton
+              :video-name="item.cleanName"
+              site="javBus"
+              :size="40"
+            />
+
+            <SitePlayButton
+              :video-name="item.cleanName"
+              site="missAv"
+              :size="40"
+            />
+
+            <SitePlayButton
+              v-if="item.folderMatchedVideos.length"
+              :video-name="item.cleanName"
+              site="emby"
+              :size="40"
+            />
+          </div>
+
+          <template
+            v-if="item.folderMatchedVideos.length"
+          >
+            <AdultChinese
+              v-if="item.isShowUpdateChinese"
+            />
+
             <AdultInventory
-              v-for="file in matchResult.folderMatchedVideos"
+              v-for="file in item.folderMatchedVideos"
               :key="file.id"
               :file="file"
             />
-          </section>
-
-          <section
-            class="grid grid-cols-2 h-15 w-full gap-2 [&>*:last-child:nth-child(1)]:col-span-2"
-          >
-            <AdultChinese
-              v-if="matchResult.isShowUpdateChinese"
-            />
-
-            <AdultEmby
-              :video-name="matchResult.cleanName"
-            />
-
-          </section>
+          </template>
         </div>
-
       </div>
     </Teleport>
   </template>
 </template>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

@@ -73,6 +73,7 @@ declare global {
   const getElapsedTime: typeof import('../../utils/time').getElapsedTime
   const getFileTagIconArray: typeof import('../../utils/getTagIconArray').getFileTagIconArray
   const getRandomNumber: typeof import('../../utils/number').getRandomNumber
+  const getRandomString: typeof import('../../utils/number').getRandomString
   const getVideoTagsFromName: typeof import('../../utils/adult').getVideoTagsFromName
   const h: typeof import('vue').h
   const homeMittBus: typeof import('../../utils/mitt').homeMittBus
@@ -459,6 +460,7 @@ declare module 'vue' {
     readonly getDuration: UnwrapRef<typeof import('../../utils/time')['getDuration']>
     readonly getElapsedTime: UnwrapRef<typeof import('../../utils/time')['getElapsedTime']>
     readonly getRandomNumber: UnwrapRef<typeof import('../../utils/number')['getRandomNumber']>
+    readonly getRandomString: UnwrapRef<typeof import('../../utils/number')['getRandomString']>
     readonly getVideoTagsFromName: UnwrapRef<typeof import('../../utils/adult')['getVideoTagsFromName']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>

@@ -72,6 +72,7 @@
     "getDuration": true,
     "getElapsedTime": true,
     "getRandomNumber": true,
+    "getRandomString": true,
     "getVideoTagsFromName": true,
     "h": true,
     "ignorableWatch": true,
