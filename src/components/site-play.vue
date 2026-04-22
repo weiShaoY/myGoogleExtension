@@ -21,68 +21,31 @@ const props = withDefaults(defineProps<Props>(), {
  */
 const ICON_SIZE_OFFSET = 5
 
+/**
+ * 组件属性类型
+ */
 type Props = {
 
-  /**
-   * 视频名称
-   */
+  /** 视频名称 */
   videoName: string
 
-  /**
-   * 站点名称
-   */
+  /** 站点名称 */
   site: string
 
-  /**
-   * 容器尺寸
-   */
+  /** 容器尺寸 */
   size?: string | number
 
-  /**
-   * 图标尺寸（不传默认 size - 5）
-   */
+  /** 图标尺寸（不传默认 size - 5） */
   iconSize?: string | number
 
-  /**
-   * 容器 class
-   */
+  /** 容器 class */
   class?: string | Record<string, boolean> | Array<string | Record<string, boolean>>
 
-  /**
-   * 图标 class
-   */
+  /** 图标 class */
   iconClass?: string | Record<string, boolean> | Array<string | Record<string, boolean>>
 
-  /**
-   * 行内样式
-   */
+  /** 行内样式 */
   style?: CSSProperties
-}
-
-/**
- * class 处理工具
- */
-function stringifyClass(
-  input?: string | Record<string, boolean> | Array<string | Record<string, boolean>>,
-): string {
-  if (!input) {
-    return ''
-  }
-
-  if (typeof input === 'string') {
-    return input
-  }
-
-  if (Array.isArray(input)) {
-    return input.map(stringifyClass)
-      .filter(Boolean)
-      .join(' ')
-  }
-
-  return Object.entries(input)
-    .filter(([_, v]) => v)
-    .map(([k]) => k)
-    .join(' ')
 }
 
 /**
@@ -102,12 +65,16 @@ const computedIconSize = computed(() => {
 /**
  * 容器样式
  */
-const computedStyle = computed<CSSProperties>(() => ({
-  verticalAlign: 'middle',
-  width: computedSize.value,
-  height: computedSize.value,
-  ...props.style,
-}))
+const computedStyle = computed(() =>
+  mergeStyle(
+    {
+      verticalAlign: 'middle',
+      width: computedSize.value,
+      height: computedSize.value,
+    },
+    props.style,
+  ),
+)
 
 /**
  * 站点 key
@@ -152,7 +119,7 @@ function sitePlay() {
 
 <template>
   <el-button
-    :class="stringifyClass(props.class)"
+    :class="mergeClass(props.class)"
     :style="computedStyle"
     @click="sitePlay"
   >
@@ -160,14 +127,14 @@ function sitePlay() {
       v-if="siteConfig"
       :icon="siteConfig.icon"
       :size="computedIconSize"
-      :class="stringifyClass(props.iconClass)"
+      :class="mergeClass(props.iconClass)"
     />
 
     <SvgIcon
       v-else-if="isEmby"
       icon="adult-site-emby"
       :size="computedIconSize"
-      :class="stringifyClass(props.iconClass)"
+      :class="mergeClass(props.iconClass)"
     />
   </el-button>
 </template>

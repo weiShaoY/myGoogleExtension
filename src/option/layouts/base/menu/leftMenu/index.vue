@@ -104,22 +104,16 @@ function refresh() {
     </el-scrollbar>
 
     <div
-      class="absolute bottom-30 left-0 right-0 flex items-center justify-center hover:cursor-pointer"
-      @click="refresh"
+      class="absolute bottom-20 left-0 right-0 flex justify-center"
     >
-      <SvgIcon
+      <BaseButton
         icon="option-menu-refresh"
+        tooltip-content="刷新"
+        tooltip-placement="right"
+        @click="refresh"
       />
+
     </div>
-
-    <BaseButton
-      class="absolute bottom-20 left-0 right-0"
-      :size="40"
-      rotates
-      icon="option-menu-refresh"
-      @click="refresh"
-    />
-
     <!-- 菜单收缩/展开按钮 -->
     <div
       class="absolute bottom-10 left-0 right-0 flex items-center justify-center hover:cursor-pointer"

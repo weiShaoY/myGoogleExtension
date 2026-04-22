@@ -4,7 +4,7 @@ import type { Placement } from 'element-plus'
 
 import type { CSSProperties } from 'vue'
 
-import { twMerge } from 'tailwind-merge'
+import { parseSize, subtractSize } from '@/utils/size'
 
 const props = withDefaults(defineProps<Props>(), {
   class: '',
@@ -21,9 +21,8 @@ defineEmits<{
 
 /**
  * 图标尺寸偏移量
- * 👉 用于按钮 size → icon size 的安全间距
  */
-const ICON_SIZE_OFFSET = 14
+const ICON_SIZE_OFFSET = 10
 
 /**
  * 组件属性类型
@@ -35,6 +34,9 @@ type Props = {
 
   /** 图标名称 */
   icon?: string
+
+  /** 文本内容 */
+  text?: string
 
   /** 图标大小 */
   size?: number | string
@@ -57,105 +59,130 @@ type Props = {
   /** 是否显示加载中 */
   loading?: boolean
 
-  /**
-   * 是否悬浮旋转
-   */
+  /** 是否悬浮旋转 */
   rotate?: boolean
 }
 
-const DEFAULT_CLASS = 'flex items-center justify-center'
+/**
+ * 默认按钮样式（接近 el-button）
+ */
+const DEFAULT_BUTTON_CLASS = [
+  'inline-flex items-center justify-center',
+  'rounded-2',
+  'border border-solid border-[#dcdfe6]',
+  'bg-white',
 
-function stringifyClass(
-  input?: string | Record<string, boolean> | Array<string | Record<string, boolean>>,
-): string {
-  if (!input) {
-    return ''
-  }
+  // hover
+  'hover:color-primary hover:shadow-sm hover:border-primary hover:bg-[#ecf5ff]',
 
-  if (typeof input === 'string') {
-    return input
-  }
+  // active
+  'active:scale-[0.97]',
 
-  if (Array.isArray(input)) {
-    return input.map(stringifyClass)
-      .filter(Boolean)
-      .join(' ')
-  }
+  // 动画
+  'transition-all duration-200',
 
-  return Object.entries(input)
-    .filter(([_, v]) => v)
-    .map(([k]) => k)
-    .join(' ')
-}
+  // 交互
+  'cursor-pointer select-none',
+]
 
-const computedButtonClass = computed(() =>
-  twMerge(DEFAULT_CLASS, stringifyClass(props.class)),
-)
+/**
+ * 是否有文本
+ */
+const hasText = computed(() => !!props.text)
 
-const computedIconClass = computed(() => {
-  const base = stringifyClass(props.iconClass)
-
-  const rotate = props.rotate
-    ? 'hover:rotate-180 hover:transition-transform hover:duration-1000'
-    : ''
-
-  return twMerge(base, rotate)
-})
-
+/**
+ * 容器尺寸
+ */
 const computedSize = computed(() => parseSize(props.size))
 
+/**
+ * 图标尺寸
+ */
 const computedIconSize = computed(() =>
   subtractSize(props.size, ICON_SIZE_OFFSET),
 )
 
-const computedStyle = computed(() => ({
-  width: computedSize.value,
-  height: computedSize.value,
-  ...props.style,
-}))
+/**
+ * 按钮 class
+ */
+const computedButtonClass = computed(() =>
+  mergeClass(DEFAULT_BUTTON_CLASS, props.class),
+)
+
+/**
+ * 图标 class
+ */
+const computedIconClass = computed(() => {
+  const rotateClass = props.rotate
+    ? 'hover:rotate-180 hover:transition-transform hover:duration-1000'
+    : ''
+
+  return mergeClass(props.iconClass, rotateClass)
+})
+
+/**
+ * 行内样式
+ * 👉 有 text → 宽度自适应
+ * 👉 无 text → 固定正方形
+ */
+const computedStyle = computed(() => {
+  const base: CSSProperties = {
+    height: computedSize.value,
+    padding: `${ICON_SIZE_OFFSET / 4}px`,
+  }
+
+  if (!hasText.value) {
+    base.width = computedSize.value
+  }
+
+  return mergeStyle(base, props.style)
+})
 </script>
 
 <template>
-  <div>
-    <el-tooltip
-      :placement="tooltipPlacement"
-      :content="tooltipContent"
-      :z-index="zIndex"
-      :disabled="!tooltipContent"
+  <el-tooltip
+    :placement="tooltipPlacement"
+    :content="tooltipContent"
+    :z-index="zIndex"
+    :disabled="!tooltipContent"
+  >
+    <div
+      :class="computedButtonClass"
+      :style="computedStyle"
+      @click="$emit('click', $event)"
     >
-      <el-button
-        text
-        quaternary
-        class="!h-auto !rounded-lg !p-0"
-        @click="$emit('click', $event)"
+      <!-- loading 优先 -->
+      <template
+        v-if="loading"
       >
-        <div
-          :class="computedButtonClass"
-          :style="computedStyle"
-        >
-          <template
-            v-if="!loading"
-          >
-            <slot>
-              <SvgIcon
-                :icon="icon"
-                :size="computedIconSize"
-                :class="computedIconClass"
-              />
-            </slot>
-          </template>
+        <IconLoading
+          :size="computedIconSize"
+        />
+      </template>
 
-          <template
-            v-else
-          >
-            <IconLoading
-              :size="computedIconSize"
-            />
-          </template>
-        </div>
-      </el-button>
-    </el-tooltip>
-  </div>
+      <template
+        v-else
+      >
+        <slot>
+          <!-- icon -->
+          <SvgIcon
+            v-if="icon"
+            :icon="icon"
+            :size="computedIconSize"
+            :class="computedIconClass"
+          />
+        </slot>
+
+        <!-- text -->
+        <span
+          v-if="text"
+          :class="mergeClass('text-4 font-bold', icon && 'ml-3')"
+        >
+          {{ text }}
+        </span>
+      </template>
+    </div>
+  </el-tooltip>
 </template>
 
 <style scoped lang="scss">

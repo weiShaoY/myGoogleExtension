@@ -100,6 +100,8 @@ declare global {
   const mapWritableState: typeof import('pinia').mapWritableState
   const markRaw: typeof import('vue').markRaw
   const menuJump: typeof import('../../utils/router').menuJump
+  const mergeClass: typeof import('../../utils/style').mergeClass
+  const mergeStyle: typeof import('../../utils/style').mergeStyle
   const nextTick: typeof import('vue').nextTick
   const onActivated: typeof import('vue').onActivated
   const onBeforeMount: typeof import('vue').onBeforeMount
@@ -264,6 +266,7 @@ declare global {
   const useFullscreen: typeof import('@vueuse/core').useFullscreen
   const useGamepad: typeof import('@vueuse/core').useGamepad
   const useGeolocation: typeof import('@vueuse/core').useGeolocation
+  const useIcon: typeof import('../../composables/useIcon').useIcon
   const useId: typeof import('vue').useId
   const useIdle: typeof import('@vueuse/core').useIdle
   const useImage: typeof import('@vueuse/core').useImage
@@ -393,6 +396,9 @@ declare global {
   export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, ShallowRef, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
   // @ts-ignore
+  export type { UseIconOptions } from '../../composables/useIcon'
+  import('../../composables/useIcon')
+  // @ts-ignore
   export type { SizeValue } from '../../utils/size'
   import('../../utils/size')
 }
@@ -479,6 +485,8 @@ declare module 'vue' {
     readonly mapWritableState: UnwrapRef<typeof import('pinia')['mapWritableState']>
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
     readonly menuJump: UnwrapRef<typeof import('../../utils/router')['menuJump']>
+    readonly mergeClass: UnwrapRef<typeof import('../../utils/style')['mergeClass']>
+    readonly mergeStyle: UnwrapRef<typeof import('../../utils/style')['mergeStyle']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
     readonly onBeforeMount: UnwrapRef<typeof import('vue')['onBeforeMount']>
@@ -630,6 +638,7 @@ declare module 'vue' {
     readonly useFullscreen: UnwrapRef<typeof import('@vueuse/core')['useFullscreen']>
     readonly useGamepad: UnwrapRef<typeof import('@vueuse/core')['useGamepad']>
     readonly useGeolocation: UnwrapRef<typeof import('@vueuse/core')['useGeolocation']>
+    readonly useIcon: UnwrapRef<typeof import('../../composables/useIcon')['useIcon']>
     readonly useId: UnwrapRef<typeof import('vue')['useId']>
     readonly useIdle: UnwrapRef<typeof import('@vueuse/core')['useIdle']>
     readonly useImage: UnwrapRef<typeof import('@vueuse/core')['useImage']>

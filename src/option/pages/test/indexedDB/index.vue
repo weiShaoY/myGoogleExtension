@@ -71,7 +71,9 @@ const tableData: ScriptItem[] = [
       />
 
     </el-table>
+
   </div>
+
 </template>
 
 <style lang="scss" scoped>
