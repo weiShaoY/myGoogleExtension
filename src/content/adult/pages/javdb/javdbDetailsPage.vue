@@ -15,9 +15,9 @@ const adultStore = useAdultStore()
 const hasChineseTag = ref<boolean>(false)
 
 /**
- * 是否显示在线播放组件
+ * 是否网站播放组件
  */
-const isShowOnlinePlay = ref<boolean>(false)
+const isShowSitePlay = ref<boolean>(false)
 
 /**
  * 是否显示自定义磁链列表
@@ -115,12 +115,10 @@ function getTorrentList() {
     // 4. 插入容器（使用封装好的安全函数）
     const success1 = insertHtml('.no-bottom', '<div id="TorrentList"></div>')
 
-    const success2 = insertHtml('.no-bottom', '<div id="OnlinePlay"></div>')
-
     // 只有插入成功才显示
-    if (success1 && success2) {
+    if (success1) {
       isShowTorrentList.value = true
-      isShowOnlinePlay.value = true
+      isShowSitePlay.value = true
     }
   })
 }
@@ -134,9 +132,20 @@ function main() {
   const cleanName = cleanVideoName(videoName)
 
   pageVideoName.value = cleanName
+  console.log('🚀 ~ file: javdbDetailsPage.vue:135 ~ pageVideoName.value:', pageVideoName.value)
 
   if (!cleanName) {
     return
+  }
+
+  const success2 = insertHtml(
+    '.panel.movie-panel-info',
+    '<div id="SitePlay"></div>',
+    'beforeend',
+  )
+
+  if (success2) {
+    isShowSitePlay.value = true
   }
 
   const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
@@ -169,11 +178,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- <OnlinePlay
-    v-if="isShowOnlinePlay && pageVideoName"
-    to="#OnlinePlay"
-    :video-name="pageVideoName"
-  /> -->
 
   <!-- 自定义磁链列表 -->
   <AdultTorrent
@@ -181,6 +185,46 @@ onMounted(() => {
     to="#TorrentList"
     :torrent-list="torrentList"
   />
+
+  <Teleport
+    v-if="isShowSitePlay && pageVideoName"
+    to="#SitePlay"
+  >
+    <div
+      class="ml-5 mt-5 w-full flex items-center gap-4"
+    >
+      <SitePlayButton
+        :video-name="pageVideoName"
+        site="javdb"
+        :size="60"
+      />
+
+      <SitePlayButton
+        :video-name="pageVideoName"
+        site="javBus"
+        :size="60"
+      />
+
+      <SitePlayButton
+        :video-name="pageVideoName"
+        site="missAv"
+        :size="60"
+      />
+
+      <SitePlayButton
+        v-if="detailsPageMatchResult.folderMatchedVideos.length > 0 && detailsPageMatchResult.cleanName"
+        :video-name="detailsPageMatchResult.cleanName"
+        site="emby"
+        :size="60"
+      />
+
+      <AdultThumbnail
+        :video-name="pageVideoName"
+        :size="60"
+      />
+    </div>
+
+  </Teleport>
 
   <div
     v-if="detailsPageMatchResult.folderMatchedVideos.length > 0 "
@@ -200,14 +244,10 @@ onMounted(() => {
       </section>
 
       <section
-        class="grid grid-cols-2 h-15 w-full gap-2 [&>*:last-child:nth-child(1)]:col-span-2"
+        class="h-15 w-full flex"
       >
         <AdultChinese
           v-if="detailsPageMatchResult.isShowUpdateChinese"
-        />
-
-        <AdultEmby
-          :video-name="detailsPageMatchResult.cleanName"
         />
 
       </section>

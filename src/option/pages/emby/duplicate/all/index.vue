@@ -59,11 +59,19 @@ function handleClickCopyPath(row: AdultType.VideoFile) {
           </el-link>
         </template>
       </el-table-column>
+      <!-- 视频大小 -->
+      <el-table-column
+        label="视频大小"
+        prop="size"
+        width="120"
+        sortable
+      />
 
       <el-table-column
         label="视频缩略图"
         prop="baseName"
         sortable
+        width="140"
       >
         <template
           #default="{ row }: { row: AdultType.VideoFile }"
@@ -73,14 +81,6 @@ function handleClickCopyPath(row: AdultType.VideoFile) {
           />
         </template>
       </el-table-column>
-
-      <!-- 视频大小 -->
-      <el-table-column
-        label="视频大小"
-        prop="size"
-        width="120"
-        sortable
-      />
 
       <!-- 标签 -->
       <el-table-column

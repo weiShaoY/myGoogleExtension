@@ -31,11 +31,6 @@ const props = withDefaults(defineProps<Props>(), {
 const THUMBNAIL_SIZE_OFFSET = 5
 
 /**
- * 是否显示缩略图
- */
-const isShowThumbnail = ref(false)
-
-/**
  * 弹窗状态
  */
 const isShowVideoThumbnailDialog = ref(false)
@@ -53,40 +48,6 @@ const videoThumbnailUrl = computed(() =>
 function handleClick() {
   isShowVideoThumbnailDialog.value = true
 }
-
-/**
- * 检测缩略图是否存在
- */
-async function checkThumbnailExists(url: string) {
-  try {
-    const response = await fetch(url, {
-      method: 'HEAD',
-    })
-
-    return response.ok
-  }
-  catch (error) {
-    console.error('获取视频缩略图失败:', error)
-
-    window.$notification?.error?.({
-      title: '获取视频缩略图失败',
-      duration: 0,
-    })
-
-    return false
-  }
-}
-
-/**
- * 初始化
- */
-async function init() {
-  const ok = await checkThumbnailExists(videoThumbnailUrl.value)
-
-  isShowThumbnail.value = ok
-}
-
-onMounted(init)
 
 /**
  * 容器尺寸（统一解析）
@@ -110,20 +71,13 @@ const resolvedIconSize = computed(() => {
 </script>
 
 <template>
-  <div
-    v-if="isShowThumbnail"
-    class="aspect-square flex cursor-pointer items-center justify-center rounded bg-white transition-all duration-300 hover:scale-105"
-    :style="{
-      width: containerSize,
-      height: containerSize,
-    }"
+
+  <BaseButton
+    icon="thumbnail"
+    :size="containerSize"
+    :icon-size="resolvedIconSize"
     @click="handleClick"
-  >
-    <SvgIcon
-      icon="thumbnail"
-      :size="resolvedIconSize"
-    />
-  </div>
+  />
 
   <el-dialog
     v-model="isShowVideoThumbnailDialog"
@@ -138,8 +92,7 @@ const resolvedIconSize = computed(() => {
     >
       <img
         :src="videoThumbnailUrl"
-        alt="video thumbnail"
-        class="h-full w-full object-cover"
+        class="!w-full"
       >
     </el-scrollbar>
   </el-dialog>

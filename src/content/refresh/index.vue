@@ -1,18 +1,22 @@
 <!------  2026-04-03---15:23---星期五  ------>
 <!------------------------------------    ------------------------------------------------->
 <script lang="ts" setup>
-function onClick() {
+function refresh() {
   window.location.reload()
 }
 </script>
 
 <template>
-  <el-button
-    class="fixed bottom-0 left-0"
-    @click="onClick"
+  <div
+    class="fixed bottom-0 left-0 flex justify-center"
   >
-    刷新
-  </el-button>
+    <BaseButton
+      icon="option-menu-refresh"
+      tooltip-content="刷新"
+      tooltip-placement="right"
+      @click="refresh"
+    />
+  </div>
 </template>
 
 <style lang="scss" scoped>

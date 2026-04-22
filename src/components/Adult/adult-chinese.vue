@@ -5,7 +5,7 @@
 
 <template>
   <div
-    class="flex items-center justify-center gap-3 rounded-2 bg-[#ffe52a] text-4 text-amber font-bold"
+    class="h-full w-full flex items-center justify-center gap-3 rounded-2 bg-[#ffe52a] text-4 text-amber font-bold"
   >
     <SvgIcon
       icon="content-adult-setting-update"
