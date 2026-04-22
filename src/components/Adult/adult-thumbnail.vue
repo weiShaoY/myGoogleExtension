@@ -112,7 +112,7 @@ const resolvedIconSize = computed(() => {
 <template>
   <div
     v-if="isShowThumbnail"
-    class="aspect-square flex cursor-pointer items-center justify-center rounded-2 bg-white p-1 transition-all duration-300 hover:scale-105"
+    class="aspect-square flex cursor-pointer items-center justify-center rounded bg-white transition-all duration-300 hover:scale-105"
     :style="{
       width: containerSize,
       height: containerSize,
