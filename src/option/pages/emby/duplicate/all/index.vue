@@ -114,28 +114,28 @@ function handleClickCopyPath(row: AdultType.VideoFile) {
           <div
             class="flex items-center gap-2"
           >
-            <SitePlay
+            <SitePlayButton
               site="javdb"
               :video-name="row.cleanName"
               :size="40"
               :icon-size="30"
             />
 
-            <SitePlay
+            <SitePlayButton
               site="javBus"
               :video-name="row.cleanName"
               :size="40"
               :icon-size="30"
             />
 
-            <SitePlay
+            <SitePlayButton
               site="missAv"
               :video-name="row.cleanName"
               :size="40"
               :icon-size="30"
             />
 
-            <SitePlay
+            <SitePlayButton
               site="emby"
               :video-name="row.cleanName"
               :size="40"

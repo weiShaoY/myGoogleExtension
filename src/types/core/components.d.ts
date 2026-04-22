@@ -41,7 +41,9 @@ declare module 'vue' {
     PageLoading: typeof import('./../../components/Loading/page-loading.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SiteButton: typeof import('./../../components/Button/site-button/index.vue')['default']
     SitePlay: typeof import('./../../components/site-play.vue')['default']
+    SitePlayButton: typeof import('./../../components/Button/site-play-button/index.vue')['default']
     SvgIcon: typeof import('./../../components/SvgIcon/index.vue')['default']
     VueEcharts: typeof import('./../../components/VueEcharts/index.vue')['default']
   }

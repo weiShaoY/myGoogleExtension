@@ -8,18 +8,10 @@ import { embySearch } from '@/apis'
 
 import { AdultConfig } from '@/configs'
 
-import { parseSize, subtractSize } from '@/utils/size'
-
 const props = withDefaults(defineProps<Props>(), {
   size: 40,
   class: '!aspect-square !p-2',
 })
-
-/**
- * 图标默认偏移量
- * 👉 iconSize 未传时使用 size - 5
- */
-const ICON_SIZE_OFFSET = 5
 
 /**
  * 组件属性类型
@@ -47,34 +39,6 @@ type Props = {
   /** 行内样式 */
   style?: CSSProperties
 }
-
-/**
- * 容器尺寸
- */
-const computedSize = computed(() => parseSize(props.size))
-
-/**
- * 图标尺寸
- */
-const computedIconSize = computed(() => {
-  return props.iconSize !== undefined
-    ? parseSize(props.iconSize)
-    : subtractSize(props.size, ICON_SIZE_OFFSET)
-})
-
-/**
- * 容器样式
- */
-const computedStyle = computed(() =>
-  mergeStyle(
-    {
-      verticalAlign: 'middle',
-      width: computedSize.value,
-      height: computedSize.value,
-    },
-    props.style,
-  ),
-)
 
 /**
  * 站点 key
@@ -118,25 +82,25 @@ function sitePlay() {
 </script>
 
 <template>
-  <el-button
-    :class="mergeClass(props.class)"
-    :style="computedStyle"
-    @click="sitePlay"
-  >
-    <SvgIcon
-      v-if="siteConfig"
-      :icon="siteConfig.icon"
-      :size="computedIconSize"
-      :class="mergeClass(props.iconClass)"
-    />
 
-    <SvgIcon
-      v-else-if="isEmby"
-      icon="adult-site-emby"
-      :size="computedIconSize"
-      :class="mergeClass(props.iconClass)"
-    />
-  </el-button>
+  <BaseButton
+    v-if="siteConfig"
+    :icon="siteConfig.icon"
+    :size="props.size"
+    :icon-size="props.iconSize"
+    :class="mergeClass(props.iconClass)"
+    @click="sitePlay"
+  />
+
+  <BaseButton
+    v-else-if="isEmby"
+    icon="adult-site-emby"
+    :size="props.size"
+    :icon-size="props.iconSize"
+    :class="mergeClass(props.iconClass)"
+    @click="embySearch(props.videoName)"
+  />
+
 </template>
 
 <style scoped lang="scss">

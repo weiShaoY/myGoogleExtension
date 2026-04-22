@@ -74,28 +74,28 @@ function handleClickCopyFileName(row: string) {
           <div
             class="flex items-center gap-2"
           >
-            <SitePlay
+            <SitePlayButton
               site="javdb"
               :video-name="row"
               :size="40"
               :icon-size="30"
             />
 
-            <SitePlay
+            <SitePlayButton
               site="javBus"
               :video-name="row"
               :size="40"
               :icon-size="30"
             />
 
-            <SitePlay
+            <SitePlayButton
               site="missAv"
               :video-name="row"
               :size="40"
               :icon-size="30"
             />
 
-            <SitePlay
+            <SitePlayButton
               site="emby"
               :video-name="row"
               :size="40"
