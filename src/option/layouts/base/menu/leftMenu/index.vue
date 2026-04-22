@@ -34,6 +34,13 @@ const currentRoute = computed<RouterType.Route | undefined>(() => {
 })
 
 console.log('🚀 ~ file: index.vue:37 ~ currentRoute:', currentRoute.value)
+
+/**
+   *  刷新
+   */
+function refresh() {
+  window.location.reload()
+}
 </script>
 
 <template>
@@ -95,6 +102,21 @@ console.log('🚀 ~ file: index.vue:37 ~ currentRoute:', currentRoute.value)
         </el-tooltip>
       </div>
     </el-scrollbar>
+
+    <div
+      class="absolute bottom-30 left-0 right-0 flex items-center justify-center hover:cursor-pointer"
+      @click="refresh"
+    >
+      <SvgIcon
+        icon="option-menu-refresh"
+      />
+    </div>
+
+    <BaseButton
+      class="absolute left-0 right-0"
+      icon="option-menu-refresh"
+      @click="refresh"
+    />
 
     <!-- 菜单收缩/展开按钮 -->
     <div

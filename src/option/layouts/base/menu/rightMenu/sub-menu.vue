@@ -1,16 +1,22 @@
-<!------  2025-04-16---15:03---星期三  ------>  
+<!------  2025-04-16---15:03---星期三  ------>
 <!------------------------------------    ------------------------------------------------->
 <script lang="ts" setup>
 import { computed } from 'vue'
+
 import { useRouter } from 'vue-router'
 
 import MenuItem from './menu-item.vue'
 
-const router = useRouter()
-
 defineOptions({
   name: 'Submenu',
 })
+
+const props = withDefaults(defineProps<Props>(), {
+  menuList: () => [],
+  level: 0,
+})
+
+const router = useRouter()
 
 type Props = {
 
@@ -24,11 +30,6 @@ type Props = {
    */
   level?: number
 }
-
-const props = withDefaults(defineProps<Props>(), {
-  menuList: () => [],
-  level: 0,
-})
 
 // 判断是否有子菜单
 function hasChildren(item: any): boolean {
@@ -68,7 +69,8 @@ function goPage(item: any) {
 function menuJump(menu: any) {
   if (menu.children && menu.children.length > 0) {
     router.push(menu.children[0].path)
-  } else {
+  }
+  else {
     router.push(menu.path)
   }
 }
@@ -135,7 +137,7 @@ function menuJump(menu: any) {
 }
 
 .el-menu-item.is-active {
-  color: var(--main-color) !important;
+  color: var(--el-color-primary) !important;
   background-color: var(--el-color-primary-light-9);
   background-image: var(--el-color-primary-custom-14);
 }

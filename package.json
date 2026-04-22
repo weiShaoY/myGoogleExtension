@@ -30,6 +30,7 @@
     "@vue/tsconfig": "^0.9.1",
     "@vueuse/core": "^14.2.1",
     "axios": "^1.15.1",
+    "echarts": "^6.0.0",
     "element-plus": "^2.13.7",
     "eslint": "^10.2.1",
     "eslint-plugin-format": "^2.0.1",
@@ -51,6 +52,7 @@
     "vite-plugin-svg-icons-ng": "^1.7.1",
     "vite-plugin-vue-devtools": "^8.1.1",
     "vite-plugin-zip-pack": "^1.2.4",
+    "vue-echarts": "^8.0.1",
     "vue-tsc": "^3.2.7"
   }
 }
