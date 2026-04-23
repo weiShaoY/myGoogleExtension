@@ -38,16 +38,19 @@ function main() {
 
     const targetElement = $(item, '.box')
 
-    // 添加样式类
-    if (isElementExists(targetElement)) {
-      targetElement.classList.add('is-highlight')
-      targetElement.classList.add(teleportTarget)
-    }
-
     // 检查是否有中文字幕标签
     const hasChineseTag = isElementExists($(item, '.is-warning'))
 
     const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
+
+    // 添加样式类
+    if (isElementExists(targetElement)) {
+      //  与详情页不同, 列表页 每个视频都有一个teleportTarget 不是匹配上才添加
+      targetElement.classList.add(teleportTarget)
+      if (folderMatchedVideos.length) {
+        targetElement.classList.add('is-highlight')
+      }
+    }
 
     // 创建匹配结果项
     const matchResultItem = createMatchResult(
