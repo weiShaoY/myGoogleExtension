@@ -14,14 +14,52 @@ const adultStore = useAdultStore()
 const listPageAllVideoBoxes = ref<AdultType.ListPageMatchResultList>([])
 
 /**
+ * 视频项高亮状态类名
+ *
+ * @description
+ * 当当前视频在本地文件夹中匹配到资源时，
+ * 会为对应 item/box 添加该 class，用于视觉高亮提示。
+ *
+ * @usage
+ * element.classList.add(HIGHLIGHT_CLASS)
+ */
+const HIGHLIGHT_CLASS = 'is-highlight'
+
+/**
  * 导入共享逻辑
  */
 const { cleanVideoName, createMatchResult } = useJavdbMatch()
 
 /**
- * 中文磁链标记选择器
+ * 中文磁链状态标记选择器
+ *
+ * @description
+ * 用于检测当前视频条目是否包含中文磁链提示信息。
+ * 通常存在于列表项 box 内部，用于标识该视频是否存在中文资源标签。
+ *
+ * ⚠️ 注意：
+ * 该选择器仅用于状态判断（hasChineseTag），
+ * 不参与 DOM 结构渲染或布局控制。
+ *
+ * @usage
+ * const hasChineseTag = isElementExists($(item, CHINESE_TAG_SELECTOR))
  */
 const CHINESE_TAG_SELECTOR = '.is-warning'
+
+/**
+ * 列表页视频 item 的 box 容器选择器
+ *
+ * @description
+ * 用于定位每个视频条目中的操作容器
+ * 该容器内部包含：
+ * - 标题
+ * - 中文磁链标记（.is-warning）
+ * - 其他操作 UI 区域
+ *
+ * ⚠️ 注意：
+ * 中文磁链状态通过 `.is-warning` 判断，而不是 box 本身
+ */
+const LIST_PAGE_VIDEO_ITEM_SELECTOR = '.movie-list .item .box'
 
 /**
  * 获取标题
@@ -33,11 +71,11 @@ function getVideoName(item: Element): string {
 }
 
 /**
- * 获取列表 DOM
+ * 获取列表 DOM 元素列表
  * @returns {Element[]}
  */
 function getMovieItems(): Element[] {
-  return Array.from($$('.movie-list .item .box'))
+  return Array.from($$(LIST_PAGE_VIDEO_ITEM_SELECTOR))
 }
 
 /**
@@ -62,14 +100,14 @@ function buildMatchResultList(): AdultType.ListPageMatchResultList {
 
     const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
 
-    const teleportTarget = `video_${cleanName}`
+    const teleportTarget = `${getRandomString(6)}_${cleanName}`
 
     // 👉 DOM 操作
     if (item) {
       item.classList.add(teleportTarget)
 
       if (folderMatchedVideos.length) {
-        item.classList.add('is-highlight')
+        item.classList.add(HIGHLIGHT_CLASS)
       }
     }
 
