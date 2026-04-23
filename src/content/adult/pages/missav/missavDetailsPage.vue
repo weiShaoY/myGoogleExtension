@@ -19,7 +19,7 @@ const hasChineseTag = ref<boolean>(false)
 const isShowOnlinePlay = ref<boolean>(false)
 
 /**
- * 是否显示自定义磁链列表
+ * 是否显示磁链列表
  */
 const isShowTorrentList = ref<boolean>(false)
 
@@ -29,47 +29,82 @@ const isShowTorrentList = ref<boolean>(false)
 const torrentList = ref<AdultType.TorrentItem[]>([])
 
 /**
- * 导入共享逻辑
+ * 工具函数
  */
 const { cleanVideoName, createMatchResult } = useAdultPageMatch()
 
 /**
  * 详情页匹配结果
  */
-const detailsPageMatchResult = ref<AdultType.DetailsPageMatchResult>({
-  cleanName: '',
-  isShowUpdateChinese: false,
-  folderMatchedVideos: [],
-})
+const detailsPageMatchResult
+  = ref<AdultType.DetailsPageMatchResult>({
+    cleanName: '',
+    isShowUpdateChinese: false,
+    folderMatchedVideos: [],
+  })
 
-/**
- * 获取页面中的磁链列表
- */
+/* =========================================================
+ *                  DOM 配置（统一结构）
+ * ========================================================= */
+
+const DETAILS_PAGE_DOM = {
+  highlight: {
+    class: 'is-highlight',
+    selector: '.relative.-mx-4.sm\\:m-0.-mt-6',
+  },
+
+  video: {
+    titleSelector: 'h1.text-base.lg\\:text-lg.text-nord6',
+  },
+
+  torrent: {
+    table: 'div[x-show="currentTab === \'magnets\'"] table',
+    row: 'tbody tr',
+    cell: 'td',
+    link: 'a',
+  },
+
+  ui: {
+    mount:
+      '.grid.grid-cols-2.md\\:grid-cols-3.xl\\:grid-cols-4.gap-5',
+
+    torrentMount: '#TorrentList',
+    onlineMount: '#OnlinePlay',
+  },
+}
+
+/* =========================================================
+ *                    磁链解析
+ * ========================================================= */
+
 function getTorrentList() {
-  // 1. 清空数据（防止重复追加）
   torrentList.value = []
   hasChineseTag.value = false
 
-  const table = $('div[x-show="currentTab === \'magnets\'"] table')
+  const table = $(DETAILS_PAGE_DOM.torrent.table)
 
   if (!table) {
     console.warn('未找到磁力表格')
     return
   }
 
-  const items = Array.from($$(table, 'tbody tr'))
+  const rows = Array.from(
+    $$(table, DETAILS_PAGE_DOM.torrent.row),
+  )
 
-  items.forEach((row) => {
-    const cells = $$(row, 'td')
+  for (const row of rows) {
+    const cells = $$(row, DETAILS_PAGE_DOM.torrent.cell)
 
     if (cells.length < 3) {
-      return
+      continue
     }
 
     const firstCell = cells[0]
 
-    // 安全获取链接（指定 a 标签类型）
-    const link = $<HTMLAnchorElement>(firstCell, 'a')
+    const link = $<HTMLAnchorElement>(
+      firstCell,
+      DETAILS_PAGE_DOM.torrent.link,
+    )
 
     const url = link?.href ?? ''
 
@@ -79,25 +114,23 @@ function getTorrentList() {
 
     const sizeText = cells[1]?.textContent?.trim() ?? ''
 
+    if (!url) {
+      continue
+    }
+
     const size = parseFileSizeToGB(sizeText)
 
     const tags = getVideoTagsFromName(name)
 
-    // 无 URL 直接跳过
-    if (!url) {
-      return
-    }
+    const isChinese
+      = AdultConfig.rules.chineseSubtitleRules.some(tag =>
+        name.toLowerCase().includes(tag.toLowerCase()),
+      )
 
-    // 判断中文字幕
-    const isChineseSub = AdultConfig.rules.chineseSubtitleRules.some(tag =>
-      name.toLowerCase().includes(tag.toLowerCase()),
-    )
-
-    if (isChineseSub) {
+    if (isChinese) {
       hasChineseTag.value = true
     }
 
-    // 推入列表
     torrentList.value.push({
       url,
       name,
@@ -105,28 +138,31 @@ function getTorrentList() {
       time,
       tags,
     })
-  })
+  }
 
-  // 8. 安全插入容器（一次性插入，顺序不乱）
-  const targetSelector = '.grid.grid-cols-2.md\\:grid-cols-3.xl\\:grid-cols-4.gap-5'
+  const inserted = insertHtml(
+    DETAILS_PAGE_DOM.ui.mount,
+    `
+      <div id="TorrentList"></div>
+      <div id="OnlinePlay"></div>
+    `,
+  )
 
-  const inserted = insertHtml(targetSelector, `
-    <div id="TorrentList"></div>
-    <div id="OnlinePlay"></div>
-  `)
-
-  // 插入成功后再显示
   if (inserted) {
     isShowTorrentList.value = true
     isShowOnlinePlay.value = true
   }
 }
 
-/**
- * 主逻辑
- */
+/* =========================================================
+ *                    主逻辑
+ * ========================================================= */
+
 function main() {
-  const videoName = $('h1.text-base.lg\\:text-lg.text-nord6')?.textContent.split(' ')[0] ?? ''
+  const videoName
+    = $(DETAILS_PAGE_DOM.video.titleSelector)
+      ?.textContent
+      ?.split(' ')[0] ?? ''
 
   const cleanName = cleanVideoName(videoName)
 
@@ -134,25 +170,30 @@ function main() {
     return
   }
 
-  const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
+  const folderMatchedVideos
+    = adultStore.getFolderMatchedVideoList(cleanName)
 
-  if (folderMatchedVideos.length === 0) {
+  if (!folderMatchedVideos.length) {
     return
   }
 
-  const targetElement = $('.relative.-mx-4.sm\\:m-0.-mt-6')
+  const targetElement
+    = $(DETAILS_PAGE_DOM.highlight.selector)
 
-  // const targetElement = $('.flex-1.order-first')
+  targetElement?.classList.add(
+    DETAILS_PAGE_DOM.highlight.class,
+  )
 
-  targetElement?.classList.add('is-highlight')
-
-  // 使用共享函数创建匹配结果
   detailsPageMatchResult.value = createMatchResult(
     cleanName,
     folderMatchedVideos,
     hasChineseTag.value,
   )
 }
+
+/* =========================================================
+ *                    生命周期
+ * ========================================================= */
 
 onMounted(() => {
   delayRun(() => {
@@ -163,44 +204,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- 自定义磁链列表 -->
-  <AdultTorrent
-    v-if="isShowTorrentList"
-    to="#TorrentList"
+  <AdultDetailsPage
+    :details-page-match-result="detailsPageMatchResult"
     :torrent-list="torrentList"
   />
-
-  <div
-    v-if="detailsPageMatchResult.folderMatchedVideos.length > 0 "
-    class="fixed left-2 top-60 !w-70"
-  >
-    <div
-      class="h-auto w-full flex flex-col items-center border border-gray-200 rounded-lg bg-white p-3 space-y-4"
-    >
-      <section
-        class="w-full space-y-2"
-      >
-        <AdultInventory
-          v-for="file in detailsPageMatchResult.folderMatchedVideos"
-          :key="file.id"
-          :file="file"
-        />
-      </section>
-
-      <section
-        class="grid grid-cols-2 h-15 w-full gap-2 [&>*:last-child:nth-child(1)]:col-span-2"
-      >
-        <AdultChinese
-          v-if="detailsPageMatchResult.isShowUpdateChinese"
-        />
-
-        <AdultEmby
-          :video-name="detailsPageMatchResult.cleanName"
-        />
-
-      </section>
-    </div>
-  </div>
 </template>
 
 <style lang="scss" scoped></style>

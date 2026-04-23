@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-
 import { onMounted, ref } from 'vue'
 
 import { useAdultPageMatch } from '@/composables/useAdultPageMatch'
@@ -10,110 +9,122 @@ import { useAdultPageMatch } from '@/composables/useAdultPageMatch'
 const adultStore = useAdultStore()
 
 /**
- * 页面上匹配到的视频结果列表
+ * 页面匹配结果列表
  */
-const listPageMatchResults = ref<AdultType.ListPageMatchResultList>([])
+const listPageAllVideoBoxes
+  = ref<AdultType.ListPageMatchResultList>([])
 
 /**
- * 导入共享逻辑
+ * 工具函数
  */
-const { cleanVideoName, createMatchResult } = useAdultPageMatch()
+const { cleanVideoName, createMatchResult }
+  = useAdultPageMatch()
 
-function main() {
-  // 获取所有视频项
-  $$('div.thumbnail.group').forEach((item) => {
-    const videoName = $(item, '.text-secondary.group-hover\\:text-primary')?.textContent.trim().split(' ')[0] ?? ''
+/* =========================================================
+ *                  DOM 配置（统一结构）
+ * ========================================================= */
+
+const LIST_PAGE_DOM = {
+  item: {
+    selector: 'div.thumbnail.group',
+  },
+
+  video: {
+    nameSelector:
+      '.text-secondary.group-hover\\:text-primary',
+  },
+
+  tag: {
+    chineseSelector: 'a.text-secondary',
+    keyword: 'chinese-subtitle',
+  },
+
+  highlight: {
+    class: 'is-highlight',
+  },
+}
+
+/* =========================================================
+ *                  视频名称解析
+ * ========================================================= */
+
+function getVideoName(item: Element): string {
+  return (
+    $(item, LIST_PAGE_DOM.video.nameSelector)
+      ?.textContent
+      ?.trim()
+      ?.split(' ')[0] ?? ''
+  )
+}
+
+/* =========================================================
+ *                  主逻辑
+ * ========================================================= */
+
+function buildMatchResultList() {
+  const result: AdultType.ListPageMatchResultList = []
+
+  const items = $$(LIST_PAGE_DOM.item.selector)
+
+  for (const item of items) {
+    const videoName = getVideoName(item)
 
     const cleanName = cleanVideoName(videoName)
 
-    const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
-
-    if (folderMatchedVideos.length === 0) {
-      return
+    if (!cleanName) {
+      continue
     }
 
-    const teleportTarget = `${cleanName}_${getRandomNumber()}`
+    const hasChineseTag = !!$<HTMLAnchorElement>(
+      item,
+      LIST_PAGE_DOM.tag.chineseSelector,
+    )?.href?.includes(LIST_PAGE_DOM.tag.keyword)
 
-    const targetElement = item
+    const folderMatchedVideos
+      = adultStore.getFolderMatchedVideoList(cleanName)
 
-    // 添加样式类
-    if (isElementExists(targetElement)) {
-      targetElement.classList.add('is-highlight')
-      targetElement.classList.add(teleportTarget)
+    const teleportTarget
+      = `${cleanName}_${getRandomNumber()}`
+
+    if (item) {
+      item.classList.add(teleportTarget)
+
+      if (folderMatchedVideos.length) {
+        item.classList.add(LIST_PAGE_DOM.highlight.class)
+      }
     }
 
-    // 检查是否有中文字幕标签
-    const hasChineseTag = !!$<HTMLAnchorElement>(item, 'a.text-secondary')?.href?.includes('chinese-subtitle')
-
-    // 创建匹配结果项
-    const matchResultItem = createMatchResult(
-      cleanName,
-      folderMatchedVideos,
-      hasChineseTag,
-      teleportTarget,
+    result.push(
+      createMatchResult(
+        cleanName,
+        folderMatchedVideos,
+        hasChineseTag,
+        teleportTarget,
+      ),
     )
+  }
 
-    listPageMatchResults.value.push(matchResultItem)
-    console.log('🚀 ~ file: missavListPage.vue:60 ~ listPageMatchResults.value:', listPageMatchResults.value)
-  })
+  return result
 }
 
-onMounted(() => delayRun(main))
+/**
+ * 主逻辑
+ */
+function main() {
+  listPageAllVideoBoxes.value = buildMatchResultList()
+}
 
+/* =========================================================
+ *                  生命周期
+ * ========================================================= */
+
+onMounted(() => delayRun(main))
 </script>
 
 <template>
-
-  <template
-    v-for="matchResult in listPageMatchResults"
-    :key="matchResult.teleportTarget"
-  >
-    <Teleport
-      v-if="matchResult.folderMatchedVideos.length "
-      :to="`.${matchResult.teleportTarget}`"
-    >
-      <!-- 事件处理包装器 -->
-      <div
-        class="teleport-wrapper"
-        style="pointer-events: auto;"
-        @click="preventEvent"
-        @mousedown="preventEvent"
-        @mouseup="preventEvent"
-        @pointerdown="preventEvent"
-        @pointerup="preventEvent"
-      >
-        <div
-          class="h-auto w-full flex flex-col items-center border border-gray-200 rounded-lg bg-white p-3 space-y-4"
-        >
-          <section
-            class="w-full space-y-2"
-          >
-            <AdultInventory
-              v-for="file in matchResult.folderMatchedVideos"
-              :key="file.id"
-              :file="file"
-            />
-          </section>
-
-          <section
-            class="grid grid-cols-2 h-15 w-full gap-2 [&>*:last-child:nth-child(1)]:col-span-2"
-          >
-            <AdultChinese
-              v-if="matchResult.isShowUpdateChinese"
-            />
-
-            <AdultEmby
-              :video-name="matchResult.cleanName"
-            />
-
-          </section>
-        </div>
-
-      </div>
-    </Teleport>
-  </template>
-
+  <AdultListPage
+    :list="listPageAllVideoBoxes"
+  />
 </template>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
