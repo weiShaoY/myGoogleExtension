@@ -33,14 +33,6 @@ const currentRoute = computed<RouterType.Route | undefined>(() => {
   return findTopRouteByPath(route.path, menuList)
 })
 
-console.log('🚀 ~ file: index.vue:37 ~ currentRoute:', currentRoute.value)
-
-/**
-   *  刷新
-   */
-function refresh() {
-  window.location.reload()
-}
 </script>
 
 <template>

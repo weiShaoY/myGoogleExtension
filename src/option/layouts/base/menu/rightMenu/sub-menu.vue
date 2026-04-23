@@ -23,7 +23,7 @@ type Props = {
   /**
    *  菜单
    */
-  menuList?: any[]
+  menuList?: RouterType.Route[]
 
   /**
    *  菜单等级

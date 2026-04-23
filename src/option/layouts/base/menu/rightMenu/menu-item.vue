@@ -8,7 +8,7 @@ type Props = {
   /**
    *  菜单项
    */
-  menu: any
+  menu: RouterType.Route
 
 }
 
