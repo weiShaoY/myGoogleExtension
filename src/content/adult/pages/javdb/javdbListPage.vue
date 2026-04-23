@@ -32,7 +32,7 @@ function getVideoName(item: Element): string {
  * @returns {Element[]}
  */
 function getMovieItems(): Element[] {
-  return Array.from($$('.movie-list .item'))
+  return Array.from($$('.movie-list .item .box'))
 }
 
 /**
@@ -55,8 +55,6 @@ function buildMatchResultList(): AdultType.ListPageMatchResultList {
     // 👉 DOM 查询统一
     const warningEl = $(item, '.is-warning')
 
-    const box = asHTMLElement($(item, '.box'))
-
     // 👉 状态
     const hasChineseTag = isElementExists(warningEl)
 
@@ -65,11 +63,11 @@ function buildMatchResultList(): AdultType.ListPageMatchResultList {
     const teleportTarget = `video_${cleanName}`
 
     // 👉 DOM 操作
-    if (box) {
-      box.classList.add(teleportTarget)
+    if (item) {
+      item.classList.add(teleportTarget)
 
       if (folderMatchedVideos.length) {
-        box.classList.add('is-highlight')
+        item.classList.add('is-highlight')
       }
     }
 
