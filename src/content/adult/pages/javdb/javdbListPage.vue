@@ -1,6 +1,4 @@
-<!------------------------------------  JavDB 列表页面  ------------------------------------------------->
 <script setup lang="ts">
-
 import { onMounted, ref } from 'vue'
 
 import { useJavdbMatch } from '@/composables/useJavdbMatch'
@@ -11,7 +9,7 @@ import { useJavdbMatch } from '@/composables/useJavdbMatch'
 const adultStore = useAdultStore()
 
 /**
- *  页面所有视频列表盒子
+ * 页面所有视频列表盒子
  */
 const listPageAllVideoBoxes = ref<AdultType.ListPageMatchResultList>([])
 
@@ -21,55 +19,85 @@ const listPageAllVideoBoxes = ref<AdultType.ListPageMatchResultList>([])
 const { cleanVideoName, createMatchResult } = useJavdbMatch()
 
 /**
- * 处理页面主要逻辑
- * 遍历电影列表，匹配本地视频文件
+ * 获取标题
+ * @param {Element} item
+ * @returns {string}
  */
-function main() {
-  $$('.movie-list .item').forEach((item) => {
-    const videoName = $(item, 'strong')?.textContent
+function getVideoName(item: Element): string {
+  return $(item, 'strong')?.textContent?.trim() || ''
+}
+
+/**
+ * 获取列表 DOM
+ * @returns {Element[]}
+ */
+function getMovieItems(): Element[] {
+  return Array.from($$('.movie-list .item'))
+}
+
+/**
+ * 构建匹配结果列表（优化版）
+ * @returns {AdultType.ListPageMatchResultList}
+ */
+function buildMatchResultList(): AdultType.ListPageMatchResultList {
+  const result: AdultType.ListPageMatchResultList = []
+
+  for (const item of getMovieItems()) {
+    // 👉 语义函数保留
+    const videoName = getVideoName(item)
 
     const cleanName = cleanVideoName(videoName)
 
     if (!cleanName) {
-      return
+      continue
     }
 
-    const teleportTarget = `${getRandomString()}_${cleanName}`
+    // 👉 DOM 查询统一
+    const warningEl = $(item, '.is-warning')
 
-    const targetElement = $(item, '.box')
+    const box = asHTMLElement($(item, '.box'))
 
-    // 检查是否有中文字幕标签
-    const hasChineseTag = isElementExists($(item, '.is-warning'))
+    // 👉 状态
+    const hasChineseTag = isElementExists(warningEl)
 
     const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
 
-    // 添加样式类
-    if (isElementExists(targetElement)) {
-      //  与详情页不同, 列表页 每个视频都有一个teleportTarget 不是匹配上才添加
-      targetElement.classList.add(teleportTarget)
+    const teleportTarget = `video_${cleanName}`
+
+    // 👉 DOM 操作
+    if (box) {
+      box.classList.add(teleportTarget)
+
       if (folderMatchedVideos.length) {
-        targetElement.classList.add('is-highlight')
+        box.classList.add('is-highlight')
       }
     }
 
-    // 创建匹配结果项
-    const matchResultItem = createMatchResult(
-      cleanName,
-      folderMatchedVideos,
-      hasChineseTag,
-      teleportTarget,
+    // 👉 收集结果
+    result.push(
+      createMatchResult(
+        cleanName,
+        folderMatchedVideos,
+        hasChineseTag,
+        teleportTarget,
+      ),
     )
+  }
 
-    listPageAllVideoBoxes.value.push(matchResultItem)
-  })
-  console.log('🚀 ~ file: javdbListPage.vue:73 ~ listPageMatchResults.value:', listPageAllVideoBoxes.value)
+  return result
+}
+
+/**
+ * 主逻辑
+ */
+function main() {
+  listPageAllVideoBoxes.value = buildMatchResultList()
 }
 
 onMounted(() => delayRun(main))
 </script>
 
 <template>
-
   <template
     v-for="item in listPageAllVideoBoxes"
     :key="item.teleportTarget"
@@ -77,7 +105,7 @@ onMounted(() => delayRun(main))
     <Teleport
       :to="`.${item.teleportTarget}`"
     >
-      <!-- 事件处理包装器 -->
+      <!-- 阻止事件冒泡 -->
       <div
         class="teleport-wrapper"
         style="pointer-events: auto"
@@ -87,13 +115,14 @@ onMounted(() => delayRun(main))
         @pointerdown="preventEvent"
         @pointerup="preventEvent"
       >
+        <!-- 卡片主体 -->
         <div
           class="h-auto w-full flex flex-col items-center border border-gray-200 rounded-lg bg-white p-3 space-y-4"
         >
+          <!-- 操作区 -->
           <div
             class="w-full flex items-center justify-start gap-2"
           >
-
             <SitePlayButton
               :video-name="item.cleanName"
               site="javdb"
@@ -125,6 +154,7 @@ onMounted(() => delayRun(main))
             />
           </div>
 
+          <!-- 文件信息 -->
           <template
             v-if="item.folderMatchedVideos.length"
           >
@@ -144,4 +174,8 @@ onMounted(() => delayRun(main))
   </template>
 </template>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.teleport-wrapper {
+  pointer-events: auto;
+}
+</style>
