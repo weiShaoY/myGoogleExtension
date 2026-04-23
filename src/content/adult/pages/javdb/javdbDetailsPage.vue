@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-
 import { onMounted, ref } from 'vue'
 
 import { AdultConfig } from '@/configs'
@@ -25,12 +24,12 @@ const isShowTorrentList = ref<boolean>(false)
 const torrentList = ref<AdultType.TorrentItem[]>([])
 
 /**
- *  页面视频名称
+ * 页面视频名称
  */
 const pageVideoName = ref<string>('')
 
 /**
- * 工具
+ * 工具函数
  */
 const { cleanVideoName, createMatchResult } = useAdultPageMatch()
 
@@ -43,25 +42,91 @@ const detailsPageMatchResult = ref<AdultType.DetailsPageMatchResult>({
   folderMatchedVideos: [],
 })
 
+/* =========================================================
+ *                  详情页 DOM 配置对象
+ * ========================================================= */
+
+const DETAILS_PAGE_DOM = {
+  highlight: {
+    class: 'is-highlight',
+    selector: '.video-meta-panel',
+  },
+
+  /**
+   * 磁链模块
+   */
+  torrent: {
+    /**
+     * 容器
+     */
+    container: '#magnets-content',
+
+    /**
+     * item
+     */
+
+    item: '.columns',
+
+    /**
+     * 下载链接
+     */
+    url: '.copy-to-clipboard',
+
+    /**
+     * 名称
+     */
+
+    name: '.name',
+
+    /**
+     * 时间
+     */
+
+    time: '.time',
+
+    /**
+     * 大小
+     */
+    size: '.meta',
+
+    /**
+     * * 插入容器
+     */
+    mount: '.no-bottom',
+  },
+}
+
 /**
- * 磁链处理
+ * 获取标题
  */
+function getVideoName(): string {
+  return $('.video-detail strong')?.textContent || ''
+}
+
+/* =========================================================
+ *                    磁链解析
+ * ========================================================= */
+
 function getTorrentList() {
-  // 1. 清空数据（防止重复追加）
   torrentList.value = []
+
   hasChineseTag.value = false
 
-  // 2. 获取容器并校验
-  const magnetsContent = $('#magnets-content')
+  const magnetsContent
+
+    = $(DETAILS_PAGE_DOM.torrent.container)
 
   if (!magnetsContent?.children.length) {
     console.warn('未找到磁链区域或内容为空')
+
     return
   }
 
-  // 3. 转数组遍历
+  const items = Array.from(
 
-  const items = Array.from($$(magnetsContent, '.columns'))
+    $$(magnetsContent, DETAILS_PAGE_DOM.torrent.item),
+
+  )
 
   const list: AdultType.TorrentItem[] = []
 
@@ -72,51 +137,88 @@ function getTorrentList() {
       continue
     }
 
-    const url = $(item, '.copy-to-clipboard')?.dataset.clipboardText || ''
+    const url
+
+      = $(item, DETAILS_PAGE_DOM.torrent.url)
+
+        ?.dataset
+        .clipboardText || ''
 
     if (!url) {
       continue
     }
 
-    const name = $(item, '.name')?.textContent?.trim() || ''
+    const name
 
-    const time = $(item, '.time')?.textContent?.trim() || ''
+      = $(item, DETAILS_PAGE_DOM.torrent.name)
 
-    const sizeText = $(item, '.meta')?.textContent?.trim() || ''
+        ?.textContent
+        ?.trim() || ''
+
+    const time
+
+      = $(item, DETAILS_PAGE_DOM.torrent.time)
+
+        ?.textContent
+        ?.trim() || ''
+
+    const sizeText
+
+      = $(item, DETAILS_PAGE_DOM.torrent.size)
+
+        ?.textContent
+        ?.trim() || ''
 
     const size = parseFileSizeToGB(sizeText)
 
     const tags = getVideoTagsFromName(name)
 
-    const isChinese = AdultConfig.rules.chineseSubtitleRules.some(tag =>
-      name.toLowerCase().includes(tag.toLowerCase()),
-    )
+    const isChinese
+
+      = AdultConfig.rules.chineseSubtitleRules.some(tag =>
+
+        name.toLowerCase().includes(tag.toLowerCase()),
+
+      )
 
     if (isChinese) {
       hasChineseTag.value = true
     }
 
     list.push({
+
       url,
+
       name,
+
       size,
+
       time,
+
       tags,
+
     })
   }
 
   torrentList.value = list
 
-  const ok = insertHtml('.no-bottom', '<div id="TorrentList"></div>')
+  insertHtml(
 
-  isShowTorrentList.value = ok
+    DETAILS_PAGE_DOM.torrent.mount,
+
+    '<div id="TorrentList"></div>',
+
+  )
+
+  isShowTorrentList.value = true
 }
 
-/**
- * 主逻辑
- */
+/* =========================================================
+ *                    主逻辑
+ * ========================================================= */
+
 function main() {
-  const videoName = $('.video-detail strong')?.textContent
+  const videoName = getVideoName()
 
   const cleanName = cleanVideoName(videoName)
 
@@ -132,11 +234,10 @@ function main() {
     return
   }
 
-  const targetElement = $('.video-meta-panel')
+  const highlightElement = $(DETAILS_PAGE_DOM.highlight.selector)
 
-  targetElement?.classList.add('is-highlight')
+  highlightElement?.classList.add(DETAILS_PAGE_DOM.highlight.class)
 
-  // 使用共享函数创建匹配结果
   detailsPageMatchResult.value = createMatchResult(
     cleanName,
     folderMatchedVideos,
@@ -144,24 +245,23 @@ function main() {
   )
 }
 
+/* =========================================================
+ *                    生命周期
+ * ========================================================= */
+
 onMounted(() => {
   delayRun(() => {
     getTorrentList()
-
     main()
   })
 })
 </script>
 
 <template>
-
   <AdultDetailsPage
     :details-page-match-result="detailsPageMatchResult"
     :torrent-list="torrentList"
   />
-
 </template>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
