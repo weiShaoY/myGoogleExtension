@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
-import { useJavdbMatch } from '@/composables/useJavdbMatch'
+import { useAdultPageMatch } from '@/composables/useJavdbMatch'
 
 /**
  * 文件夹存储
@@ -19,7 +19,7 @@ const CHINESE_TAG_SELECTOR = '.btn-warning'
 
 const LIST_PAGE_VIDEO_ITEM_SELECTOR = '#waterfall .movie-box'
 
-const { cleanVideoName, createMatchResult } = useJavdbMatch()
+const { cleanVideoName, createMatchResult } = useAdultPageMatch()
 
 function getVideoName(item: Element): string {
   return item

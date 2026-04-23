@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
-import { useJavdbMatch } from '@/composables/useJavdbMatch'
+import { useAdultPageMatch } from '@/composables/useJavdbMatch'
 
 /**
  * 文件夹存储
@@ -28,7 +28,7 @@ const HIGHLIGHT_CLASS = 'is-highlight'
 /**
  * 导入共享逻辑
  */
-const { cleanVideoName, createMatchResult } = useJavdbMatch()
+const { cleanVideoName, createMatchResult } = useAdultPageMatch()
 
 /**
  * 中文磁链状态标记选择器

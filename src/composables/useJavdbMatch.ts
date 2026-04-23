@@ -1,9 +1,9 @@
 /**
- * JavDB 视频匹配相关组合式函数
- * @description 封装 JavDB 页面与本地视频匹配的核心逻辑、工具方法
+ * 成人网站 视频匹配相关组合式函数
+ * @description 封装成人网站 页面与本地视频匹配的核心逻辑、工具方法
  * @returns  包含匹配相关的事件处理、结果创建、元素校验方法
  */
-export function useJavdbMatch() {
+export function useAdultPageMatch() {
   /**
    * 清洗视频名称：小写 + 去空格
    */

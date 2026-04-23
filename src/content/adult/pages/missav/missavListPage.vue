@@ -2,7 +2,7 @@
 
 import { onMounted, ref } from 'vue'
 
-import { useJavdbMatch } from '@/composables/useJavdbMatch'
+import { useAdultPageMatch } from '@/composables/useJavdbMatch'
 
 /**
  * 文件夹存储
@@ -17,7 +17,7 @@ const listPageMatchResults = ref<AdultType.ListPageMatchResultList>([])
 /**
  * 导入共享逻辑
  */
-const { cleanVideoName, createMatchResult } = useJavdbMatch()
+const { cleanVideoName, createMatchResult } = useAdultPageMatch()
 
 function main() {
   // 获取所有视频项
