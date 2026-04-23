@@ -40,7 +40,7 @@ export const useAdultStore = defineStore(
     function getFolderMatchedVideoList(cleanName: string) {
       const list = embyFolder.value.folderVideoFiles ?? []
 
-      if (!list.length || !cleanName) {
+      if (!cleanName || !list.length) {
         return []
       }
 

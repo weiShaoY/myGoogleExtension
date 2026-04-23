@@ -26,7 +26,15 @@ export const routes: RouterType.Route[] = [
           icon: 'option-menu-scanner',
         },
       },
-
+      {
+        path: 'folder',
+        name: 'EmbyFolder',
+        component: () => import('@/option/pages/emby/folder/index.vue'),
+        meta: {
+          title: '文件夹',
+          icon: 'option-menu-folder',
+        },
+      },
       {
         path: 'duplicate',
         name: 'EmbyDuplicate',
@@ -57,13 +65,25 @@ export const routes: RouterType.Route[] = [
           },
         ],
       },
+
+    ],
+  },
+  {
+    // 网站相关
+    path: '/site',
+    name: 'Site',
+    meta: {
+      title: '网站',
+      icon: 'option-menu-site',
+    },
+    children: [
       {
-        path: 'folder',
-        name: 'EmbyFolder',
-        component: () => import('@/option/pages/emby/folder/index.vue'),
+        path: 'javDb',
+        name: 'SiteJavDb',
+        component: () => import('@/option/pages/site/javDb/index.vue'),
         meta: {
-          title: '文件夹',
-          icon: 'option-menu-folder',
+          title: 'JavDB',
+          icon: 'option-menu-javDB',
         },
       },
     ],

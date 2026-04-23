@@ -59,7 +59,7 @@ type AdultConfigType = {
     /**
      * 站点图标标识
      * @description 用于 UI 图标渲染（通常对应 SvgIcon key）
-     * @example "content-adult-site-javdb"
+     * @example "content-adult-site-javDB"
      */
     icon: string
 
@@ -149,7 +149,7 @@ export const AdultConfig: AdultConfigType = {
     {
       isVisible: true,
       name: 'JavDB',
-      icon: 'adult-site-javdb',
+      icon: 'adult-site-javDB',
       hostname: 'javdb.com',
       searchUrl: '/search?q={{code}}',
 
