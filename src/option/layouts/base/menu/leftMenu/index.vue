@@ -72,7 +72,7 @@ const currentRoute = computed<RouterType.Route | undefined>(() => {
           :disabled="dualMenuShowText"
         >
           <div
-            class="aspect-square flex flex-col items-center justify-center rounded-md text-center transition-all duration-300 hover:cursor-pointer"
+            class="aspect-square flex flex-col items-center justify-center rounded-md text-center transition-all duration-300 hover:cursor-pointer hover:bg-[#eef3ff] hover:text-primary"
             :class="[
               currentRoute?.path === menu.path ? 'bg-[#eef3ff] text-primary' : '',
               dualMenuShowText ? 'w-[80%]' : 'w-[70%]',
