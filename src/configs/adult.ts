@@ -167,7 +167,7 @@ export const AdultConfig: AdultConfigType = {
       isVisible: true,
       name: 'MISSAV',
       icon: 'adult-site-missAv',
-      hostname: 'missav.ws',
+      hostname: 'missav.ai',
       searchUrl: '/{{code}}/',
     },
   ],
@@ -206,23 +206,23 @@ export const AdultConfig: AdultConfigType = {
     torrentTagRules: [
       {
         names: ['-c', '-C', '_ch', '-UC', '中文'],
-        icon: 'content-adult-tag-ziMu',
+        icon: 'adult-tag-ziMu',
       },
       {
         names: ['4K'],
-        icon: 'content-adult-tag-4k',
+        icon: 'adult-tag-4k',
       },
       {
         names: ['无码'],
-        icon: 'content-adult-tag-wuMa',
+        icon: 'adult-tag-wuMa',
       },
       {
         names: ['破解'],
-        icon: 'content-adult-tag-poJie',
+        icon: 'adult-tag-poJie',
       },
       {
         names: ['流出'],
-        icon: 'content-adult-tag-liuChu',
+        icon: 'adult-tag-liuChu',
       },
     ],
 

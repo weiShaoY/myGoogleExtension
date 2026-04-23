@@ -298,7 +298,7 @@ const sortedTorrentList = computed(() => {
                 @click="copyTorrentUrl(torrent)"
               >
                 <SvgIcon
-                  icon="content-adult-torrent-copy"
+                  icon="adult-torrent-copy"
                 />
               </button> -->
 
@@ -311,7 +311,7 @@ const sortedTorrentList = computed(() => {
                   class="absolute bottom-1 left-1 top-1 h-11 w-11 flex items-center justify-center rounded-lg bg-white p-2 text-slate-950 shadow-sm transition-all duration-300 group-active:rotate-90 group-hover:rotate-180"
                 >
                   <SvgIcon
-                    icon="content-adult-torrent-copy"
+                    icon="adult-torrent-copy"
                   />
                 </div>
 

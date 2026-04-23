@@ -8,12 +8,12 @@
     class="h-15 w-full flex items-center justify-around gap-5 rounded-2 bg-[#ffe52a] text-4 text-amber font-bold"
   >
     <SvgIcon
-      icon="content-adult-setting-update"
+      icon="adult-update"
       :size="30"
     />
 
     <SvgIcon
-      icon="content-adult-setting-chinese"
+      icon="adult-chinese"
       :size="30"
     />
   </div>

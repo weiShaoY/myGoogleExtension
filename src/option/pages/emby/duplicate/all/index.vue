@@ -85,6 +85,8 @@ function handleClickCopyPath(row: AdultType.VideoFile) {
       <!-- 标签 -->
       <el-table-column
         label="视频标签"
+        prop="tags"
+        sortable
         width="160"
       >
         <template

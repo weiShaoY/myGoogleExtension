@@ -15,11 +15,6 @@ const adultStore = useAdultStore()
 const hasChineseTag = ref<boolean>(false)
 
 /**
- * 是否网站播放组件
- */
-const isShowSitePlay = ref<boolean>(false)
-
-/**
  * 是否显示自定义磁链列表
  */
 const isShowTorrentList = ref<boolean>(false)
@@ -131,14 +126,6 @@ function main() {
     return
   }
 
-  const ok = insertHtml(
-    '.panel.movie-panel-info',
-    '<div id="SitePlay"></div>',
-    'beforeend',
-  )
-
-  isShowSitePlay.value = ok
-
   const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
 
   if (!folderMatchedVideos.length) {
@@ -162,8 +149,6 @@ onMounted(() => {
     getTorrentList()
 
     main()
-
-    console.log('🚀 ~ file: javdbDetailsPage.vue:160 ~ detailsPageMatchResult.value:', detailsPageMatchResult.value)
   })
 })
 </script>
@@ -171,12 +156,46 @@ onMounted(() => {
 <template>
   <!-- 侧边栏 -->
   <div
-    v-if="detailsPageMatchResult.folderMatchedVideos.length"
-    class="fixed left-2 top-60 box-border !w-70"
+    class="fixed left-2 top-60 box-border !w-90"
   >
     <div
       class="h-auto w-full flex flex-col items-center border border-gray-200 rounded-lg bg-white p-3 space-y-4"
     >
+      <div
+        class="w-full flex items-center justify-start gap-2"
+      >
+
+        <SitePlayButton
+          :video-name="pageVideoName"
+          site="javdb"
+          :size="60"
+        />
+
+        <SitePlayButton
+          :video-name="pageVideoName"
+          site="javBus"
+          :size="60"
+        />
+
+        <SitePlayButton
+          :video-name="pageVideoName"
+          site="missAv"
+          :size="60"
+        />
+
+        <SitePlayButton
+          v-if="detailsPageMatchResult.folderMatchedVideos.length"
+          :video-name="detailsPageMatchResult.cleanName"
+          site="emby"
+          :size="60"
+        />
+
+        <AdultThumbnail
+          :video-name="pageVideoName"
+          :size="60"
+        />
+      </div>
+
       <AdultChinese
         v-if="detailsPageMatchResult.isShowUpdateChinese"
       />
@@ -188,47 +207,6 @@ onMounted(() => {
       />
     </div>
   </div>
-
-  <!-- 网站↑组件 -->
-  <Teleport
-    v-if="isShowSitePlay && pageVideoName"
-    to="#SitePlay"
-  >
-    <div
-      class="ml-5 mt-5 w-full flex items-center gap-4"
-    >
-
-      <SitePlayButton
-        :video-name="pageVideoName"
-        site="javdb"
-        :size="60"
-      />
-
-      <SitePlayButton
-        :video-name="pageVideoName"
-        site="javBus"
-        :size="60"
-      />
-
-      <SitePlayButton
-        :video-name="pageVideoName"
-        site="missAv"
-        :size="60"
-      />
-
-      <SitePlayButton
-        v-if="detailsPageMatchResult.folderMatchedVideos.length"
-        :video-name="detailsPageMatchResult.cleanName"
-        site="emby"
-        :size="60"
-      />
-
-      <AdultThumbnail
-        :video-name="pageVideoName"
-        :size="60"
-      />
-    </div>
-  </Teleport>
 
   <!-- 自定义磁链列表 -->
   <AdultTorrent
