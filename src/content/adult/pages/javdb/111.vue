@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
-import { useAdultPageMatch } from '@/composables/useJavdbMatch'
+import { useAdultPageMatch } from '@/composables/useAdultPageMatch'
 
 /**
  * 文件夹存储

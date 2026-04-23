@@ -29,7 +29,7 @@ const torrentList = ref<AdultType.TorrentItem[]>([])
 /**
  * 导入共享逻辑
  */
-const { cleanVideoName, createMatchResult } = useJavdbMatch()
+const { cleanVideoName, createMatchResult } = useAdultPageMatch()
 
 /**
  * 详情页匹配结果

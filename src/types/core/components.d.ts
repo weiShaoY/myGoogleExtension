@@ -12,6 +12,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AdultChinese: typeof import('./../../components/Adult/adult-chinese.vue')['default']
+    AdultDetailsPage: typeof import('./../../components/Adult/adult-details-page.vue')['default']
     AdultEmby: typeof import('./../../components/Adult/adult-emby.vue')['default']
     AdultInventory: typeof import('./../../components/Adult/adult-inventory.vue')['default']
     AdultListPage: typeof import('./../../components/Adult/adult-list-page.vue')['default']

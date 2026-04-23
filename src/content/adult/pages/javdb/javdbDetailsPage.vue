@@ -32,7 +32,7 @@ const pageVideoName = ref<string>('')
 /**
  * 工具
  */
-const { cleanVideoName, createMatchResult } = useJavdbMatch()
+const { cleanVideoName, createMatchResult } = useAdultPageMatch()
 
 /**
  * 详情页匹配结果
@@ -154,64 +154,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- 侧边栏 -->
-  <div
-    class="fixed left-2 top-60 box-border !w-90"
-  >
-    <div
-      class="h-auto w-full flex flex-col items-center border border-gray-200 rounded-lg bg-white p-3 space-y-4"
-    >
-      <div
-        class="w-full flex items-center justify-start gap-2"
-      >
 
-        <SitePlayButton
-          :video-name="pageVideoName"
-          site="javdb"
-          :size="60"
-        />
-
-        <SitePlayButton
-          :video-name="pageVideoName"
-          site="javBus"
-          :size="60"
-        />
-
-        <SitePlayButton
-          :video-name="pageVideoName"
-          site="missAv"
-          :size="60"
-        />
-
-        <SitePlayButton
-          v-if="detailsPageMatchResult.folderMatchedVideos.length"
-          :video-name="detailsPageMatchResult.cleanName"
-          site="emby"
-          :size="60"
-        />
-
-        <AdultThumbnail
-          :video-name="pageVideoName"
-          :size="60"
-        />
-      </div>
-
-      <AdultChinese
-        v-if="detailsPageMatchResult.isShowUpdateChinese"
-      />
-
-      <AdultInventory
-        v-for="file in detailsPageMatchResult.folderMatchedVideos"
-        :key="file.id"
-        :file="file"
-      />
-    </div>
-  </div>
-
-  <!-- 自定义磁链列表 -->
-  <AdultTorrent
-    v-if="isShowTorrentList"
-    to="#TorrentList"
+  <AdultDetailsPage
+    :details-page-match-result="detailsPageMatchResult"
     :torrent-list="torrentList"
   />
 
