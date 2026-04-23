@@ -43,6 +43,7 @@ declare module 'vue' {
     IconLoading: typeof import('./../../components/Loading/icon-loading.vue')['default']
     LinkButton: typeof import('./../../components/Button/link-button/index.vue')['default']
     PageLoading: typeof import('./../../components/Loading/page-loading.vue')['default']
+    RefreshButton: typeof import('./../../components/Button/refresh-button/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SiteButton: typeof import('./../../components/Button/site-button/index.vue')['default']

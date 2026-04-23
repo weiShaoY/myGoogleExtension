@@ -6,8 +6,6 @@
 
 import Adult from './adult/index.vue'
 
-import Refresh from './refresh/index.vue'
-
 // import Search from './search/index.vue'
 
 import Test from './test.vue'
@@ -25,15 +23,17 @@ onMounted(() => {
 
   <AppProvider>
 
-    <Adult />
-
-    <!-- <Search /> -->
-
     <Test
       v-if="AppConfig.isShowTest"
     />
 
-    <Refresh />
+    <Adult />
+
+    <!-- <Search /> -->
+
+    <RefreshButton
+      class="fixed bottom-2 left-2"
+    />
 
   </AppProvider>
 

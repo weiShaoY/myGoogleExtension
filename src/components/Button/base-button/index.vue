@@ -10,6 +10,7 @@ const props = withDefaults(defineProps<Props>(), {
   class: '',
   icon: '',
   size: 40,
+  iconSize: undefined, // ✅ 关键：默认不传才走自动计算
   tooltipContent: '',
   tooltipPlacement: 'bottom',
   loading: false,
@@ -38,8 +39,11 @@ type Props = {
   /** 文本内容 */
   text?: string
 
-  /** 图标大小 */
+  /** 按钮尺寸 */
   size?: number | string
+
+  /** 图标尺寸（优先级更高） */
+  iconSize?: number | string
 
   /** 图标额外的 class */
   iconClass?: string | Record<string, boolean> | Array<string | Record<string, boolean>>
@@ -50,13 +54,13 @@ type Props = {
   /** 提示框位置 */
   tooltipPlacement?: Placement
 
-  /** 层级 z-index */
+  /** 层级 */
   zIndex?: number
 
   /** 行内样式 */
   style?: CSSProperties
 
-  /** 是否显示加载中 */
+  /** 是否 loading */
   loading?: boolean
 
   /** 是否悬浮旋转 */
@@ -64,10 +68,11 @@ type Props = {
 }
 
 /**
- * 默认按钮样式（接近 el-button）
+ * 默认按钮样式
  */
 const DEFAULT_BUTTON_CLASS = [
-  'inline-flex items-center justify-center',
+  'flex items-center justify-center',
+  'box-border',
   'rounded-2',
   'border border-solid border-[#dcdfe6]',
   'bg-white',
@@ -91,23 +96,28 @@ const DEFAULT_BUTTON_CLASS = [
 const hasText = computed(() => !!props.text)
 
 /**
- * 容器尺寸
+ * 按钮尺寸
  */
 const computedSize = computed(() => parseSize(props.size))
 
 /**
- * 图标尺寸
+ * 图标尺寸（支持覆盖）
  */
-const computedIconSize = computed(() =>
-  subtractSize(props.size, ICON_SIZE_OFFSET),
-)
+const computedIconSize = computed(() => {
+  const { iconSize, size } = props
+
+  return iconSize != null
+    ? parseSize(iconSize)
+    : subtractSize(size, ICON_SIZE_OFFSET)
+})
 
 /**
- * 按钮 class
+ * 按钮 class（不再用 mergeClass，避免坑）
  */
-const computedButtonClass = computed(() =>
-  mergeClass(DEFAULT_BUTTON_CLASS, props.class),
-)
+const computedButtonClass = computed(() => [
+  DEFAULT_BUTTON_CLASS,
+  props.class,
+])
 
 /**
  * 图标 class
@@ -115,15 +125,28 @@ const computedButtonClass = computed(() =>
 const computedIconClass = computed(() => {
   const rotateClass = props.rotate
     ? 'hover:rotate-180 hover:transition-transform hover:duration-1000'
-    : ''
+    : undefined
 
-  return mergeClass(props.iconClass, rotateClass)
+  const list = []
+
+  if (props.iconClass) {
+    if (Array.isArray(props.iconClass)) {
+      list.push(...props.iconClass)
+    }
+    else {
+      list.push(props.iconClass)
+    }
+  }
+
+  if (rotateClass) {
+    list.push(rotateClass)
+  }
+
+  return list
 })
 
 /**
  * 行内样式
- * 👉 有 text → 宽度自适应
- * 👉 无 text → 固定正方形
  */
 const computedStyle = computed(() => {
   const base: CSSProperties = {
@@ -135,54 +158,61 @@ const computedStyle = computed(() => {
     base.width = computedSize.value
   }
 
-  return mergeStyle(base, props.style)
+  return Object.assign(base, props.style)
 })
 </script>
 
 <template>
-  <el-tooltip
-    :placement="tooltipPlacement"
-    :content="tooltipContent"
-    :z-index="zIndex"
-    :disabled="!tooltipContent"
+  <!-- ✅ 最外层 = 按钮（承载 fixed / absolute） -->
+  <div
+    :class="computedButtonClass"
+    :style="computedStyle"
+    @click="$emit('click', $event)"
   >
-    <div
-      :class="computedButtonClass"
-      :style="computedStyle"
-      @click="$emit('click', $event)"
+    <!-- ✅ tooltip 只包内容 -->
+    <el-tooltip
+      :placement="tooltipPlacement"
+      :content="tooltipContent"
+      :z-index="zIndex"
+      :disabled="!tooltipContent"
     >
-      <!-- loading 优先 -->
-      <template
-        v-if="loading"
+      <div
+        class="h-full w-full flex items-center justify-center"
       >
-        <IconLoading
-          :size="computedIconSize"
-        />
-      </template>
-
-      <template
-        v-else
-      >
-        <slot>
-          <!-- icon -->
-          <SvgIcon
-            v-if="icon"
-            :icon="icon"
-            :size="computedIconSize"
-            :class="computedIconClass"
-          />
-        </slot>
-
-        <!-- text -->
-        <span
-          v-if="text"
-          :class="mergeClass('text-4 font-bold', icon && 'ml-3')"
+        <!-- loading -->
+        <template
+          v-if="loading"
         >
-          {{ text }}
-        </span>
-      </template>
-    </div>
-  </el-tooltip>
+          <IconLoading
+            :size="computedIconSize"
+          />
+        </template>
+
+        <template
+          v-else
+        >
+          <slot>
+            <!-- icon -->
+            <SvgIcon
+              v-if="icon"
+              :icon="icon"
+              :size="computedIconSize"
+              :class="computedIconClass"
+            />
+          </slot>
+
+          <!-- text -->
+          <span
+            v-if="text"
+            class="text-4 font-bold"
+            :class="icon && 'ml-3'"
+          >
+            {{ text }}
+          </span>
+        </template>
+      </div>
+    </el-tooltip>
+  </div>
 </template>
 
 <style scoped lang="scss">
