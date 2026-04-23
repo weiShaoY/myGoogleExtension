@@ -19,6 +19,11 @@ const listPageAllVideoBoxes = ref<AdultType.ListPageMatchResultList>([])
 const { cleanVideoName, createMatchResult } = useJavdbMatch()
 
 /**
+ * 中文磁链标记选择器
+ */
+const CHINESE_TAG_SELECTOR = '.is-warning'
+
+/**
  * 获取标题
  * @param {Element} item
  * @returns {string}
@@ -53,10 +58,7 @@ function buildMatchResultList(): AdultType.ListPageMatchResultList {
     }
 
     // 👉 DOM 查询统一
-    const warningEl = $(item, '.is-warning')
-
-    // 👉 状态
-    const hasChineseTag = isElementExists(warningEl)
+    const hasChineseTag = isElementExists($(item, CHINESE_TAG_SELECTOR))
 
     const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
 
