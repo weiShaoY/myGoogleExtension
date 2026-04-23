@@ -24,11 +24,6 @@ const isShowTorrentList = ref<boolean>(false)
 const torrentList = ref<AdultType.TorrentItem[]>([])
 
 /**
- * 页面视频名称
- */
-const pageVideoName = ref<string>('')
-
-/**
  * 工具函数
  */
 const { cleanVideoName, createMatchResult } = useAdultPageMatch()
@@ -112,13 +107,10 @@ function getTorrentList() {
 
   hasChineseTag.value = false
 
-  const magnetsContent
-
-    = $(DETAILS_PAGE_DOM.torrent.container)
+  const magnetsContent = $(DETAILS_PAGE_DOM.torrent.container)
 
   if (!magnetsContent?.children.length) {
     console.warn('未找到磁链区域或内容为空')
-
     return
   }
 
@@ -186,28 +178,19 @@ function getTorrentList() {
     }
 
     list.push({
-
       url,
-
       name,
-
       size,
-
       time,
-
       tags,
-
     })
   }
 
   torrentList.value = list
 
   insertHtml(
-
     DETAILS_PAGE_DOM.torrent.mount,
-
     '<div id="TorrentList"></div>',
-
   )
 
   isShowTorrentList.value = true
@@ -221,8 +204,6 @@ function main() {
   const videoName = getVideoName()
 
   const cleanName = cleanVideoName(videoName)
-
-  pageVideoName.value = cleanName
 
   if (!cleanName) {
     return
