@@ -88,7 +88,9 @@ function sitePlay() {
     :icon="siteConfig.icon"
     :size="props.size"
     :icon-size="props.iconSize"
-    :class="mergeClass(props.iconClass)"
+    :class="props.class"
+    :icon-class="props.iconClass"
+    :style="props.style"
     @click="sitePlay"
   />
 
@@ -97,7 +99,9 @@ function sitePlay() {
     icon="adult-site-emby"
     :size="props.size"
     :icon-size="props.iconSize"
-    :class="mergeClass(props.iconClass)"
+    :class="props.class"
+    :icon-class="props.iconClass"
+    :style="props.style"
     @click="embySearch(props.videoName)"
   />
 

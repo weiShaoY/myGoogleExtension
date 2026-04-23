@@ -106,13 +106,7 @@ function refresh() {
     <div
       class="absolute bottom-20 left-0 right-0 flex justify-center"
     >
-      <BaseButton
-        icon="option-menu-refresh"
-        tooltip-content="刷新"
-        tooltip-placement="right"
-        @click="refresh"
-      />
-
+      <RefreshButton />
     </div>
     <!-- 菜单收缩/展开按钮 -->
     <div

@@ -14,19 +14,31 @@ const props = withDefaults(defineProps<Props>(), {
   size: 40,
 })
 
-function refresh() {
-  window.location.reload()
+async function goOptionPage() {
+  try {
+    if (chrome.runtime.openOptionsPage) {
+      chrome.runtime.openOptionsPage()
+    }
+    else {
+      chrome.runtime.sendMessage({
+        type: 'OPEN_OPTIONS',
+      })
+    }
+  }
+  catch (error) {
+    console.error('跳转选项页失败:', error)
+  }
 }
 </script>
 
 <template>
   <BaseButton
-    icon="refresh"
+    icon="option"
     :size="props.size"
     :class="props.class"
-    tooltip-content="刷新"
+    tooltip-content="跳转到插件选项页"
     tooltip-placement="right"
-    @click="refresh"
+    @click="goOptionPage"
   />
 </template>
 
