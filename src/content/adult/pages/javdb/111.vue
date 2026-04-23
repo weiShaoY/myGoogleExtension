@@ -26,6 +26,11 @@ const listPageAllVideoBoxes = ref<AdultType.ListPageMatchResultList>([])
 const HIGHLIGHT_CLASS = 'is-highlight'
 
 /**
+ * 导入共享逻辑
+ */
+const { cleanVideoName, createMatchResult } = useJavdbMatch()
+
+/**
  * 中文磁链状态标记选择器
  *
  * @description
@@ -55,8 +60,6 @@ const CHINESE_TAG_SELECTOR = '.is-warning'
  * 中文磁链状态通过 `.is-warning` 判断，而不是 box 本身
  */
 const LIST_PAGE_VIDEO_ITEM_SELECTOR = '.movie-list .item .box'
-
-const { cleanVideoName, createMatchResult } = useJavdbMatch()
 
 /**
  * 获取标题
@@ -133,7 +136,84 @@ onMounted(() => delayRun(main))
 </script>
 
 <template>
-  <AdultListPage
-    :list="listPageAllVideoBoxes"
-  />
+  <template
+    v-for="item in listPageAllVideoBoxes"
+    :key="item.teleportTarget"
+  >
+    <Teleport
+      :to="`.${item.teleportTarget}`"
+    >
+      <!-- 阻止事件冒泡 -->
+      <div
+        class="teleport-wrapper"
+        style="pointer-events: auto"
+        @click="preventEvent"
+        @mousedown="preventEvent"
+        @mouseup="preventEvent"
+        @pointerdown="preventEvent"
+        @pointerup="preventEvent"
+      >
+        <!-- 卡片主体 -->
+        <div
+          class="h-auto w-full flex flex-col items-center border border-gray-200 rounded-lg bg-white p-3 space-y-4"
+        >
+          <!-- 操作区 -->
+          <div
+            class="w-full flex items-center justify-start gap-2"
+          >
+            <SitePlayButton
+              :video-name="item.cleanName"
+              site="javdb"
+              :size="40"
+            />
+
+            <SitePlayButton
+              :video-name="item.cleanName"
+              site="javBus"
+              :size="40"
+            />
+
+            <SitePlayButton
+              :video-name="item.cleanName"
+              site="missAv"
+              :size="40"
+            />
+
+            <SitePlayButton
+              v-if="item.folderMatchedVideos.length"
+              :video-name="item.cleanName"
+              site="emby"
+              :size="40"
+            />
+
+            <AdultThumbnail
+              :video-name="item.cleanName"
+              :size="40"
+            />
+          </div>
+
+          <!-- 文件信息 -->
+          <template
+            v-if="item.folderMatchedVideos.length"
+          >
+            <AdultChinese
+              v-if="item.isShowUpdateChinese"
+            />
+
+            <AdultInventory
+              v-for="file in item.folderMatchedVideos"
+              :key="file.id"
+              :file="file"
+            />
+          </template>
+        </div>
+      </div>
+    </Teleport>
+  </template>
 </template>
+
+<style scoped>
+.teleport-wrapper {
+  pointer-events: auto;
+}
+</style>

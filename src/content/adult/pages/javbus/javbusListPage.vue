@@ -9,57 +9,74 @@ import { useJavdbMatch } from '@/composables/useJavdbMatch'
 const adultStore = useAdultStore()
 
 /**
- * 页面上匹配到的视频结果列表
+ * 页面所有视频列表盒子
  */
-const listPageMatchResults = ref<AdultType.ListPageMatchResultList>([])
+const listPageAllVideoBoxes = ref<AdultType.ListPageMatchResultList>([])
 
-/**
- * 导入共享逻辑
- */
+const HIGHLIGHT_CLASS = 'is-highlight'
+
+const CHINESE_TAG_SELECTOR = '.btn-warning'
+
+const LIST_PAGE_VIDEO_ITEM_SELECTOR = '#waterfall .movie-box'
+
 const { cleanVideoName, createMatchResult } = useJavdbMatch()
 
-function main() {
-  $$('#waterfall .movie-box').forEach((item) => {
-    const videoName = item
-      .getAttribute('href')
-      ?.split('/')
-      .pop() ?? ''
+function getVideoName(item: Element): string {
+  return item
+    .getAttribute('href')
+    ?.split('/')
+    ?.pop() ?? ''
+}
+
+function getMovieItems(): Element[] {
+  return Array.from($$(LIST_PAGE_VIDEO_ITEM_SELECTOR))
+}
+
+function buildMatchResultList(): AdultType.ListPageMatchResultList {
+  const result: AdultType.ListPageMatchResultList = []
+
+  for (const item of getMovieItems()) {
+    // 👉 语义函数保留
+    const videoName = getVideoName(item)
 
     const cleanName = cleanVideoName(videoName)
 
     if (!cleanName) {
-      return
+      continue
     }
+
+    const hasChineseTag = isElementExists($(item, CHINESE_TAG_SELECTOR))
 
     const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
 
-    if (folderMatchedVideos.length === 0) {
-      return
+    const teleportTarget = `${getRandomString(6)}_${cleanName}`
+
+    if (item) {
+      item.classList.add(teleportTarget)
+
+      if (folderMatchedVideos.length) {
+        item.classList.add(HIGHLIGHT_CLASS)
+      }
     }
 
-    const teleportTarget = `${cleanName}_${getRandomNumber()}`
-
-    const targetElement = item
-
-    // 添加样式类
-    if (isElementExists(targetElement)) {
-      targetElement.classList.add('is-highlight')
-      targetElement.classList.add(teleportTarget)
-    }
-
-    // 检查是否有中文字幕标签
-    const hasChineseTag = isElementExists($(item, '.btn-warning'))
-
-    // 创建匹配结果项
-    const matchResultItem = createMatchResult(
-      cleanName,
-      folderMatchedVideos,
-      hasChineseTag,
-      teleportTarget,
+    result.push(
+      createMatchResult(
+        cleanName,
+        folderMatchedVideos,
+        hasChineseTag,
+        teleportTarget,
+      ),
     )
+  }
 
-    listPageMatchResults.value.push(matchResultItem)
-  })
+  return result
+}
+
+/**
+ * 主逻辑
+ */
+function main() {
+  listPageAllVideoBoxes.value = buildMatchResultList()
 }
 
 onMounted(() => delayRun(main))
@@ -67,54 +84,9 @@ onMounted(() => delayRun(main))
 </script>
 
 <template>
-  <template
-    v-for="matchResult in listPageMatchResults"
-    :key="matchResult.teleportTarget"
-  >
-    <Teleport
-      v-if="matchResult.folderMatchedVideos.length"
-      :to="`.${matchResult.teleportTarget}`"
-    >
-      <!-- 事件处理包装器 -->
-      <div
-        class="teleport-wrapper"
-        style="pointer-events: auto;"
-        @click="preventEvent"
-        @mousedown="preventEvent"
-        @mouseup="preventEvent"
-        @pointerdown="preventEvent"
-        @pointerup="preventEvent"
-      >
-        <div
-          class="h-auto w-full flex flex-col items-center border border-gray-200 rounded-lg bg-white p-3 space-y-4"
-        >
-          <section
-            class="w-full space-y-2"
-          >
-            <AdultInventory
-              v-for="file in matchResult.folderMatchedVideos"
-              :key="file.id"
-              :file="file"
-            />
-          </section>
-
-          <section
-            class="grid grid-cols-2 h-15 w-full gap-2 [&>*:last-child:nth-child(1)]:col-span-2"
-          >
-            <AdultChinese
-              v-if="matchResult.isShowUpdateChinese"
-            />
-
-            <AdultEmby
-              :video-name="matchResult.cleanName"
-            />
-
-          </section>
-        </div>
-
-      </div>
-    </Teleport>
-  </template>
+  <AdultListPage
+    :list="listPageAllVideoBoxes"
+  />
 </template>
 
 <style lang="scss" scoped></style>
