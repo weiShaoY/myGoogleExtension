@@ -2,6 +2,8 @@ import { createPinia } from 'pinia'
 
 import { useAdultStore } from './modules/adult'
 
+import { useSiteStore } from './modules/site'
+
 import { useTestStore } from './modules/test'
 
 import { chromeStorage } from './pinia-sync-plugin'
@@ -14,6 +16,7 @@ pinia.use(
 
 export {
   useAdultStore,
+  useSiteStore,
   useTestStore,
 }
 
