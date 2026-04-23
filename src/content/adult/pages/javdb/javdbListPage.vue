@@ -90,10 +90,6 @@ onMounted(() => delayRun(main))
           <div
             class="w-full flex items-center justify-start gap-2"
           >
-            <AdultThumbnail
-              :video-name="item.cleanName"
-              :size="40"
-            />
 
             <SitePlayButton
               :video-name="item.cleanName"
@@ -117,6 +113,11 @@ onMounted(() => delayRun(main))
               v-if="item.folderMatchedVideos.length"
               :video-name="item.cleanName"
               site="emby"
+              :size="40"
+            />
+
+            <AdultThumbnail
+              :video-name="item.cleanName"
               :size="40"
             />
           </div>

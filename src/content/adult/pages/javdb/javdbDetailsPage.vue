@@ -197,10 +197,6 @@ onMounted(() => {
     <div
       class="ml-5 mt-5 w-full flex items-center gap-4"
     >
-      <AdultThumbnail
-        :video-name="pageVideoName"
-        :size="60"
-      />
 
       <SitePlayButton
         :video-name="pageVideoName"
@@ -224,6 +220,11 @@ onMounted(() => {
         v-if="detailsPageMatchResult.folderMatchedVideos.length"
         :video-name="detailsPageMatchResult.cleanName"
         site="emby"
+        :size="60"
+      />
+
+      <AdultThumbnail
+        :video-name="pageVideoName"
         :size="60"
       />
     </div>

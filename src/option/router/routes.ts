@@ -11,18 +11,18 @@ export const routes: RouterType.Route[] = [
   {
     path: '/emby',
     name: 'Emby',
-    redirect: '/emby/folder-scanner',
+    redirect: '/emby/scanner',
     meta: {
       title: 'Emby',
       icon: 'option-menu-emby',
     },
     children: [
       {
-        path: 'folder-scanner',
+        path: 'scanner',
         name: 'EmbyScanner',
         component: () => import('@/option/pages/emby/scanner/index.vue'),
         meta: {
-          title: '文件夹扫描',
+          title: '扫描',
           icon: 'option-menu-scanner',
         },
       },

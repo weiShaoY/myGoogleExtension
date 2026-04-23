@@ -1,23 +1,15 @@
-<!------  2025-08-16---05:08---星期六  ------>
-<!------------------------------------    ------------------------------------------------->
 <script setup lang="ts">
 import { parseSize, subtractSize } from '@/utils/size'
 
 type Props = {
 
-  /**
-   * 视频名称
-   */
+  /** 视频名称 */
   videoName: string
 
-  /**
-   * 外壳大小（容器尺寸）
-   */
+  /** 外壳大小 */
   size?: number | string
 
-  /**
-   * 图标大小（可选，不传则默认 size - offset）
-   */
+  /** 图标大小 */
   iconSize?: number | string
 }
 
@@ -25,60 +17,109 @@ const props = withDefaults(defineProps<Props>(), {
   size: 60,
 })
 
-/**
- * 容器尺寸偏移量
- */
+/** 偏移量 */
 const THUMBNAIL_SIZE_OFFSET = 5
 
-/**
- * 弹窗状态
- */
+/** 弹窗状态 */
 const isShowVideoThumbnailDialog = ref(false)
 
-/**
- * 缩略图 URL
- */
+/** 是否显示按钮（默认不显示） */
+const isThumbnailAvailable = ref(false)
+
+/** 缩略图地址 */
 const videoThumbnailUrl = computed(() =>
   `https://image.memojav.com/image/screenshot/${props.videoName.toLocaleUpperCase()}.jpg`,
 )
 
-/**
- * 点击
- */
+/** 点击 */
 function handleClick() {
   isShowVideoThumbnailDialog.value = true
 }
 
-/**
- * 容器尺寸（统一解析）
- */
-const containerSize = computed(() =>
-  parseSize(props.size),
-)
+/** 尺寸 */
+const containerSize = computed(() => parseSize(props.size))
 
-/**
- * 图标尺寸
- * 👉 如果传 iconSize 就用 iconSize
- * 👉 否则 = size - 5
- */
+/** 图标尺寸 */
 const resolvedIconSize = computed(() => {
-  if (props.iconSize !== undefined && props.iconSize !== null) {
+  if (props.iconSize != null) {
     return parseSize(props.iconSize)
   }
 
   return subtractSize(props.size, THUMBNAIL_SIZE_OFFSET)
 })
+
+/**
+ * 探测成功
+ */
+/**
+
+ * 探测成功
+
+ */
+
+function handleDetectLoad(e: Event) {
+  const img = e.target as HTMLImageElement
+
+  const width = img.naturalWidth
+
+  const height = img.naturalHeight
+
+  // ❗关键：过滤“假图”
+
+  const isFake
+
+    = width === 0
+
+      || height === 0
+
+      || (width < 200 && height < 200) // 小图基本都是 fallback
+
+  if (!isFake) {
+    isThumbnailAvailable.value = true
+  }
+  else {
+    isThumbnailAvailable.value = false
+  }
+}
+
+/**
+ * 探测失败
+ */
+function handleDetectError() {
+  isThumbnailAvailable.value = false
+}
+
+/**
+ * videoName 变化时重置
+ */
+watch(
+  () => props.videoName,
+  () => {
+    isThumbnailAvailable.value = false
+  },
+)
 </script>
 
 <template>
 
+  <!-- 👇 隐藏探测图（核心） -->
+  <img
+    :src="videoThumbnailUrl"
+    class="hidden"
+    @load="handleDetectLoad"
+    @error="handleDetectError"
+  >
+
+  <!-- 👇 只有检测成功才显示按钮 -->
   <BaseButton
+    v-if="isThumbnailAvailable"
     icon="thumbnail"
     :size="containerSize"
     :icon-size="resolvedIconSize"
     @click="handleClick"
   />
 
+  <!-- 弹窗 -->
   <el-dialog
     v-model="isShowVideoThumbnailDialog"
     :title="videoName"
@@ -86,7 +127,6 @@ const resolvedIconSize = computed(() => {
     :show-close="false"
     append-to-body
   >
-
     <template
       #title
     >
@@ -120,6 +160,3 @@ const resolvedIconSize = computed(() => {
     </el-scrollbar>
   </el-dialog>
 </template>
-
-<style scoped lang="scss">
-</style>
