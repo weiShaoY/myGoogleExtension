@@ -32,6 +32,7 @@ function preventEvent(e: Event) {
         @mouseup="preventEvent"
         @pointerdown="preventEvent"
         @pointerup="preventEvent"
+        @auxclick="preventEvent"
       >
         <!-- 卡片主体（完全固定，不用 slot） -->
         <div

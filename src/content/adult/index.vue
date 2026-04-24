@@ -40,4 +40,17 @@ const activeType = computed(() => {
     :is="componentMap[activeType]"
     v-if="activeType"
   />
+
+  <template
+    v-if="activeType"
+  >
+    <GoOptionButton
+      class="fixed bottom-16 left-2"
+    />
+
+    <RefreshButton
+      class="fixed bottom-2 left-2"
+    />
+  </template>
+
 </template>

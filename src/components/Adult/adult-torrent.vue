@@ -303,7 +303,7 @@ const sortedTorrentList = computed(() => {
               </button> -->
 
               <button
-                class="group relative h-14 flex items-center justify-center whitespace-nowrap border-2 border-yellow-500 rounded-xl bg-yellow-400 pl-[4.5rem] pr-6 text-lg text-slate-950 font-bold shadow-[0_6px_0_0_#b45309] transition-all duration-200 will-change-transform active:translate-y-[6px] active:shadow-[0_0px_0_0_#b45309] hover:shadow-[0_8px_0_0_#b45309] hover:-translate-y-0.5"
+                class="group relative h-14 flex cursor-pointer items-center justify-center whitespace-nowrap border-2 border-yellow-500 rounded-xl bg-yellow-400 pl-[4.5rem] pr-6 text-lg text-slate-950 font-bold shadow-[0_6px_0_0_#b45309] transition-all duration-200 will-change-transform active:translate-y-[6px] active:shadow-[0_0px_0_0_#b45309] hover:shadow-[0_8px_0_0_#b45309] hover:-translate-y-0.5"
                 @click="copyTorrentUrl(torrent)"
               >
 
