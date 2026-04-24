@@ -177,6 +177,7 @@ function main() {
     cleanName,
     folderMatchedVideos,
     hasChineseTag.value,
+
   )
 
   if (!folderMatchedVideos.length) {

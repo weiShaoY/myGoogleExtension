@@ -27,18 +27,34 @@ export function useAdultPageMatch() {
    * @param  hasChineseTag - 当前匹配项是否包含中文字幕标签
    * @returns 符合页面展示规范的匹配结果项
    */
+  /**
+   * 创建视频匹配结果项
+   */
   function createMatchResult(
     cleanName: string,
     folderMatchedVideos: AdultType.VideoFile[],
     hasChineseTag: boolean,
     teleportTarget = '',
   ): AdultType.PageVideoMatchItem {
-    // 判断是否需要显示中文字幕更新按钮：
-    // 1. 必须有中文字幕标签
-    // 2. 所有视频都没有中文字幕（只要有一个视频有中文字幕，就不显示更新按钮）
-    const needsChineseUpdate = hasChineseTag && folderMatchedVideos.every(
-      file => !file.hasChineseSubtitle,
+  /**
+   * 是否有本地视频
+   */
+    const hasLocalVideos = folderMatchedVideos.length > 0
+
+    /**
+     * 本地是否已有中文字幕
+     */
+    const hasLocalChineseSubtitle = folderMatchedVideos.some(
+      file => file.hasChineseSubtitle,
     )
+
+    /**
+     * 是否需要更新中文字幕
+     */
+    const needsChineseUpdate
+      = hasChineseTag
+        && hasLocalVideos
+        && !hasLocalChineseSubtitle
 
     return {
       cleanName,
