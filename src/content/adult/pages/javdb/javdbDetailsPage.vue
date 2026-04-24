@@ -211,6 +211,13 @@ function main() {
 
   const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
 
+  detailsPageMatchResult.value = createMatchResult(
+    cleanName,
+    folderMatchedVideos,
+    hasChineseTag.value,
+  )
+
+  // 没有匹配到文件
   if (!folderMatchedVideos.length) {
     return
   }
@@ -218,12 +225,6 @@ function main() {
   const highlightElement = $(DETAILS_PAGE_DOM.highlight.selector)
 
   highlightElement?.classList.add(DETAILS_PAGE_DOM.highlight.class)
-
-  detailsPageMatchResult.value = createMatchResult(
-    cleanName,
-    folderMatchedVideos,
-    hasChineseTag.value,
-  )
 }
 
 /* =========================================================

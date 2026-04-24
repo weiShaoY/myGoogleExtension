@@ -55,7 +55,7 @@ function preventEvent(e: Event) {
 
             <SitePlayButton
               :video-name="item.cleanName"
-              site="missAv"
+              site="missAV"
               :size="40"
             />
 

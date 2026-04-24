@@ -1,8 +1,24 @@
 import { AdultConfig } from '@/configs'
 
 /**
+ * 构建 URL（带 query）
+ * @param baseUrl 基础地址
+ * @param params 查询参数
+ */
+function buildUrl(baseUrl: string, params: Record<string, any>): string {
+  const url = new URL(baseUrl)
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      url.searchParams.append(key, String(value))
+    }
+  })
+
+  return url.toString()
+}
+
+/**
  * 生成 Emby 首页 URL
- * @returns Emby 首页 URL
  */
 function getEmbyHomeUrl(): string {
   const { url, port } = AdultConfig.emby.request
@@ -11,9 +27,8 @@ function getEmbyHomeUrl(): string {
 }
 
 /**
- * 生成 Emby 项目详情页 URL
- * @param item Emby 项目对象
- * @returns Emby 详情页 URL
+ * 生成 Emby 详情页 URL
+ * @param item Emby 项目
  */
 function getEmbyItemUrl(item: any): string {
   const { url, port } = AdultConfig.emby.request
@@ -22,137 +37,91 @@ function getEmbyItemUrl(item: any): string {
 }
 
 /**
- * 搜索 Emby 服务器上的视频
+ * 请求 Emby 搜索
  * @param videoName 视频名称
- * @returns Promise<EmbySearchResponse>
  */
 async function requestEmbySearch(videoName: string): Promise<AdultType.EmbyResponse> {
-  const url = `${AdultConfig.emby.request.url}:${AdultConfig.emby.request.port}/emby/Users/${AdultConfig.emby.request.userId}/Items`
+  const { url, port, userId, token } = AdultConfig.emby.request
 
-  const requestParams = {
-    'SearchTerm': videoName,
-    'Recursive': true,
-    'Fields': 'PrimaryImageAspectRatio,PremiereDate,ProductionYear',
-    'EnableUserData': false,
-    'GroupProgramsBySeries': true,
-    'Limit': 30,
+  const apiUrl = `${url}:${port}/emby/Users/${userId}/Items`
 
-    // Emby 特定的查询参数
-    'X-Emby-Client': 'Emby Web',
-    'X-Emby-Device-Name': AdultConfig.emby.request.deviceName,
-    'X-Emby-Device-Id': AdultConfig.emby.request.deviceId,
-    'X-Emby-Client-Version': AdultConfig.emby.request.clientVersion,
-    'X-Emby-Token': AdultConfig.emby.request.token,
-    'X-Emby-Language': AdultConfig.emby.request.language,
+  const params = {
+    SearchTerm: videoName,
+    Recursive: true,
+    Fields: 'PrimaryImageAspectRatio,PremiereDate,ProductionYear',
+    EnableUserData: false,
+    GroupProgramsBySeries: true,
+    Limit: 30,
   }
 
-  const headers = {
-    'Accept': 'application/json',
-    'Accept-Language': 'zh,zh-CN;q=0.9,ja;q=0.8',
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36',
+  const finalUrl = buildUrl(apiUrl, params)
+
+  const res = await fetch(finalUrl, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+
+      /**
+       * ✅ 正确鉴权方式（关键）
+       */
+      'X-Emby-Token': token,
+    },
+  })
+
+  if (!res.ok) {
+    const text = await res.text()
+
+    throw new Error(`HTTP ${res.status} - ${text}`)
   }
 
-  try {
-    // 通过 background script 发送请求，解决混合内容问题
-    const response = await new Promise<AdultType.EmbyResponse>((resolve, reject) => {
-      chrome.runtime.sendMessage(
-        {
-          type: 'embySearch',
-          data: {
-            url,
-            params: requestParams,
-            headers,
-          },
-        },
-        (response) => {
-          if (chrome.runtime.lastError) {
-            reject(new Error(chrome.runtime.lastError.message))
-            return
-          }
-
-          if (response.success) {
-            resolve(response.data)
-          }
-          else {
-            reject(new Error(response.error))
-          }
-        },
-      )
-    })
-
-    return response
-  }
-  catch (error) {
-    console.error('Emby 搜索请求失败:', error)
-    throw error
-  }
+  return res.json()
 }
 
 /**
- * 使用 Chrome 扩展 API 打开 Emby 标签页
- * @param url - 要打开的 URL
+ * 打开页面
+ * @param url 页面地址
  */
-function openEmbyTab(url: string): void {
-  chrome.runtime.sendMessage(
-    {
-      type: 'openEmbyTab',
-      data: {
-        url,
-      },
-    },
-    (response) => {
-      console.log('🚀 ~ file: adult-emby.vue:86 ~ response:', response)
-      if (chrome.runtime.lastError) {
-        console.error('打开标签页失败:', chrome.runtime.lastError)
-
-        // 如果扩展 API 失败，尝试使用普通方法
-        openLink(url)
-      }
-    },
-  )
+function openUrl(url: string): void {
+  window.open(url, '_blank')
 }
 
 /**
- *  搜索 Emby 服务器上的视频
- *  @param  videoName - 视频名称
+ * Emby 搜索入口
+ * @param videoName 视频名称
  */
 export async function embySearch(videoName: string) {
   try {
     const result = await requestEmbySearch(videoName)
 
-    //  如果结果为空，则提示没有找到
-    if (result.Items.length === 0) {
+    console.log('🚀 Emby 搜索结果:', result)
+
+    // 没结果
+    if (!result?.Items?.length) {
       window.$messageBox
         .confirm(`是否打开 Emby 首页?`, 'Emby中没有找到该视频!', {
           confirmButtonText: '确认',
           cancelButtonText: '取消',
           type: 'warning',
         })
-        .then(() => {
-          openEmbyTab(getEmbyHomeUrl())
-        })
+        .then(() => openUrl(getEmbyHomeUrl()))
         .catch(() => {
           window.$notification.error('Emby中没有找到该视频!')
         })
+
+      return
     }
 
-    //  如果只有一个结果，则直接打开
-    else if (result.Items.length === 1) {
-      const item = result.Items[0]
-
-      const url = getEmbyItemUrl(item)
-
-      openEmbyTab(url)
-    }
-    else {
-      window.$notification.error('Emby中找到多个结果!')
-      openEmbyTab(getEmbyHomeUrl())
+    if (result.Items.length > 0) {
+      for (const item of result.Items) {
+        openUrl(getEmbyItemUrl(item))
+      }
     }
   }
   catch (error) {
-    console.error('Emby 搜索失败:', error)
+    console.error('❌ Emby 搜索失败:', error)
+
     window.$notification.error({
-      title: '请求失败, 请检查 Emby 服务器',
+      title: '请求失败，请检查 Emby Token / userId / 跨域',
       duration: 5000,
     })
   }

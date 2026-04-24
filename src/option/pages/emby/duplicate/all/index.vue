@@ -131,7 +131,7 @@ function handleClickCopyPath(row: AdultType.VideoFile) {
             />
 
             <SitePlayButton
-              site="missAv"
+              site="missA"
               :video-name="row.cleanName"
               :size="40"
               :icon-size="30"

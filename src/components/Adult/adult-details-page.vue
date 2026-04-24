@@ -40,7 +40,7 @@ defineProps<{
 
         <SitePlayButton
           :video-name="detailsPageMatchResult.cleanName"
-          site="missAv"
+          site="missAV"
           :size="60"
         />
 

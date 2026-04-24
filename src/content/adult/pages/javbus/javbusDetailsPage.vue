@@ -176,6 +176,12 @@ function main() {
   const folderMatchedVideos
     = adultStore.getFolderMatchedVideoList(cleanName)
 
+  detailsPageMatchResult.value = createMatchResult(
+    cleanName,
+    folderMatchedVideos,
+    hasChineseTag.value,
+  )
+
   if (!folderMatchedVideos.length) {
     return
   }
@@ -185,12 +191,6 @@ function main() {
 
   highlightElement?.classList.add(
     DETAILS_PAGE_DOM.highlight.class,
-  )
-
-  detailsPageMatchResult.value = createMatchResult(
-    cleanName,
-    folderMatchedVideos,
-    hasChineseTag.value,
   )
 }
 

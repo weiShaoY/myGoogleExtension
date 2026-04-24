@@ -134,8 +134,8 @@ export const SearchConfig: {
           searchUrl: 'https://javdb.com/search?q=',
         },
         {
-          name: 'missav',
-          icon: 'search-site-adult-missav',
+          name: 'MissAV',
+          icon: 'search-site-adult-missAV',
           hostname: 'missav.ai',
           inputClass: 'input.text-nord9',
           searchUrl: 'https://missav.ai/search/',

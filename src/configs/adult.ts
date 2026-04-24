@@ -128,7 +128,7 @@ export const AdultConfig: AdultConfigType = {
       deviceName: 'Chrome macOS',
       deviceId: 'e8b45a84-0a7e-4481-906a-3b0555555e0a',
       clientVersion: '4.9.3.0',
-      token: '1d44f71e9e14cb0acebf66834d77044',
+      token: '1d454f71e9e14cb0acebf66834d77044',
       language: 'zh-cn',
       queryParams: {
         SearchTerm: '',
@@ -165,8 +165,8 @@ export const AdultConfig: AdultConfigType = {
     },
     {
       isVisible: true,
-      name: 'MISSAV',
-      icon: 'adult-site-missAv',
+      name: 'MissAV',
+      icon: 'adult-site-missAV',
       hostname: 'missav.ai',
       searchUrl: '/{{code}}/',
     },
