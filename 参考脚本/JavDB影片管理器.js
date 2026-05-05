@@ -900,7 +900,7 @@
             }
 
             .stat-value {
-                font-size: 24px;
+                // font-size: 24px;
                 font-weight: 700;
                 line-height: 1.1;
                 margin-bottom: 8px;

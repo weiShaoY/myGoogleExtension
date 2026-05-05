@@ -106,9 +106,14 @@
       }
 
       .first-block {
+        // 第一个番号
         .value {
+          // cursor: pointer;
           font-size: 24px !important;
           font-weight: 700 !important;
+
+          // 点击 全选
+          user-select: all !important;
         }
       }
 

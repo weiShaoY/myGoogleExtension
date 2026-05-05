@@ -77,6 +77,13 @@
       min-height: 100% !important;
       border-radius: 10px;
 
+      // // 番号
+      // p:first-of-type span:nth-of-type(2) {
+      //   color: red;
+      //   background: yellow;
+      //   font-weight: bold;
+      // }
+
       a {
         color: #485fc7;
         cursor: pointer;
@@ -89,9 +96,13 @@
         display: flex;
         align-items: center;
 
+        // 番号
         &:first-child > :last-child {
           font-size: 24px;
           font-weight: 700;
+
+          // 点击 全选
+          user-select: all !important;
         }
 
         span {
