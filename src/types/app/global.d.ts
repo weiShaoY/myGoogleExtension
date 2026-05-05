@@ -45,3 +45,21 @@ declare global {
     $isDevelopment: boolean
   }
 }
+
+/**
+ * file-saver 模块类型声明
+ */
+declare module 'file-saver' {
+  interface FileSaverOptions {
+    autoBom?: boolean
+    registry?: object
+  }
+
+  interface SaveDialogOptions {
+    defaultPath?: string
+    dialogType?: 'save' | 'open'
+  }
+
+  export function saveAs(data: Blob | File, filename?: string, options?: FileSaverOptions | SaveDialogOptions): void
+  export default { saveAs }
+}

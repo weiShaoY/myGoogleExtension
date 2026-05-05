@@ -77,6 +77,9 @@ export default antfu({
           maxEmptyLines: 1, // 设置空行的最大数量为 1
         },
       ],
+
+      // 强制自定义事件名称使用驼峰命名法
+      'vue/custom-event-name-casing': ['warn', 'kebab-case'],
     },
   },
 
