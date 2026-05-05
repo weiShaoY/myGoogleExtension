@@ -168,7 +168,7 @@ export const AdultConfig: AdultConfigType = {
       name: 'MissAV',
       icon: 'adult-site-missAV',
       hostname: 'missav.ai',
-      searchUrl: '/{{code}}/',
+      searchUrl: '/search/{{code}}',
     },
   ],
 

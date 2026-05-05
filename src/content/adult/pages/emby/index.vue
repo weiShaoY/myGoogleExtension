@@ -1,16 +1,18 @@
-<!------  2026-04-01---09:30---星期三  ------>
-<!------------------------------------    ------------------------------------------------->
-<script lang="ts" setup>
+<script setup lang="ts">
+
+import DetailsPage from './embyDetailsPage.vue'
+
+const isListPage = !!$('#waterfall')
+
+const bodyClass = isListPage ? 'javbus-list-page' : 'javbus-details-page'
+
+document.body.classList.add('javbus', bodyClass)
 </script>
 
 <template>
-  <div
-    class=""
-  >
-    1
-  </div>
+
+  <DetailsPage />
 </template>
 
-<style lang="scss" scoped>
-
+<style lang="scss">
 </style>
