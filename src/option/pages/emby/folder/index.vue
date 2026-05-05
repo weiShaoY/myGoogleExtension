@@ -16,7 +16,7 @@ const options = {
 const tableData = computed(() => {
   return adultStore.embyFolder.folderVideoFiles.map(file => ({
     ...file,
-    tags: file.tags.join(', '),
+    tags: file.tags.map(t => t.label).join(', '),
   }))
 })
 

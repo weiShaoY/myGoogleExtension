@@ -247,9 +247,21 @@ namespace AdultType {
     cleanName: string
 
     /**
-     * 视频文件标签图标数组
+     * 视频文件标签数组
+     * @description 包含标签显示名称和图标标识的对象数组
      */
-    tags: string[]
+    tags: {
+
+      /**
+       * 标签显示名称
+       */
+      label: string
+
+      /**
+       * 标签图标标识
+       */
+      icon: string
+    }[]
 
     // =========================
     // ④ 业务标识（规则层）
@@ -412,7 +424,10 @@ namespace AdultType {
      * @description 通过文件名解析得出的标签，用于在界面上显示对应的图标
      * @example ["tag-4k", "tag-ziMu", "tag-wuMa"]
      */
-    tags: string[]
+    tags: {
+      label: string
+      icon: string
+    }[]
 
     /**
      * 种子来源网站标识（可选）

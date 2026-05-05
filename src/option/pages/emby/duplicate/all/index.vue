@@ -97,8 +97,8 @@ function handleClickCopyPath(row: AdultType.VideoFile) {
           >
             <SvgIcon
               v-for="tag in row.tags"
-              :key="tag"
-              :icon="tag"
+              :key="tag.icon"
+              :icon="tag.icon"
               :size="30"
             />
           </div>

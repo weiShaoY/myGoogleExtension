@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<PropsType>(), {
  */
 const chineseCount = computed(
   () =>
-    props.torrentList.filter(item => item.tags.includes('tag-ziMu')).length,
+    props.torrentList.filter(item => item.tags.some(tag => tag.label === '中文')).length,
 )
 
 /**
@@ -278,11 +278,11 @@ const sortedTorrentList = computed(() => {
               <!-- 标签图标 -->
               <div
                 v-for="tag in torrent.tags"
-                :key="tag"
+                :key="tag.icon"
                 class="m-x-3"
               >
                 <SvgIcon
-                  :icon="tag"
+                  :icon="tag.icon"
                   class="!h-10 !w-10"
                 />
               </div>

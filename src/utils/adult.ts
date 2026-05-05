@@ -32,19 +32,15 @@ export const videoFileTagExtractionRegex = new RegExp(
 )
 
 /**
- * 从文件名提取匹配的标签图标数组
- * @description 自动识别标签并返回对应图标，自动去重，大小写不敏感
+ * 从文件名提取匹配的标签数组
+ * @description 自动识别标签并返回对应标签信息，自动去重，大小写不敏感
  * @param fullName 视频完整名称（含扩展名）
- * @returns 图标名称数组
+ * @returns 标签数组，每个元素包含 label 和 icon
  */
-// 定义从文件名提取标签图标的方法
-export function getVideoTagsFromName(fullName: string): string[] {
+export function getVideoTagsFromName(fullName: string): { label: string, icon: string }[] {
   // 使用正则表达式在文件名中查找所有匹配的标签
   // matchAll 返回一个迭代器，使用展开运算符 [...] 转换为数组
   const matches = [...fullName.matchAll(videoFileTagExtractionRegex)]
-
-  console.log('🚀 ~ file: adult.ts:45 ~ matches:', matches)
-  alert(matches)
 
   // 如果没有找到任何匹配项，直接返回空数组
   if (matches.length === 0) {
@@ -55,8 +51,8 @@ export function getVideoTagsFromName(fullName: string): string[] {
   // m[0] 表示匹配到的完整字符串
   const lowerMatches = matches.map(m => m[0].toLowerCase())
 
-  // 创建空数组用于存储匹配到的图标标识
-  const icons: string[] = []
+  // 创建空数组用于存储匹配到的标签
+  const tags: { label: string, icon: string }[] = []
 
   // 遍历所有标签规则，检查是否有匹配的标签
   for (const tag of AdultConfig.rules.tagRules) {
@@ -74,13 +70,18 @@ export function getVideoTagsFromName(fullName: string): string[] {
       )
     })
 
-    // 如果当前标签有匹配，添加对应的图标标识到结果数组
+    // 如果当前标签有匹配，添加对应的标签到结果数组
     if (hit) {
-      icons.push(tag.icon)
+      tags.push({
+        label: tag.label,
+        icon: tag.icon,
+      })
     }
   }
 
-  // 使用 Set 去重，然后展开为数组返回
-  // 避免同一个图标被添加多次（如文件名包含多个同一类型的标签）
-  return [...new Set(icons)]
+  // 使用 Map 去重（基于 icon），然后展开为数组返回
+  // 避免同一个标签被添加多次（如文件名包含多个同一类型的关键词）
+  const uniqueTags = [...new Map(tags.map(t => [t.icon, t])).values()]
+
+  return uniqueTags
 }
