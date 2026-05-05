@@ -1,50 +1,12 @@
 import { AdultConfig } from '@/configs'
 
 /**
- * 搜索站点配置
- */
-export type SearchEngine = {
-  id: string
-  title: string
-  baseUrl: string
-  queryParam: string
-  transformQuery?: (query: string) => string
-}
-
-/**
  * 菜单常量
  */
 export const MENU_ID = {
   ROOT: 'adult-root',
   OPTION: 'adult-option',
 } as const
-
-/**
- * 搜索站点列表
- */
-export const SEARCH_ENGINES: SearchEngine[] = [
-  {
-    id: 'adult-javDB',
-    title: 'JavDB',
-    baseUrl: 'https://javdb.com/search',
-    queryParam: 'q',
-  },
-  {
-    id: 'adult-javBus',
-    title: 'JavBus',
-    baseUrl: 'https://www.javbus.com',
-    queryParam: '',
-    transformQuery: query => `/${query}`,
-  },
-  {
-    id: 'adult-missAV',
-    title: 'MissAV',
-    baseUrl: 'https://missav.com/search',
-    queryParam: '',
-    transformQuery: query => `/${query}`,
-  },
-
-]
 
 /**
  * 格式化搜索关键字
@@ -64,19 +26,6 @@ export function formatSearchQuery(text: string): string {
 }
 
 /**
- * 生成搜索 URL
- */
-export function buildSearchUrl(engine: SearchEngine, query: string): string {
-  const encodedQuery = encodeURIComponent(query)
-
-  if (engine.transformQuery) {
-    return `${engine.baseUrl}${engine.transformQuery(encodedQuery)}`
-  }
-
-  return `${engine.baseUrl}?${engine.queryParam}=${encodedQuery}`
-}
-
-/**
  * 在新标签页打开 URL
  */
 export function openNewTab(url: string) {
@@ -86,24 +35,29 @@ export function openNewTab(url: string) {
 }
 
 /**
- * 根据引擎 ID 获取搜索引擎配置
+ * 根据站点 ID 获取站点配置
  */
-export function getSearchEngine(id: string): SearchEngine | undefined {
-  return SEARCH_ENGINES.find(engine => engine.id === id)
+export function getSiteConfig(id: string) {
+  return AdultConfig.siteList.find(site => site.hostname === id)
 }
 
 /**
  * 处理搜索请求
  */
-export function handleSearch(engineId: string, query: string) {
-  const engine = getSearchEngine(engineId)
+export function handleSearch(siteId: string, query: string) {
+  const site = getSiteConfig(siteId)
 
-  if (!engine) {
-    console.warn(`[ContextMenu] Unknown search engine: ${engineId}`)
+  if (!site) {
+    console.warn(`[ContextMenu] Unknown site: ${siteId}`)
     return
   }
 
-  const url = buildSearchUrl(engine, query)
+  if (!site.transformQuery) {
+    console.warn(`[ContextMenu] Site ${siteId} has no transformQuery function`)
+    return
+  }
+
+  const url = site.transformQuery(query)
 
   openNewTab(url)
 }
@@ -121,15 +75,17 @@ export function initContextMenu() {
       contexts: ['selection'],
     })
 
-    // 创建搜索站点子菜单
-    AdultConfig.siteList.forEach((engine) => {
-      chrome.contextMenus.create({
-        id: engine.hostname,
-        title: engine.name,
-        parentId: MENU_ID.ROOT,
-        contexts: ['selection'],
+    // 创建搜索站点子菜单（只显示可见的站点）
+    AdultConfig.siteList
+      .filter(site => site.isVisible)
+      .forEach((site) => {
+        chrome.contextMenus.create({
+          id: site.hostname,
+          title: site.name,
+          parentId: MENU_ID.ROOT,
+          contexts: ['selection'],
+        })
       })
-    })
 
     // 创建选项页菜单
     chrome.contextMenus.create({
