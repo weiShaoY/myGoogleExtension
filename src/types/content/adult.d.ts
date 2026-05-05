@@ -450,7 +450,7 @@ namespace AdultType {
      * @description 注意：匹配是大小写敏感的，建议使用小写关键词
      * @example "4K", "1080p", "BluRay", "无码破解", "-c"
      */
-    name: string
+    keywords: string
 
     /**
      * 匹配上该规则时的背景颜色

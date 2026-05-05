@@ -226,67 +226,67 @@ export const AdultConfig: AdultConfigType = {
      */
     torrentSortRules: [
       {
-        name: 'UC.torrent.无码破解',
+        keywords: 'UC.torrent.无码破解',
         backgroundColor: '#f12e01',
         web: '色花堂',
       },
       {
-        name: 'U.torrent.无码破解',
+        keywords: 'U.torrent.无码破解',
         backgroundColor: '#2accea',
         web: '色花堂',
       },
       {
-        name: '破解-c',
+        keywords: '破解-c',
         backgroundColor: '#8441d8',
       },
       {
-        name: 'UC',
+        keywords: 'UC',
         backgroundColor: '#7baefe',
       },
       {
-        name: '-c',
+        keywords: '-c',
         backgroundColor: '#25c9ba',
       },
       {
-        name: '-C.torrent',
+        keywords: '-C.torrent',
         backgroundColor: '#FF1166',
         web: '色花堂',
       },
       {
-        name: '-C',
+        keywords: '-C',
         backgroundColor: '#2668B5',
       },
       {
-        name: '中文',
+        keywords: '中文',
         backgroundColor: '#fe5f60',
       },
       {
-        name: 'ch',
+        keywords: 'ch',
         backgroundColor: '#b6d984',
       },
       {
-        name: '-U',
+        keywords: '-U',
         backgroundColor: '#e147a3',
       },
       {
-        name: 'ThZu.Cc',
+        keywords: 'ThZu.Cc',
         backgroundColor: '#FF4900',
         web: '桃花族',
       },
       {
-        name: '4K-破解',
+        keywords: '4K-破解',
         backgroundColor: '#9BEC00',
       },
       {
-        name: '4k',
+        keywords: '4k',
         backgroundColor: '#e7bc86',
       },
       {
-        name: '无码破解',
+        keywords: '无码破解',
         backgroundColor: '#DDDD22',
       },
       {
-        name: '无码',
+        keywords: '无码',
         backgroundColor: '#95D2B3',
       },
     ],

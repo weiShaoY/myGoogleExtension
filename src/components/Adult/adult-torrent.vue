@@ -1,6 +1,5 @@
 <!------------------------------------  磁链列表  ------------------------------------------------->
 <script lang="ts" setup>
-import { computed } from 'vue'
 
 import { AdultConfig } from '@/configs'
 
@@ -52,7 +51,7 @@ function copyTorrentUrl(torrent: AdultType.TorrentItem) {
  */
 function getTorrentStyle(torrent: AdultType.TorrentItem) {
   const matchingRule = AdultConfig.rules.torrentSortRules.find(rule =>
-    torrent.name.includes(rule.name),
+    torrent.name.includes(rule.keywords),
   )
 
   return matchingRule
@@ -78,14 +77,14 @@ const sortedTorrentList = computed(() => {
      *   视频A在排序规则数组中的位置   （-1 代表不在数组中）
      */
     const indexA = AdultConfig.rules.torrentSortRules.findIndex(rule =>
-      videoA.name.includes(rule.name),
+      videoA.name.includes(rule.keywords),
     )
 
     /**
      *   视频B在排序规则数组中的位置   （-1 代表不在数组中）
      */
     const indexB = AdultConfig.rules.torrentSortRules.findIndex(rule =>
-      videoB.name.includes(rule.name),
+      videoB.name.includes(rule.keywords),
     )
 
     // console.log('🚀 ~ file: adult-torrent.vue:83 ~ indexA:', indexA)
@@ -285,6 +284,13 @@ const sortedTorrentList = computed(() => {
                   :icon="tag.icon"
                   class="!h-10 !w-10"
                 />
+              </div>
+
+              <div
+                class=""
+              >
+                {{ torrent.source }}
+
               </div>
             </div>
 
