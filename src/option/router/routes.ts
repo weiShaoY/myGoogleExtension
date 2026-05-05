@@ -98,7 +98,7 @@ export const routes: RouterType.Route[] = [
     },
     children: [
       {
-        path: 'folder',
+        path: 'folder1',
         name: 'DataFolder',
         component: () => import('@/option/pages/data/folder/index.vue'),
         meta: {
