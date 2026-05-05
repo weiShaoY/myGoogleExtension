@@ -37,6 +37,7 @@ declare module 'vue' {
     ElTimelineItem: typeof import('element-plus/es')['ElTimelineItem']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ExcelExport: typeof import('./../../components/Forms/excel-export/index.vue')['default']
+    ExcelImport: typeof import('./../../components/Forms/excel-import/index.vue')['default']
     GoOptionButton: typeof import('./../../components/Button/go-option-button/index.vue')['default']
     IconLoading: typeof import('./../../components/Loading/icon-loading.vue')['default']
     PageLoading: typeof import('./../../components/Loading/page-loading.vue')['default']

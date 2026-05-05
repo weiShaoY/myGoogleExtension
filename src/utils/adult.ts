@@ -43,6 +43,9 @@ export function getVideoTagsFromName(fullName: string): string[] {
   // matchAll 返回一个迭代器，使用展开运算符 [...] 转换为数组
   const matches = [...fullName.matchAll(videoFileTagExtractionRegex)]
 
+  console.log('🚀 ~ file: adult.ts:45 ~ matches:', matches)
+  alert(matches)
+
   // 如果没有找到任何匹配项，直接返回空数组
   if (matches.length === 0) {
     return []
