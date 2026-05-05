@@ -78,7 +78,7 @@ const columnConfig = {
   },
   id: {
     title: 'ID',
-    width: 20,
+    width: 40,
     formatter: (value: unknown) => (value ? String(value) : '未知'),
   },
   path: {
