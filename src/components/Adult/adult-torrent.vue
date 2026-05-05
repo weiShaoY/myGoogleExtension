@@ -45,103 +45,101 @@ function copyTorrentUrl(torrent: AdultType.TorrentItem) {
 }
 
 /**
- * 根据种子项计算背景颜色和标签
- * @param  torrent - 种子项
- * @returns  背景颜色和标签信息
+ * 根据种子项获取匹配的排序规则
  */
-function getTorrentStyle(torrent: AdultType.TorrentItem) {
-  const matchingRule = AdultConfig.rules.torrentSortRules.find(rule =>
-    torrent.name.includes(rule.keywords),
+function getMatchingRule(name: string) {
+  return AdultConfig.rules.torrentSortRules.find(rule =>
+    name.includes(rule.keywords),
   )
-
-  return matchingRule
-    ? {
-        backgroundColor: matchingRule.backgroundColor,
-        web: matchingRule.web || '',
-      }
-    : {
-        backgroundColor: '',
-        web: '',
-      }
 }
 
 /**
  * 排序后的种子列表
  */
 const sortedTorrentList = computed(() => {
-  return [...props.torrentList].sort((videoA, videoB) => {
-    // console.log('🚀 ~ file: adult-torrent.vue:74 ~ videoA:', videoA.name)
-    // console.log('🚀 ~ file: adult-torrent.vue:74 ~ videoB:', videoB.name)
+  return [...props.torrentList]
+    .map((torrent) => {
+      const matchingRule = getMatchingRule(torrent.name)
 
-    /**
-     *   视频A在排序规则数组中的位置   （-1 代表不在数组中）
-     */
-    const indexA = AdultConfig.rules.torrentSortRules.findIndex(rule =>
-      videoA.name.includes(rule.keywords),
-    )
+      return {
+        ...torrent,
+        backgroundColor: matchingRule?.backgroundColor || '',
+        source: matchingRule?.source || torrent.source || '',
+      }
+    })
+    .sort((videoA, videoB) => {
+      // console.log('🚀 ~ file: adult-torrent.vue:74 ~ videoA:', videoA.name)
+      // console.log('🚀 ~ file: adult-torrent.vue:74 ~ videoB:', videoB.name)
 
-    /**
-     *   视频B在排序规则数组中的位置   （-1 代表不在数组中）
-     */
-    const indexB = AdultConfig.rules.torrentSortRules.findIndex(rule =>
-      videoB.name.includes(rule.keywords),
-    )
+      /**
+       *   视频A在排序规则数组中的位置   （-1 代表不在数组中）
+       */
+      const indexA = AdultConfig.rules.torrentSortRules.findIndex(rule =>
+        videoA.name.includes(rule.keywords),
+      )
 
-    // console.log('🚀 ~ file: adult-torrent.vue:83 ~ indexA:', indexA)
-    // console.log('🚀 ~ file: adult-torrent.vue:83 ~ indexB:', indexB)
+      /**
+       *   视频B在排序规则数组中的位置   （-1 代表不在数组中）
+       */
+      const indexB = AdultConfig.rules.torrentSortRules.findIndex(rule =>
+        videoB.name.includes(rule.keywords),
+      )
 
-    // # ////////////////////////////////////////  1.在规则数组中，按数组里关键词的顺序排序,如果关键词的顺序一样了,按文件大小排序  ////////////////////////////////////////
-    // videoA在规则数组中 videoB不在规则数组中 则videoA应该排在videoB前面  应该返回 -1
-    if (indexA !== -1 && indexB === -1) {
-      return -1
-    }
+      // console.log('🚀 ~ file: adult-torrent.vue:83 ~ indexA:', indexA)
+      // console.log('🚀 ~ file: adult-torrent.vue:83 ~ indexB:', indexB)
 
-    // videoA不在规则数组中，videoB在，videoB排前面
-    //  videoA不在规则数组中 videoB在规则数组中 则videoB应该排在videoA前面  应该返回 1
-    if (indexA === -1 && indexB !== -1) {
-      return 1
-    }
+      // # ////////////////////////////////////////  1.在规则数组中，按数组里关键词的顺序排序,如果关键词的顺序一样了,按文件大小排序  ////////////////////////////////////////
+      // videoA在规则数组中 videoB不在规则数组中 则videoA应该排在videoB前面  应该返回 -1
+      if (indexA !== -1 && indexB === -1) {
+        return -1
+      }
 
-    // 两者都在规则数组中
-    if (indexA !== -1 && indexB !== -1) {
-      // 关键词顺序一样，按文件大小排序
-      if (indexA === indexB) {
+      // videoA不在规则数组中，videoB在，videoB排前面
+      //  videoA不在规则数组中 videoB在规则数组中 则videoB应该排在videoA前面  应该返回 1
+      if (indexA === -1 && indexB !== -1) {
+        return 1
+      }
+
+      // 两者都在规则数组中
+      if (indexA !== -1 && indexB !== -1) {
+        // 关键词顺序一样，按文件大小排序
+        if (indexA === indexB) {
+          //  如果 videoA 的 文件大小 大于 videoB 的文件大小，则应该返回 -1 将 videoA 排在 videoB 前面
+          return videoA.size > videoB.size ? -1 : 1
+        }
+
+        // 关键词顺序不一样，按关键词顺序排序
+        return indexA < indexB ? -1 : 1
+      }
+
+      // # ////////////////////////////////////////  2. 文件名是纯小写的，按文件大小排序  ////////////////////////////////////////
+      const isLowerCaseA = /^[a-z0-9.-]+$/.test(videoA.name)
+
+      const isLowerCaseB = /^[a-z0-9.-]+$/.test(videoB.name)
+
+      // 两者都是纯小写，按文件大小排序
+      //  如果 videoA 和 videoB 都是纯小写的，则按文件大小排序
+      if (isLowerCaseA && isLowerCaseB) {
         //  如果 videoA 的 文件大小 大于 videoB 的文件大小，则应该返回 -1 将 videoA 排在 videoB 前面
         return videoA.size > videoB.size ? -1 : 1
       }
 
-      // 关键词顺序不一样，按关键词顺序排序
-      return indexA < indexB ? -1 : 1
-    }
+      // videoA是纯小写，videoB不是，videoA排前面
+      //  如果 videoA 是纯小写的，videoB 是不是纯小写的 则将 videoA 排在 videoB 前面
+      if (isLowerCaseA && !isLowerCaseB) {
+        return -1
+      }
 
-    // # ////////////////////////////////////////  2. 文件名是纯小写的，按文件大小排序  ////////////////////////////////////////
-    const isLowerCaseA = /^[a-z0-9.-]+$/.test(videoA.name)
+      // videoA不是纯小写，videoB是，videoB排前面
+      // 如果 videoA 是不是纯小写的，videoB 是纯小写的 则将 videoB 排在 videoA 前面
+      if (!isLowerCaseA && isLowerCaseB) {
+        return 1
+      }
 
-    const isLowerCaseB = /^[a-z0-9.-]+$/.test(videoB.name)
-
-    // 两者都是纯小写，按文件大小排序
-    //  如果 videoA 和 videoB 都是纯小写的，则按文件大小排序
-    if (isLowerCaseA && isLowerCaseB) {
-      //  如果 videoA 的 文件大小 大于 videoB 的文件大小，则应该返回 -1 将 videoA 排在 videoB 前面
+      // # ////////////////////////////////////////  3. 其他情况，按文件大小排序  ////////////////////////////////////////
+      // 如果 videoA 的大小 大于 videoB 的大小，则应该返回 -1 将 videoA 排在 videoB 前面
       return videoA.size > videoB.size ? -1 : 1
-    }
-
-    // videoA是纯小写，videoB不是，videoA排前面
-    //  如果 videoA 是纯小写的，videoB 是不是纯小写的 则将 videoA 排在 videoB 前面
-    if (isLowerCaseA && !isLowerCaseB) {
-      return -1
-    }
-
-    // videoA不是纯小写，videoB是，videoB排前面
-    // 如果 videoA 是不是纯小写的，videoB 是纯小写的 则将 videoB 排在 videoA 前面
-    if (!isLowerCaseA && isLowerCaseB) {
-      return 1
-    }
-
-    // # ////////////////////////////////////////  3. 其他情况，按文件大小排序  ////////////////////////////////////////
-    // 如果 videoA 的大小 大于 videoB 的大小，则应该返回 -1 将 videoA 排在 videoB 前面
-    return videoA.size > videoB.size ? -1 : 1
-  })
+    })
 })
 </script>
 
@@ -195,7 +193,7 @@ const sortedTorrentList = computed(() => {
           <div
             class="group relative z-0 h-[6em] flex cursor-pointer items-center justify-between overflow-hidden rounded-2 p-2"
             :style="{
-              backgroundColor: getTorrentStyle(torrent).backgroundColor,
+              backgroundColor: torrent.backgroundColor,
             }"
           >
             <!-- 悬浮动画 -->
@@ -218,7 +216,7 @@ const sortedTorrentList = computed(() => {
                 <div
                   class="truncate text-4 font-bold group-hover:text-[#fff]"
                   :style="{
-                    color: getTorrentStyle(torrent).backgroundColor
+                    color: torrent.backgroundColor
                       ? '#fff'
                       : '#000',
                   }"
@@ -230,7 +228,7 @@ const sortedTorrentList = computed(() => {
                 <div
                   class="m-t-1 text-3 font-semibold !group-hover:text-[#fff]"
                   :style="{
-                    color: getTorrentStyle(torrent).backgroundColor
+                    color: torrent.backgroundColor
                       ? '#fff'
                       : '#9CA3AF',
                   }"
@@ -241,14 +239,14 @@ const sortedTorrentList = computed(() => {
 
               <!-- 网站 信息 -->
               <div
-                class="m-l-3 w-30 group-hover:text-[#fff]"
+                class="mx-5 min-w-20 text-4 font-semibold group-hover:text-[#fff]"
+                :style="{
+                  color: torrent.backgroundColor
+                    ? '#fff'
+                    : '#9CA3AF',
+                }"
               >
-                <span
-                  v-if="torrent.source"
-                  class="text-4 font-bold"
-                >
-                  {{ getTorrentStyle(torrent).web }}
-                </span>
+                {{ torrent.source }}
               </div>
 
               <!-- 文件大小 -->
@@ -286,12 +284,6 @@ const sortedTorrentList = computed(() => {
                 />
               </div>
 
-              <div
-                class=""
-              >
-                {{ torrent.source }}
-
-              </div>
             </div>
 
             <!-- 右边 -->

@@ -466,7 +466,7 @@ namespace AdultType {
      * @description 当多个规则匹配时，此属性用于进一步区分优先级
      * @example "色花堂", "桃花族", "BT天堂"
      */
-    web?: string
+    source?: string
   }
 
   /**

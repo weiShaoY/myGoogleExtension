@@ -20,6 +20,7 @@ declare module 'vue' {
     AdultTorrent: typeof import('./../../components/Adult/adult-torrent.vue')['default']
     AppProvider: typeof import('./../../components/AppProvider/index.vue')['default']
     BaseButton: typeof import('./../../components/Button/base-button/index.vue')['default']
+    copy: typeof import('./../../components/Adult/adult-torrent copy.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
     ElDialog: typeof import('element-plus/es')['ElDialog']

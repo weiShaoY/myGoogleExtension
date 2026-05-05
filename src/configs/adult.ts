@@ -228,12 +228,12 @@ export const AdultConfig: AdultConfigType = {
       {
         keywords: 'UC.torrent.无码破解',
         backgroundColor: '#f12e01',
-        web: '色花堂',
+        source: '色花堂',
       },
       {
         keywords: 'U.torrent.无码破解',
         backgroundColor: '#2accea',
-        web: '色花堂',
+        source: '色花堂',
       },
       {
         keywords: '破解-c',
@@ -250,7 +250,7 @@ export const AdultConfig: AdultConfigType = {
       {
         keywords: '-C.torrent',
         backgroundColor: '#FF1166',
-        web: '色花堂',
+        source: '色花堂',
       },
       {
         keywords: '-C',
@@ -271,7 +271,7 @@ export const AdultConfig: AdultConfigType = {
       {
         keywords: 'ThZu.Cc',
         backgroundColor: '#FF4900',
-        web: '桃花族',
+        source: '桃花族',
       },
       {
         keywords: '4K-破解',
