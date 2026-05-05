@@ -1,3 +1,5 @@
+import { AdultConfig } from '@/configs'
+
 /**
  * 搜索站点配置
  */
@@ -41,12 +43,7 @@ export const SEARCH_ENGINES: SearchEngine[] = [
     queryParam: '',
     transformQuery: query => `/${query}`,
   },
-  {
-    id: 'adult-emby',
-    title: 'Emby',
-    baseUrl: 'https://app.emby.media/search.html',
-    queryParam: 'query',
-  },
+
 ]
 
 /**
@@ -112,13 +109,6 @@ export function handleSearch(engineId: string, query: string) {
 }
 
 /**
- * 处理选项页
- */
-export function openOptionsPage() {
-  chrome.runtime.openOptionsPage()
-}
-
-/**
  * 初始化右键菜单并设置事件监听
  */
 export function initContextMenu() {
@@ -132,10 +122,10 @@ export function initContextMenu() {
     })
 
     // 创建搜索站点子菜单
-    SEARCH_ENGINES.forEach((engine) => {
+    AdultConfig.siteList.forEach((engine) => {
       chrome.contextMenus.create({
-        id: engine.id,
-        title: engine.title,
+        id: engine.hostname,
+        title: engine.name,
         parentId: MENU_ID.ROOT,
         contexts: ['selection'],
       })
@@ -161,7 +151,7 @@ export function initContextMenu() {
 
     // 选项页
     if (menuId === MENU_ID.OPTION) {
-      openOptionsPage()
+      chrome.runtime.openOptionsPage()
       return
     }
 

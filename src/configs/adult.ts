@@ -71,13 +71,10 @@ type AdultConfigType = {
     hostname: string
 
     /**
-     * 搜索 / 播放路径模板
-     * @description
-     * 支持 {{code}} 占位符，会被视频文件名或番号替换
-     * @example "/search?q={{code}}"
-     * @example "/videos/{{code}}/"
+     * 搜索 / 播放路径模板转换函数
+     * @description 用于对搜索关键字进行转换，如添加前缀、后缀等
      */
-    searchUrl: string
+    transformQuery?: (query: string) => string
   }[]
 
   /**
@@ -145,30 +142,34 @@ export const AdultConfig: AdultConfigType = {
 
     dirPath: 'Z:/日本-有码/',
   },
+
   siteList: [
     {
       isVisible: true,
       name: 'JavDB',
       icon: 'adult-site-javDB',
       hostname: 'javdb.com',
-      searchUrl: '/search?q={{code}}',
-
+      transformQuery(query) {
+        return `https://${this.hostname}/search?q=${query}`
+      },
     },
-
     {
       isVisible: true,
       name: 'JavBus',
       icon: 'adult-site-javBus',
       hostname: 'javbus.com',
-      searchUrl: '/{{code}}',
-
+      transformQuery(query) {
+        return `https://${this.hostname}/search/${query}`
+      },
     },
     {
       isVisible: true,
       name: 'MissAV',
       icon: 'adult-site-missAV',
       hostname: 'missav.ai',
-      searchUrl: '/search/{{code}}',
+      transformQuery(query) {
+        return `https://${this.hostname}/search/${query}`
+      },
     },
   ],
 

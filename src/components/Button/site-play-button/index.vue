@@ -66,10 +66,7 @@ function sitePlay() {
   const config = siteConfig.value
 
   if (config?.name) {
-    const url = `https://${config.hostname}${config.searchUrl.replace(
-      '{{code}}',
-      props.videoName,
-    )}`
+    const url = config.transformQuery?.(props.videoName) || props.videoName
 
     openLink(url)
     return
@@ -108,4 +105,5 @@ function sitePlay() {
 </template>
 
 <style scoped lang="scss">
+
 </style>
