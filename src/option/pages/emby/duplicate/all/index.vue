@@ -23,7 +23,7 @@ function handleClickCopyFileName(row: AdultType.VideoFile) {
  * 点击路径
  */
 function handleClickCopyPath(row: AdultType.VideoFile) {
-  const fullDirPath = `${AdultConfig.folder.dirPath}${row.path}`
+  const fullDirPath = `${AdultConfig.emby.folderDir}${row.path}`
 
   copyToClipboard((fullDirPath), {
     title: '视频文件名 已复制到剪切板',

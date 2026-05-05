@@ -16,23 +16,16 @@ type AdultConfigType = {
   emby: {
 
     /**
+     * Emby 服务器文件夹目录（不含文件）
+     * @description 包含 Emby 服务器文件夹路径的配置信息
+     */
+    folderDir: string
+
+    /**
      * Emby 服务器请求配置
      * @description 包含连接 Emby 服务器所需的全部请求参数
      */
     request: AdultType.EmbyRequest
-  }
-
-  /**
-   * 文件夹相关配置
-   * @description 包含文件夹相关的配置信息
-   */
-  folder: {
-
-    /**
-     * 文件夹路径（不含文件）
-     * @description 包含文件夹路径的配置信息
-     */
-    dirPath: string
   }
 
   /**
@@ -118,6 +111,7 @@ export const AdultConfig: AdultConfigType = {
   // 1. 第三方服务配置（仅连接信息）
   // ==========================================
   emby: {
+    folderDir: 'Z:/日本-有码/',
     request: {
       url: 'http://192.168.0.3',
       port: '8096',
@@ -136,11 +130,6 @@ export const AdultConfig: AdultConfigType = {
         Limit: 30,
       },
     },
-  },
-
-  folder: {
-
-    dirPath: 'Z:/日本-有码/',
   },
 
   siteList: [

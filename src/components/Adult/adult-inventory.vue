@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<PropsType>(), {
 })
 
 const fullDirPath = computed(() => {
-  return `${AdultConfig.folder.dirPath}${props.file.path}`
+  return `${AdultConfig.emby.folderDir}${props.file.path}`
 })
 
 /**
