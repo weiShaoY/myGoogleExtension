@@ -457,22 +457,32 @@ namespace AdultType {
   /**
    * 标签规则配置
    * @description 从文件名匹配标签并映射到对应的图标标识
+   * @description 每条规则包含：展示标签、匹配关键词以及对应图标。
    */
-  type TorrentTagRule = {
+  type tagRules = {
+
+    /**
+     * 标签显示名称
+     * @description 用于在界面（如标签、徽标等）中展示的文本内容
+     * @example "中文字幕"
+     */
+
+    label: string
 
     /**
      * 标签图标标识
-     * @description 匹配到标签时显示的图标标识
-     * @example "tag-4k"
+     * @description 匹配成功后用于 UI 渲染的图标 key（通常对应 SvgIcon 或 Icon 组件）
+     * @example "adult-tag-4k"
      */
+
     icon: string
 
     /**
-     * 标签匹配关键词
-     * @description 用于在文件名中匹配标签的关键词数组
-     * @example ["2160P", "4K"]
+     * 标签匹配关键词列表
+     * @description 用于在视频文件名中进行匹配的关键字数组，当文件名包含任意一个关键词时，即认为命中该标签规则
+     * @example ["-C", "_CH", "中文字幕","4K"]
      */
-    names: string[]
 
+    keywords: string[]
   }
 }

@@ -89,10 +89,10 @@ type AdultConfigType = {
     videoExtRules: string[]
 
     /**
-     * 种子标签规则
-     * @description 从种子文件名匹配标签并映射到对应图标的规则配置
+     * 标签规则
+     * @description 从视频文件名匹配标签并映射到对应图标的规则配置
      */
-    torrentTagRules: AdultType.TorrentTagRule[]
+    tagRules: AdultType.tagRules[]
 
     /**
      * 种子排序规则
@@ -191,27 +191,32 @@ export const AdultConfig: AdultConfigType = {
     ],
 
     /**
-     * 种子标签规则
+     * 标签规则
      */
-    torrentTagRules: [
+    tagRules: [
       {
-        names: ['-c', '-C', '_ch', '-UC', '中文'],
+        label: '中文',
+        keywords: ['-c', '-C', '_ch', '-UC', '中文'],
         icon: 'adult-tag-ziMu',
       },
       {
-        names: ['4K'],
+        label: '4K',
+        keywords: ['4K'],
         icon: 'adult-tag-4k',
       },
       {
-        names: ['无码'],
+        label: '无码',
+        keywords: ['无码'],
         icon: 'adult-tag-wuMa',
       },
       {
-        names: ['破解'],
+        label: '破解',
+        keywords: ['破解'],
         icon: 'adult-tag-poJie',
       },
       {
-        names: ['流出'],
+        label: '流出',
+        keywords: ['流出'],
         icon: 'adult-tag-liuChu',
       },
     ],

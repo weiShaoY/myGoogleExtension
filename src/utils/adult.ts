@@ -7,10 +7,10 @@ import { AdultConfig } from '@/configs'
 export const videoFileTagExtractionRegex = new RegExp(
 
   // 处理所有标签配置，生成正则表达式模式
-  AdultConfig.rules.torrentTagRules
+  AdultConfig.rules.tagRules
 
   // 扁平化处理：将所有标签的 names 数组合并为一个数组
-    .flatMap(tag => tag.names)
+    .flatMap(tag => tag.keywords)
 
   // 遍历每个标签名称，生成正则表达式片段
     .map((name) => {
@@ -56,10 +56,10 @@ export function getVideoTagsFromName(fullName: string): string[] {
   const icons: string[] = []
 
   // 遍历所有标签规则，检查是否有匹配的标签
-  for (const tag of AdultConfig.rules.torrentTagRules) {
+  for (const tag of AdultConfig.rules.tagRules) {
     // 检查当前标签的任一关键词是否匹配
     // some 方法：只要有一个满足条件就返回 true
-    const hit = tag.names.some((n) => {
+    const hit = tag.keywords.some((n) => {
       // 将标签关键词转换为小写，用于大小写不敏感比较
       const tagNameLower = n.toLowerCase()
 
