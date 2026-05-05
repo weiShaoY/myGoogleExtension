@@ -8,6 +8,16 @@ import { AdultConfig } from '@/configs'
 const scanCount = ref(0)
 
 /**
+ * 当前扫描已耗时秒数
+ */
+const scanElapsedSeconds = ref(0)
+
+/**
+ * 扫描计时器
+ */
+let scanTimer: ReturnType<typeof setInterval> | undefined
+
+/**
  * 页面是否正在扫描（用于 loading 展示）
  */
 const isLoading = ref(false)
@@ -66,12 +76,21 @@ const videoExtRules = AdultConfig.rules.videoExtRules.map(ext => ext.toLowerCase
  */
 async function scan(folderName: string, files: AsyncIterable<FileData>, concurrency: number) {
   scanCount.value = 0
+  scanElapsedSeconds.value = 0
   isLoading.value = true
 
   /**
    * 扫描开始时间戳（用于计算耗时）
    */
   const startTime = Date.now()
+
+  if (scanTimer) {
+    clearInterval(scanTimer)
+  }
+
+  scanTimer = setInterval(() => {
+    scanElapsedSeconds.value = Math.floor((Date.now() - startTime) / 1000)
+  }, 1000)
 
   /**
    * 扫描结果集合（用于去重）
@@ -164,9 +183,21 @@ async function scan(folderName: string, files: AsyncIterable<FileData>, concurre
     adultStore.saveEmbyFolderData(folderName, Array.from(videoFileSet), startTime)
   }
   finally {
+    if (scanTimer) {
+      clearInterval(scanTimer)
+      scanTimer = undefined
+    }
+
+    scanElapsedSeconds.value = Math.floor((Date.now() - startTime) / 1000)
     isLoading.value = false
   }
 }
+
+onUnmounted(() => {
+  if (scanTimer) {
+    clearInterval(scanTimer)
+  }
+})
 
 async function handleInputSelect(e: Event) {
   /**
@@ -481,6 +512,24 @@ async function mainBtnHandler() {
         class="w-30 text-8 color-emby font-bold"
       >
         {{ scanCount }}
+      </div>
+
+      <div
+        class="flex items-baseline gap-2"
+      >
+        <span>
+          已耗时
+        </span>
+
+        <span
+          class="text-8 color-emby font-bold"
+        >
+          {{ scanElapsedSeconds }}
+        </span>
+
+        <span>
+          秒
+        </span>
       </div>
 
     </div>

@@ -27,6 +27,7 @@ export default defineManifest({
     'declarativeNetRequest', // 网络请求权限，拦截/修改/重定向网络请求
     'scripting', // 脚本注入权限，动态向网页注入JS/CSS代码
     'fileSystem', // 文件系统权限，读取/写入文件系统
+    'contextMenus', // 上下文菜单权限，添加/管理浏览器上下文菜单
   ],
   host_permissions: [
     'http://192.168.0.3:8096/*', // 允许插件访问该HTTP本地服务地址
