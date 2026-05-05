@@ -64,17 +64,21 @@ const columnConfig = {
     title: '标签',
     width: 20,
     formatter: (value: unknown) => {
+    // 判断是不是数组
       if (Array.isArray(value)) {
-        return value.join(', ')
+      // 提取所有 label → 组成字符串数组
+        return value.map(item => item.label || '')
+          .filter(Boolean)
+          .join(', ')
       }
 
-      return value ? String(value) : '无'
+      return value ? String(value) : ''
     },
   },
   hasChineseSubtitle: {
     title: '中文字幕',
     width: 10,
-    formatter: (value: unknown) => (value ? '是' : '否'),
+    formatter: (value: unknown) => (value ? '是' : ''),
   },
   id: {
     title: 'ID',
