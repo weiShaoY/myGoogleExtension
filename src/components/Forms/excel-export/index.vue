@@ -68,16 +68,35 @@ type ColumnConfig = {
   formatter?: (value: ExportValue, row: ExportData, index: number) => string
 }
 
-/** 导出配置选项 */
-type ExportOptions = {
+/** 单个工作表配置 */
+type SheetConfig = {
+
+  /** 工作表名称 */
+  name: string
 
   /** 数据源 */
   data: ExportData[]
 
+  /** 列配置映射 */
+  columns?: Record<string, ColumnConfig>
+
+  /** 表头映射（简化版本） */
+  headers?: Record<string, string>
+}
+
+/** 导出配置选项 */
+type ExportOptions = {
+
+  /** 数据源（单工作表模式） */
+  data?: ExportData[]
+
+  /** 工作表配置（多工作表模式，优先级高于 data） */
+  sheets?: SheetConfig[]
+
   /** 文件名（不含扩展名） */
   filename?: string
 
-  /** 工作表名称 */
+  /** 工作表名称（单工作表模式） */
   sheetName?: string
 
   /** 按钮类型 */
@@ -101,10 +120,10 @@ type ExportOptions = {
   /** 序号列标题 */
   indexColumnTitle?: string
 
-  /** 列配置映射 */
+  /** 列配置映射（单工作表模式） */
   columns?: Record<string, ColumnConfig>
 
-  /** 表头映射（简化版本，向后兼容） */
+  /** 表头映射（简化版本，向后兼容，单工作表模式） */
   headers?: Record<string, string>
 
   /** 最大导出行数 */
@@ -147,9 +166,6 @@ class ExportError extends Error {
 
 const isExporting = ref(false)
 
-/** 是否有数据可导出 */
-const hasData = computed(() => Array.isArray(props.data) && props.data.length > 0)
-
 /** 验证导出数据 */
 function validateData(data: ExportData[]): void {
   if (!Array.isArray(data)) {
@@ -168,10 +184,27 @@ function validateData(data: ExportData[]): void {
   }
 }
 
+/** 是否有数据可导出 */
+const hasData = computed(() => {
+  // 多工作表模式
+  if (props.sheets && props.sheets.length > 0) {
+    return props.sheets.some(sheet => Array.isArray(sheet.data) && sheet.data.length > 0)
+  }
+
+  // 单工作表模式（向后兼容）
+  return Array.isArray(props.data) && props.data.length > 0
+})
+
 /** 格式化单元格值 */
-function formatCellValue(value: ExportValue, key: string, row: ExportData, index: number): string {
-  // 使用列配置的格式化函数
-  const column = props.columns[key]
+function formatCellValue(
+  value: ExportValue,
+  key: string,
+  row: ExportData,
+  index: number,
+  columns?: Record<string, ColumnConfig>,
+): string {
+  // 使用传入的列配置或 props 的列配置
+  const column = columns?.[key] || props.columns[key]
 
   if (column?.formatter) {
     return column.formatter(value, row, index)
@@ -194,15 +227,31 @@ function formatCellValue(value: ExportValue, key: string, row: ExportData, index
 }
 
 /** 处理数据 */
-function processData(data: ExportData[]): Record<string, string>[] {
+function processData(
+  data: ExportData[],
+  options?: {
+    columns?: Record<string, ColumnConfig>
+    headers?: Record<string, string>
+    autoIndex?: boolean
+    indexColumnTitle?: string
+  },
+): Record<string, string>[] {
+  const {
+    columns = props.columns,
+    headers = props.headers,
+    autoIndex = props.autoIndex,
+    indexColumnTitle = props.indexColumnTitle,
+  } = options || {
+  }
+
   // 获取列顺序：优先使用 columns 的键顺序，其次使用 headers 的键顺序
   const getColumnOrder = (): string[] => {
-    if (Object.keys(props.columns).length > 0) {
-      return Object.keys(props.columns)
+    if (Object.keys(columns).length > 0) {
+      return Object.keys(columns)
     }
 
-    if (Object.keys(props.headers).length > 0) {
-      return Object.keys(props.headers)
+    if (Object.keys(headers).length > 0) {
+      return Object.keys(headers)
     }
 
     // 如果没有配置，使用第一个数据项的键顺序
@@ -220,8 +269,8 @@ function processData(data: ExportData[]): Record<string, string>[] {
     }
 
     // 添加序号列（放在最前面）
-    if (props.autoIndex) {
-      processedItem[props.indexColumnTitle] = String(index + 1)
+    if (autoIndex) {
+      processedItem[indexColumnTitle] = String(index + 1)
     }
 
     // 按照配置的列顺序处理数据列
@@ -235,15 +284,15 @@ function processData(data: ExportData[]): Record<string, string>[] {
       // 获取列标题
       let columnTitle = key
 
-      if (props.columns[key]?.title) {
-        columnTitle = props.columns[key].title
+      if (columns[key]?.title) {
+        columnTitle = columns[key].title
       }
-      else if (props.headers[key]) {
-        columnTitle = props.headers[key]
+      else if (headers[key]) {
+        columnTitle = headers[key]
       }
 
       // 格式化值
-      processedItem[columnTitle] = formatCellValue(value, key, item, index)
+      processedItem[columnTitle] = formatCellValue(value, key, item, index, columns)
     })
 
     return processedItem
@@ -253,18 +302,26 @@ function processData(data: ExportData[]): Record<string, string>[] {
 }
 
 /** 计算列宽度 */
-function calculateColumnWidths(data: Record<string, string>[]): XLSX.ColInfo[] {
+function calculateColumnWidths(
+  data: Record<string, string>[],
+  options?: {
+    columns?: Record<string, ColumnConfig>
+  },
+): XLSX.ColInfo[] {
   if (data.length === 0) {
     return []
   }
 
+  const { columns = props.columns } = options || {
+  }
+
   const sampleSize = Math.min(data.length, 100) // 只取前100行计算列宽
 
-  const columns = Object.keys(data[0])
+  const dataColumns = Object.keys(data[0])
 
-  return columns.map((column) => {
+  return dataColumns.map((column) => {
     // 使用配置的列宽度
-    const configWidth = Object.values(props.columns).find(col => col.title === column)?.width
+    const configWidth = Object.values(columns).find(col => col.title === column)?.width
 
     if (configWidth) {
       return {
@@ -288,14 +345,9 @@ function calculateColumnWidths(data: Record<string, string>[]): XLSX.ColInfo[] {
 }
 
 /** 导出到 Excel */
-async function exportToExcel(data: ExportData[], filename: string, sheetName: string): Promise<void> {
+async function exportToExcel(): Promise<void> {
   try {
     emit('export-progress', 10)
-
-    // 处理数据
-    const processedData = processData(data)
-
-    emit('export-progress', 30)
 
     // 创建工作簿
     const workbook = XLSX.utils.book_new()
@@ -303,7 +355,7 @@ async function exportToExcel(data: ExportData[], filename: string, sheetName: st
     // 设置工作簿属性
     if (props.workbookOptions) {
       workbook.Props = {
-        Title: filename,
+        Title: props.filename,
         Subject: '数据导出',
         Author: props.workbookOptions.creator || 'Art Design Pro',
         Manager: props.workbookOptions.lastModifiedBy || '',
@@ -316,20 +368,48 @@ async function exportToExcel(data: ExportData[], filename: string, sheetName: st
       }
     }
 
-    emit('export-progress', 50)
+    emit('export-progress', 20)
 
-    // 创建工作表
-    const worksheet = XLSX.utils.json_to_sheet(processedData)
+    // 判断是多工作表模式还是单工作表模式
+    if (props.sheets && props.sheets.length > 0) {
+      // 多工作表模式
+      const progressStep = 70 / props.sheets.length
 
-    // 设置列宽度
-    worksheet['!cols'] = calculateColumnWidths(processedData)
+      for (let i = 0; i < props.sheets.length; i++) {
+        const sheet = props.sheets[i]
 
-    emit('export-progress', 70)
+        const processedData = processData(sheet.data, {
+          columns: sheet.columns,
+          headers: sheet.headers,
+          autoIndex: props.autoIndex,
+          indexColumnTitle: props.indexColumnTitle,
+        })
 
-    // 添加工作表到工作簿
-    XLSX.utils.book_append_sheet(workbook, worksheet, sheetName)
+        const worksheet = XLSX.utils.json_to_sheet(processedData)
 
-    emit('export-progress', 85)
+        worksheet['!cols'] = calculateColumnWidths(processedData, {
+          columns: sheet.columns,
+        })
+
+        XLSX.utils.book_append_sheet(workbook, worksheet, sheet.name)
+        emit('export-progress', 20 + (i + 1) * progressStep)
+      }
+    }
+    else if (props.data) {
+      // 单工作表模式（向后兼容）
+      const processedData = processData(props.data)
+
+      const worksheet = XLSX.utils.json_to_sheet(processedData)
+
+      worksheet['!cols'] = calculateColumnWidths(processedData)
+      XLSX.utils.book_append_sheet(workbook, worksheet, props.sheetName)
+      emit('export-progress', 90)
+    }
+    else {
+      throw new ExportError('没有可导出的数据', 'NO_DATA')
+    }
+
+    emit('export-progress', 90)
 
     // 生成 Excel 文件
     const excelBuffer = XLSX.write(workbook, {
@@ -350,7 +430,7 @@ async function exportToExcel(data: ExportData[], filename: string, sheetName: st
       .toISOString()
       .replace(/[:.]/g, '-')
 
-    const finalFilename = `${filename}_${timestamp}.xlsx`
+    const finalFilename = `${props.filename}_${timestamp}.xlsx`
 
     FileSaver.saveAs(blob, finalFilename)
 
@@ -375,24 +455,50 @@ const handleExport = useThrottleFn(async () => {
   isExporting.value = true
 
   try {
-    // 验证数据
-    validateData(props.data)
+    // 判断是多工作表模式还是单工作表模式
+    if (props.sheets && props.sheets.length > 0) {
+      // 多工作表模式：验证所有工作表数据
+      for (const sheet of props.sheets) {
+        validateData(sheet.data)
+      }
 
-    // 触发导出前事件
-    emit('before-export', props.data)
+      // 触发导出前事件
+      const allData = props.sheets.flatMap(sheet => sheet.data)
 
-    // 执行导出
-    await exportToExcel(props.data, props.filename, props.sheetName)
+      emit('before-export', allData)
 
-    // 触发成功事件
-    emit('export-success', props.filename, props.data.length)
+      // 执行导出
+      await exportToExcel()
 
-    // 显示成功消息
-    if (props.showSuccessMessage) {
-      window.$message.success({
-        message: `成功导出 ${props.data.length} 条数据`,
-        duration: 3000,
-      })
+      // 触发成功事件
+      const totalCount = props.sheets.reduce((sum, sheet) => sum + sheet.data.length, 0)
+
+      emit('export-success', props.filename, totalCount)
+
+      // 显示成功消息
+      if (props.showSuccessMessage) {
+        window.$message.success({
+          message: `成功导出 ${totalCount} 条数据（${props.sheets.length} 个工作表）`,
+          duration: 3000,
+        })
+      }
+    }
+    else if (props.data) {
+      // 单工作表模式（向后兼容）
+      validateData(props.data)
+      emit('before-export', props.data)
+      await exportToExcel()
+      emit('export-success', props.filename, props.data.length)
+
+      if (props.showSuccessMessage) {
+        window.$message.success({
+          message: `成功导出 ${props.data.length} 条数据`,
+          duration: 3000,
+        })
+      }
+    }
+    else {
+      throw new ExportError('没有可导出的数据', 'NO_DATA')
     }
   }
   catch (error) {

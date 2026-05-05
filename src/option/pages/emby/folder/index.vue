@@ -1,6 +1,7 @@
 <!------  2026-04-21---00:41---星期二  ------>
 <!------------------------------------    ------------------------------------------------->
 <script lang="ts" setup>
+
 import JsonEditorVue from 'json-editor-vue'
 
 const adultStore = useAdultStore()
@@ -10,19 +11,24 @@ const json = computed(() => adultStore.embyFolder)
 const options = {
 }
 
-/**
- * 表格数据（转换 tags 数组为字符串）
- */
-const tableData = computed(() => {
-  return adultStore.embyFolder.folderVideoFiles.map(file => ({
+/** 转换 tags 数组为字符串 */
+function processVideoData(file: any) {
+  return {
     ...file,
-    tags: file.tags.map(t => t.label).join(', '),
-  }))
+    tags: file.tags.map((t: any) => t.label).join(', '),
+  }
+}
+
+/** 表格数据（转换 tags 数组为字符串） */
+const folderVideoFiles = computed(() => {
+  return adultStore.embyFolder.folderVideoFiles.map(processVideoData)
 })
 
-/**
- * 表头映射配置
- */
+const uniqueVideoFiles = computed(() => {
+  return adultStore.embyFolder.folderAllDuplicateVideoFiles.map(processVideoData)
+})
+
+/** 表头映射配置 */
 const headers = {
   baseName: '文件名',
   cleanName: '清洗后名称',
@@ -34,9 +40,7 @@ const headers = {
   path: '完整路径',
 }
 
-/**
- * 列配置
- */
+/** 列配置 */
 const columnConfig = {
   baseName: {
     title: '文件名',
@@ -53,27 +57,15 @@ const columnConfig = {
     width: 10,
     formatter: (value: unknown) => (value ? String(value) : '未知'),
   },
-
   size: {
     title: '大小',
     width: 12,
     formatter: (value: unknown) => (value ? String(value) : '未知'),
   },
-
   tags: {
     title: '标签',
     width: 20,
-    formatter: (value: unknown) => {
-    // 判断是不是数组
-      if (Array.isArray(value)) {
-      // 提取所有 label → 组成字符串数组
-        return value.map(item => item.label || '')
-          .filter(Boolean)
-          .join(', ')
-      }
-
-      return value ? String(value) : ''
-    },
+    formatter: (value: unknown) => (value ? String(value) : ''),
   },
   hasChineseSubtitle: {
     title: '中文字幕',
@@ -87,10 +79,34 @@ const columnConfig = {
   },
   path: {
     title: '完整路径',
-    width: 40,
+    width: 50,
     formatter: (value: unknown) => (value ? String(value) : '未知'),
   },
 }
+
+/** 多工作表配置 */
+const sheets = computed(() => {
+  return [
+    {
+      name: '全部视频',
+      data: folderVideoFiles.value,
+      headers,
+      columns: columnConfig,
+    },
+    {
+      name: '中文字幕',
+      data: folderVideoFiles.value.filter(file => file.hasChineseSubtitle),
+      headers,
+      columns: columnConfig,
+    },
+    {
+      name: '重复视频',
+      data: uniqueVideoFiles.value,
+      headers,
+      columns: columnConfig,
+    },
+  ]
+})
 </script>
 
 <template>
@@ -100,14 +116,11 @@ const columnConfig = {
     <div
       class="flex items-center justify-end gap-4 p-4"
     >
-      <excel-export
-        :data="tableData"
+      <ExcelExport
+        :sheets="sheets"
         :filename="`emby-视频文件列表-[${adultStore.embyFolder.folderName}]`"
-        sheet-name="视频列表"
         type="success"
-        :headers="headers"
         auto-index
-        :columns="columnConfig"
       />
     </div>
 
