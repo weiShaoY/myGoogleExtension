@@ -81,7 +81,7 @@ function buildMatchResultList() {
     )?.href?.includes(LIST_PAGE_DOM.tag.keyword)
 
     const folderMatchedVideos
-      = adultStore.getFolderMatchedVideoList(cleanName)
+      = adultStore.getEmbyFolderMatchedVideoList(cleanName)
 
     const teleportTarget
       = `${cleanName}_${getRandomNumber()}`

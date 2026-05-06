@@ -209,7 +209,7 @@ function main() {
     return
   }
 
-  const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
+  const folderMatchedVideos = adultStore.getEmbyFolderMatchedVideoList(cleanName)
 
   detailsPageMatchResult.value = createMatchResult(
     cleanName,

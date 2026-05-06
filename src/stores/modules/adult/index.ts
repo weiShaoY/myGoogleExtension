@@ -32,12 +32,12 @@ export const useAdultStore = defineStore(
     }
 
     /**
-     * 根据标准化名称获取文件夹中的视频列表
+     * Emby 文件夹中根据标准化名称匹配视频列表
      * @description 通过 cleanName 模糊匹配当前文件夹内的视频文件
      * @param cleanName 标准化纯净名称
      * @returns 匹配到的视频文件列表
      */
-    function getFolderMatchedVideoList(cleanName: string) {
+    function getEmbyFolderMatchedVideoList(cleanName: string) {
       const list = embyFolder.value.folderVideoFiles ?? []
 
       if (!cleanName || !list.length) {
@@ -63,12 +63,12 @@ export const useAdultStore = defineStore(
       saveEmbyFolderData,
 
       /**
-       * 根据标准化名称获取文件夹中的视频列表
+       * Emby 文件夹中根据标准化名称匹配视频列表
        * @description 通过 cleanName 模糊匹配当前文件夹内的视频文件
        * @param cleanName 标准化纯净名称
        * @returns 匹配到的视频文件列表
        */
-      getFolderMatchedVideoList,
+      getEmbyFolderMatchedVideoList,
     }
   },
 

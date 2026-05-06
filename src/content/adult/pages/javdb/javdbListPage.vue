@@ -93,7 +93,7 @@ function buildMatchResultList(): AdultType.ListPageMatchResultList {
     // 👉 DOM 查询统一
     const hasChineseTag = isElementExists($(item, CHINESE_TAG_SELECTOR))
 
-    const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
+    const folderMatchedVideos = adultStore.getEmbyFolderMatchedVideoList(cleanName)
 
     const teleportTarget = `${getRandomString(6)}_${cleanName}`
 

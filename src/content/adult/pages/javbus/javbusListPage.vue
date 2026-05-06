@@ -45,7 +45,7 @@ function buildMatchResultList(): AdultType.ListPageMatchResultList {
 
     const hasChineseTag = isElementExists($(item, CHINESE_TAG_SELECTOR))
 
-    const folderMatchedVideos = adultStore.getFolderMatchedVideoList(cleanName)
+    const folderMatchedVideos = adultStore.getEmbyFolderMatchedVideoList(cleanName)
 
     const teleportTarget = `${getRandomString(6)}_${cleanName}`
 
